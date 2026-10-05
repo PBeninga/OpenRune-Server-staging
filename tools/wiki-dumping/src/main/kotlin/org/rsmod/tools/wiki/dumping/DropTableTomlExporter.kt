@@ -127,6 +127,7 @@ object DropTableTomlExporter {
                     TomlWeightedSection(
                         total = spec.mainMaxRoll,
                         name = spec.tableIdentifier,
+                        rolls = spec.mainRolls,
                         entries = mainEntries,
                         separateRolls = separateRolls,
                     )
@@ -198,6 +199,7 @@ private fun SeparateRollSpec.toTomlSeparateRoll(): TomlSeparateRoll =
         numerator = accessNumerator,
         denominator = accessDenominator,
         boosted = boosted,
+        rolls = rolls,
         entries = entries.map { it.toTomlWeightedEntry() },
     )
 

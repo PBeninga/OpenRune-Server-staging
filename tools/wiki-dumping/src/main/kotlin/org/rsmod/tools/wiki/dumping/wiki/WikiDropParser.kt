@@ -15,6 +15,7 @@ data class ParsedWikiDrop(
     val wikiNotes: WikiDropNotes = WikiDropNotes(),
     val isNothing: Boolean = false,
     val isNoted: Boolean = false,
+    val rolls: Int = 1,
 )
 
 data class ParsedNpcDropTable(
@@ -602,6 +603,15 @@ object WikiDropParser {
         return parsed
     }
 
+    /**
+     * A whole number of rolls (`rolls=2`). Fractional averages (`rolls=1.33`, the wiki's shorthand
+     * for a conditional extra roll) and missing values count as one roll.
+     */
+    internal fun parseRolls(raw: String?): Int {
+        val value = raw?.trim()?.toDoubleOrNull() ?: return 1
+        return if (value >= 1.0 && value == kotlin.math.floor(value)) value.toInt() else 1
+    }
+
     private fun toParsedDrop(
         params: Map<String, String>,
         section: WikiDropSection,
@@ -665,6 +675,7 @@ object WikiDropParser {
             subsection = subsection,
             wikiNotes = wikiNotes,
             isNoted = isNoted,
+            rolls = parseRolls(params["rolls"]),
         )
     }
 
