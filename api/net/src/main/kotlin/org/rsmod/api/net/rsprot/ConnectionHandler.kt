@@ -218,7 +218,10 @@ private constructor(
         responseHandler: GameLoginResponseHandler<Player>,
         block: LoginBlock<XteaKey>,
     ) {
-        // TODO: Reconnection.
-        responseHandler.writeFailedResponse(LoginResponse.ConnectFail)
+        // TODO: Reconnection. Until then answer Duplicate: the client shows "your account is still
+        // logged in" and a fresh login works once the old session is gone, whereas ConnectFail
+        // shows "Unexpected server response".
+        logger.info { "Reconnect refused for '${block.username}': reconnection is not supported" }
+        responseHandler.writeFailedResponse(LoginResponse.Duplicate)
     }
 }

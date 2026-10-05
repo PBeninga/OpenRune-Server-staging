@@ -477,6 +477,7 @@ class AccountLoadResponseHook(
     }
 
     private fun writeErrorResponse(response: LoginResponse) {
+        logger.info { "Login refused for '${loginBlock.username}': ${response::class.simpleName}" }
         clearLoginSecrets()
         channelResponses.writeFailedResponse(response)
     }
