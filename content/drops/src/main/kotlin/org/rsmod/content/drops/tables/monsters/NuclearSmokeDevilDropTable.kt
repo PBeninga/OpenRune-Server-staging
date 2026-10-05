@@ -22,6 +22,7 @@ import org.rsmod.game.entity.Player
 public val nuclearSmokeDevilDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Nuclear smoke devil Drops",
     npcs = npcs("npc.superior_smoke_devil"),
+    mainRolls = 3,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.konar_key" count 1 killCondition {
             player, npc, areaChecker -> player.shouldDropBrimstoneKey(npc, areaChecker)
@@ -56,8 +57,12 @@ public val nuclearSmokeDevilDropTable: RSDropTable<Player, DropRollItem> = RSDro
         2 weight "obj.adamantite_bar" count 1
         2 weight "obj.xbows_crossbow_string" count 1
         2 weight "obj.ugthanki_kebab" count 3
-        1 outOf 512 separate "obj.occult_necklace" count 1
-        1 outOf 32768 separate "obj.dragon_chainbody" count 1
+        rolls(3) {
+            1 outOf 512 separate "obj.occult_necklace" count 1
+        }
+        rolls(3) {
+            1 outOf 32768 separate "obj.dragon_chainbody" count 1
+        }
 
         18 weight rsWeightedTable(total = 3) {
             2 weight herbDropTable

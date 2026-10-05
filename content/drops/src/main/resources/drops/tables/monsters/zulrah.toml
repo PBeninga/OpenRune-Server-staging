@@ -9,6 +9,7 @@ count = "100..299"
 [main]
 total = 250
 name = "Zulrah Drops"
+rolls = 2
 
 [[main.entries]]
 weight = 10
@@ -208,6 +209,7 @@ shared = "rareDrop"
 numerator = 4
 denominator = 1024
 boosted = true
+rolls = 2
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -232,6 +234,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 2
 denominator = 13107
+rolls = 2
 
 [[main.separate_rolls.entries]]
 weight = 1

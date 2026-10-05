@@ -4,6 +4,7 @@ npcs = ["npc.superior_aquanite", "npc.superior_aquanite_nolure"]
 [main]
 total = 22
 name = "Elder aquanite Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 1
@@ -52,6 +53,7 @@ nothing = true
 [[main.separate_rolls]]
 numerator = 1
 denominator = 750
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -61,6 +63,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 1
 denominator = 128
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -70,6 +73,7 @@ count = "9..15"
 [[main.separate_rolls]]
 numerator = 1
 denominator = 64
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -79,6 +83,7 @@ count = "14..22"
 [[main.separate_rolls]]
 numerator = 5
 denominator = 16
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -108,6 +113,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 3
 denominator = 13
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -127,6 +133,7 @@ count = "150..350"
 [[main.separate_rolls]]
 numerator = 1
 denominator = 42
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -136,6 +143,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 1
 denominator = 32
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1

@@ -4,6 +4,7 @@ npcs = ["npc.superior_araxyte"]
 [main]
 total = 127
 name = "Dreadborn Araxyte Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 5
@@ -106,6 +107,7 @@ nothing = true
 [[main.separate_rolls]]
 numerator = 1
 denominator = 400
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -115,6 +117,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 1
 denominator = 2000
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1

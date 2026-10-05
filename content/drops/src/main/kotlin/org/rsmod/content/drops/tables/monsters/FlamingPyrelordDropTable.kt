@@ -18,6 +18,7 @@ import org.rsmod.game.entity.Player
 public val flamingPyrelordDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Flaming pyrelord Drops",
     npcs = npcs("npc.superior_pyrefiend"),
+    mainRolls = 3,
     mainTable = rsPlayerWeightedTable(total = 128) {
         name("Flaming pyrelord Drops")
         4 weight "obj.steel_axe" count 1

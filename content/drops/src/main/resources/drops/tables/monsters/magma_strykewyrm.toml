@@ -9,6 +9,7 @@ should_drop_brimstone_key = true
 [main]
 total = 128
 name = "Magma strykewyrm Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 5
@@ -166,6 +167,7 @@ nothing = true
 [[main.separate_rolls]]
 numerator = 1
 denominator = 100
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -175,6 +177,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 5
 denominator = 471
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -184,6 +187,7 @@ count = "5..10"
 [[main.separate_rolls]]
 numerator = 5
 denominator = 589
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -193,6 +197,7 @@ count = "5..10"
 [[main.separate_rolls]]
 numerator = 5
 denominator = 589
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -202,6 +207,7 @@ count = "5..10"
 [[main.separate_rolls]]
 numerator = 1
 denominator = 157
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -211,6 +217,7 @@ count = "5..10"
 [[main.separate_rolls]]
 numerator = 2
 denominator = 673
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1
@@ -220,6 +227,7 @@ count = "5..10"
 [[main.separate_rolls]]
 numerator = 1
 denominator = 471
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1

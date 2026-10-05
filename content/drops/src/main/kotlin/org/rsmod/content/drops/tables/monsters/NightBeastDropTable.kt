@@ -22,6 +22,7 @@ import org.rsmod.game.entity.Player
 public val nightBeastDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Night beast Drops",
     npcs = npcs("npc.superior_dark_beast"),
+    mainRolls = 3,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.prif_crystal_shard" count (6..10) condition { player ->
             // Drops Need Manual: Crystal shards are only dropped by those found within the Iorwerth Dungeon.
@@ -53,7 +54,9 @@ public val nightBeastDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         3 weight "obj.shark" count 1
         1 weight "obj.shark" count 2
         1 weight "obj.death_talisman" count 1
-        1 outOf 512 separate "obj.darkbow" count 1
+        rolls(3) {
+            1 outOf 512 separate "obj.darkbow" count 1
+        }
 
         24 weight rsWeightedTable(total = 5) {
             4 weight herbDropTable

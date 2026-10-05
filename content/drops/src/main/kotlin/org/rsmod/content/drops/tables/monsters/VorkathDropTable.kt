@@ -19,6 +19,7 @@ import org.rsmod.game.entity.Player
 public val vorkathDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Vorkath Drops",
     npcs = npcs("npc.vorkath", "npc.vorkath_quest", "npc.vorkath_sleeping", "npc.vorkath_sleeping_noop"),
+    mainRolls = 2,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.dragonhide_blue" count 2
     },
@@ -52,19 +53,33 @@ public val vorkathDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         4 weight "obj.cert_diamond" count 10..20
         3 weight "obj.cert_dragonstone" count 2..3
         3 weight "obj.wrath_talisman" count 1
-        25 outOf 2730 separate "obj.xbows_bolt_tips_diamond" count 25..30
-        40 outOf 2730 separate rsPlayerWeightedTable {
-            20 weight "obj.xbows_bolt_tips_emerald" count 25..30
-            20 weight "obj.xbows_bolt_tips_ruby" count 25..30
+        rolls(2) {
+            25 outOf 2730 separate "obj.xbows_bolt_tips_diamond" count 25..30
         }
-        14 outOf 2730 separate "obj.xbows_bolt_tips_dragonstone" count 25..30
-        7 outOf 2730 separate "obj.xbows_bolt_tips_onyx" count 25..30
-        5 outOf 2730 separate "obj.xbows_bolt_tips_sapphire" count 25..30
-        6 outOf 300 separate rsPlayerWeightedTable {
-            3 weight "obj.cert_raw_shark" count 35..55
-            3 weight "obj.shark_lure" count 70..110
+        rolls(2) {
+            40 outOf 2730 separate rsPlayerWeightedTable {
+                20 weight "obj.xbows_bolt_tips_emerald" count 25..30
+                20 weight "obj.xbows_bolt_tips_ruby" count 25..30
+            }
         }
-        2 outOf 300 separate "obj.cert_mantaray" count 35..55
+        rolls(2) {
+            14 outOf 2730 separate "obj.xbows_bolt_tips_dragonstone" count 25..30
+        }
+        rolls(2) {
+            7 outOf 2730 separate "obj.xbows_bolt_tips_onyx" count 25..30
+        }
+        rolls(2) {
+            5 outOf 2730 separate "obj.xbows_bolt_tips_sapphire" count 25..30
+        }
+        rolls(2) {
+            6 outOf 300 separate rsPlayerWeightedTable {
+                3 weight "obj.cert_raw_shark" count 35..55
+                3 weight "obj.shark_lure" count 70..110
+            }
+        }
+        rolls(2) {
+            2 outOf 300 separate "obj.cert_mantaray" count 35..55
+        }
 
         5 weight SharedDropTables.rareDrop
         14 weight nothing()

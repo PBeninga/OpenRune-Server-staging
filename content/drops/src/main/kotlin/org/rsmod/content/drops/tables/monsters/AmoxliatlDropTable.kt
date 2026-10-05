@@ -18,6 +18,7 @@ import org.rsmod.game.entity.Player
 public val amoxliatlDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Amoxliatl Drops",
     npcs = npcs("npc.amoxliatl"),
+    mainRolls = 2,
     mainTable = rsPlayerWeightedTable(total = 58) {
         name("Amoxliatl Drops")
         2 weight "obj.rune_mace" count 1

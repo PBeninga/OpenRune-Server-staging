@@ -18,6 +18,7 @@ import org.rsmod.game.entity.Player
 public val insatiableMutatedBloodveldDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Insatiable mutated Bloodveld Drops",
     npcs = npcs("npc.superior_kourend_bloodveld"),
+    mainRolls = 3,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.arceuus_corpse_bloodveld" count 1
         "obj.prif_crystal_shard" count (6..10) condition { player ->

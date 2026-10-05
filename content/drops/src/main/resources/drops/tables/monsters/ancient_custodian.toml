@@ -4,6 +4,7 @@ npcs = ["npc.superior_custodian"]
 [main]
 total = 124
 name = "Ancient Custodian Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 15

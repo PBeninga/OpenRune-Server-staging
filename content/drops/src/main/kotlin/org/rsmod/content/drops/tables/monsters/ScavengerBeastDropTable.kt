@@ -17,6 +17,7 @@ import org.rsmod.game.entity.Player
 public val scavengerBeastDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Scavenger beast Drops",
     npcs = npcs("npc.raids_scavenger_beast_a", "npc.raids_scavenger_beast_b"),
+    mainRolls = 2,
     mainTable = rsPlayerWeightedTable(total = 18) {
         name("Scavenger beast Drops")
         1 weight "obj.fishing_rod" count 1

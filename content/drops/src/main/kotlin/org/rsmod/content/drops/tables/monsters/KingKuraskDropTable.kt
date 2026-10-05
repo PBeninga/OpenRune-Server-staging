@@ -19,6 +19,7 @@ import org.rsmod.game.entity.Player
 public val kingKuraskDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "King kurask Drops",
     npcs = npcs("npc.superior_kurask"),
+    mainRolls = 3,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.prif_crystal_shard" count (6..10) condition { player ->
             // Drops Need Manual: Crystal shards are only dropped by those found within the Iorwerth Dungeon.
@@ -44,9 +45,15 @@ public val kingKuraskDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         5 weight "obj.coins" count 10000
         4 weight "obj.cert_papaya" count 10
         4 weight "obj.cert_coconut" count 10
-        1 outOf 384 separate "obj.leafbladed_sword" count 1
-        1 outOf 512 separate "obj.mystic_robe_top_light" count 1
-        1 outOf 1026 separate "obj.leafbladed_battleaxe" count 1
+        rolls(3) {
+            1 outOf 384 separate "obj.leafbladed_sword" count 1
+        }
+        rolls(3) {
+            1 outOf 512 separate "obj.mystic_robe_top_light" count 1
+        }
+        rolls(3) {
+            1 outOf 1026 separate "obj.leafbladed_battleaxe" count 1
+        }
 
         18 weight SharedDropTables.herb
         6 weight SharedDropTables.gem

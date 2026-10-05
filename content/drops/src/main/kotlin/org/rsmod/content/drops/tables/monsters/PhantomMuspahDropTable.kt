@@ -72,12 +72,18 @@ public val phantomMuspahDropTable: RSDropTable<Player, DropRollItem> = RSDropTab
             1 weight "obj.3dose2restore" count 2..3
             1 weight "obj.3doseprayerrestore" count 2..3
         }
-        5 outOf 752 separate "obj.cert_unidentified_kwuarm" count 6
-        8 outOf 752 separate rsPlayerWeightedTable {
-            4 weight "obj.cert_unidentified_dwarf_weed" count 6
-            4 weight "obj.cert_unidentified_cadantine" count 6
+        rolls(2) {
+            5 outOf 752 separate "obj.cert_unidentified_kwuarm" count 6
         }
-        3 outOf 752 separate "obj.cert_unidentified_lantadyme" count 6
+        rolls(2) {
+            8 outOf 752 separate rsPlayerWeightedTable {
+                4 weight "obj.cert_unidentified_dwarf_weed" count 6
+                4 weight "obj.cert_unidentified_cadantine" count 6
+            }
+        }
+        rolls(2) {
+            3 outOf 752 separate "obj.cert_unidentified_lantadyme" count 6
+        }
 
         5 weight SharedDropTables.rareDrop
         9 weight nothing()
