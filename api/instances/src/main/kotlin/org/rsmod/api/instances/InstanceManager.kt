@@ -369,7 +369,9 @@ constructor(
         if (session != null) {
             val exit = session.placement.exitCoord
             removeOccupant(player, session, currentTick)
-            player.attr[InstanceAttributes.LOGIN_EXIT_COORD] = exit.packed
+            if (exit != CoordGrid.ZERO) {
+                player.attr[InstanceAttributes.LOGIN_EXIT_COORD] = exit.packed
+            }
             return
         }
         cancelPendingEntry(player, currentTick)
