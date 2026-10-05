@@ -17,6 +17,7 @@ public data class TomlDropTableDef(
 public data class TomlWeightedSection(
     val total: Int? = null,
     val name: String? = null,
+    val rolls: Int = 1,
     val entries: List<TomlWeightedEntry> = emptyList(),
     val separateRolls: List<TomlSeparateRoll> = emptyList(),
 )
@@ -25,6 +26,7 @@ public data class TomlSeparateRoll(
     val numerator: Int,
     val denominator: Int,
     val boosted: Boolean = false,
+    val rolls: Int = 1,
     val entries: List<TomlWeightedEntry> = emptyList(),
 )
 

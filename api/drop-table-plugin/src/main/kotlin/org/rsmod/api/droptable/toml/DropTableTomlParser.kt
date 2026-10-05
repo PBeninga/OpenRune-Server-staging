@@ -37,6 +37,7 @@ public object DropTableTomlParser {
             preRoll = buildPreRoll(def.preRoll, def.preRollSeparateRolls, resolver, sourcePath),
             mainTable = buildMain(def.main, resolver, sourcePath),
             tertiaries = buildTertiary(def, resolver),
+            mainRolls = def.main?.rolls ?: 1,
         )
     }
 
@@ -76,10 +77,12 @@ public object DropTableTomlParser {
                 require(roll.entries.isNotEmpty()) {
                     "Separate roll ${roll.numerator}/${roll.denominator} in '$sourcePath' must define entries."
                 }
-                boostedIf(roll.boosted) {
-                    roll.numerator outOf roll.denominator separate {
-                        for (entry in roll.entries) {
-                            appendTomlWeightedEntry(entry, resolver, sourcePath)
+                rolls(roll.rolls) {
+                    boostedIf(roll.boosted) {
+                        roll.numerator outOf roll.denominator separate {
+                            for (entry in roll.entries) {
+                                appendTomlWeightedEntry(entry, resolver, sourcePath)
+                            }
                         }
                     }
                 }
@@ -132,9 +135,9 @@ public object DropTableTomlParser {
                 require(roll.entries.isNotEmpty()) {
                     "Pre-roll separate roll ${roll.numerator}/${roll.denominator} in '$sourcePath' must define entries."
                 }
-                boostedIf(roll.boosted) {
-                    roll.numerator outOf roll.denominator rolls
-                        buildSeparateRollTable(roll, resolver, sourcePath)
+                val table = buildSeparateRollTable(roll, resolver, sourcePath)
+                repeat(roll.rolls) {
+                    boostedIf(roll.boosted) { roll.numerator outOf roll.denominator rolls table }
                 }
             }
         }
