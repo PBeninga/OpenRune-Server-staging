@@ -26,12 +26,12 @@ public val frigatebirdDropTable: RSDropTable<Player, DropRollItem> = RSDropTable
         9 weight "obj.coral_pillar_frag" count 1
         3 weight "obj.coral_umbral_frag" count 1
         18 outOf 50 separate "obj.feather" count 300..500
-        5 outOf 50 separate rsPlayerWeightedTable {
+        15 outOf 50 separate rsPlayerWeightedTable {
             5 weight "obj.raw_swordfish" count 1
             5 weight "obj.ruby" count 1
             5 weight "obj.ruby_ring" count 1
         }
-        2 outOf 50 separate rsPlayerWeightedTable {
+        4 outOf 50 separate rsPlayerWeightedTable {
             2 weight "obj.raw_lobster" count 1
             2 weight "obj.maple_roots" count 1
         }

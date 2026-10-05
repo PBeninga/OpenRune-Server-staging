@@ -44,13 +44,13 @@ public val theNightmareDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         5 weight "obj.3dosepotionofzamorak" count 1..10
         2 weight "obj.coins" count 2291..43958
         1 outOf 300 separate "obj.nightmare_staff" count 1
-        1 outOf 420 separate rsPlayerWeightedTable {
+        3 outOf 420 separate rsPlayerWeightedTable {
             1 weight "obj.inquisitors_helm" count 1
             1 weight "obj.inquisitors_body" count 1
             1 weight "obj.inquisitors_skirt" count 1
         }
         1 outOf 750 separate "obj.inquisitors_mace" count 1
-        1 outOf 960 separate rsPlayerWeightedTable {
+        3 outOf 960 separate rsPlayerWeightedTable {
             1 weight "obj.eldritch_orb" count 1
             1 weight "obj.harmonised_orb" count 1
             1 weight "obj.volatile_orb" count 1

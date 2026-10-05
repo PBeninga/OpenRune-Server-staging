@@ -125,7 +125,7 @@ weight = 4
 shared = "gem"
 
 [[main.separate_rolls]]
-numerator = 5
+numerator = 10
 denominator = 136
 
 [[main.separate_rolls.entries]]
@@ -139,7 +139,7 @@ obj = "obj.cert_unicorn_horn"
 count = "60..150"
 
 [[main.separate_rolls]]
-numerator = 10
+numerator = 30
 denominator = 136
 
 [[main.separate_rolls.entries]]
@@ -158,7 +158,7 @@ obj = "obj.cert_limpwurt_root"
 count = "60..150"
 
 [[main.separate_rolls]]
-numerator = 15
+numerator = 30
 denominator = 136
 
 [[main.separate_rolls.entries]]

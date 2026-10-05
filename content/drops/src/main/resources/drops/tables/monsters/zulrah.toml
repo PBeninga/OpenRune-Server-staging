@@ -205,7 +205,7 @@ weight = 10
 shared = "rareDrop"
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 4
 denominator = 1024
 boosted = true
 
@@ -230,7 +230,7 @@ obj = "obj.uncut_onyx"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 2
 denominator = 13107
 
 [[main.separate_rolls.entries]]

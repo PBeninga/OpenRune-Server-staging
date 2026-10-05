@@ -29,13 +29,13 @@ public val sergeantGrimspikeDropTable: RSDropTable<Player, DropRollItem> = RSDro
         8 weight "obj.cert_limpwurt_root" count 5
         2 weight "obj.3dosecombat" count 1
         2 weight "obj.3dose2strength" count 1
-        1 outOf 16256 separate rsPlayerWeightedTable {
+        3 outOf 16256 separate rsPlayerWeightedTable {
             1 weight "obj.bandos_chestplate" count 1
             1 weight "obj.bandos_skirt" count 1
             1 weight "obj.bandos_boots" count 1
         }
         125 outOf 16256 separate "obj.coins" count 1400..1500
-        1 outOf 1524 separate rsPlayerWeightedTable {
+        3 outOf 1524 separate rsPlayerWeightedTable {
             1 weight "obj.godwars_godsword_blade1" count 1
             1 weight "obj.godwars_godsword_blade2" count 1
             1 weight "obj.godwars_godsword_blade3" count 1

@@ -41,7 +41,7 @@ public val bloodthirstySpectreDropTable: RSDropTable<Player, DropRollItem> = RSD
         30 weight "obj.cert_wine_of_zamorak" count 30..50
         30 weight "obj.dwarf_weed_seed" count 5..8
         3 outOf 128 separate "obj.steel_axe" count 1
-        1 outOf 128 separate rsPlayerWeightedTable {
+        4 outOf 128 separate rsPlayerWeightedTable {
             1 weight "obj.mithril_kiteshield" count 1
             1 weight "obj.lava_battlestaff" count 1
             1 weight "obj.adamant_platelegs" count 1

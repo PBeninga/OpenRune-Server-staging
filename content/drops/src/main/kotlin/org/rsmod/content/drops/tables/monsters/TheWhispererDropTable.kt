@@ -49,7 +49,7 @@ public val theWhispererDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         1 outOf 512 separate "obj.soulreaper_axe_staff" count 1
         3 outOf 512 separate vestigeProgressRoll("varp.whisperer_vestige_progress", "obj.bellator_vestige")
         3 outOf 512 separate "obj.chromium_ingot" count 1
-        1 outOf 1536 separate rsPlayerWeightedTable {
+        3 outOf 1536 separate rsPlayerWeightedTable {
             1 weight "obj.virtus_mask" count 1
             1 weight "obj.virtus_top" count 1
             1 weight "obj.virtus_legs" count 1
@@ -60,7 +60,7 @@ public val theWhispererDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         }
         1 outOf 35 separate "obj.dt2_awakeners_orb" count 1
         1 outOf 209 separate "obj.shadow_quartz" count 1
-        1 outOf 6 separate rsPlayerWeightedTable {
+        3 outOf 6 separate rsPlayerWeightedTable {
             1 weight "obj.2doseancientbrew" count 1
             1 weight "obj.3doseprayerrestore" count 1
             1 weight "obj.mantaray" count 3..4

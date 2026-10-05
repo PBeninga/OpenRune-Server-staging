@@ -31,7 +31,7 @@ public val zaklnGritchDropTable: RSDropTable<Player, DropRollItem> = RSDropTable
         2 weight "obj.3dose2strength" count 1
         3 outOf 16129 separate "obj.zamorak_spear" count 1
         124 outOf 16129 separate "obj.coins" count 1300..1400
-        1 outOf 1524 separate rsPlayerWeightedTable {
+        3 outOf 1524 separate rsPlayerWeightedTable {
             1 weight "obj.godwars_godsword_blade1" count 1
             1 weight "obj.godwars_godsword_blade2" count 1
             1 weight "obj.godwars_godsword_blade3" count 1

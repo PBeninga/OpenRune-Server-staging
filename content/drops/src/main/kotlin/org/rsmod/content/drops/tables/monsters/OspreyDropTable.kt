@@ -27,18 +27,18 @@ public val ospreyDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         2 weight "obj.coral_umbral_frag" count 1
         65 outOf 2500 separate "obj.bird_nest_seeds_jan2019" count 1
         32 outOf 2500 separate "obj.bird_nest_ring" count 1
-        1 outOf 2500 separate rsPlayerWeightedTable {
+        3 outOf 2500 separate rsPlayerWeightedTable {
             1 weight "obj.bird_nest_egg_red" count 1
             1 weight "obj.bird_nest_egg_green" count 1
             1 weight "obj.bird_nest_egg_blue" count 1
         }
         25 outOf 50 separate "obj.feather" count 200..300
-        2 outOf 50 separate rsPlayerWeightedTable {
+        4 outOf 50 separate rsPlayerWeightedTable {
             2 weight "obj.raw_lobster" count 1
             2 weight "obj.willow_roots" count 1
         }
         5 outOf 50 separate "obj.raw_tuna" count 1
-        4 outOf 50 separate rsPlayerWeightedTable {
+        8 outOf 50 separate rsPlayerWeightedTable {
             4 weight "obj.emerald" count 1
             4 weight "obj.emerald_ring" count 1
         }

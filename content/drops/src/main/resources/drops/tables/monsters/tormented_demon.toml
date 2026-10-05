@@ -102,7 +102,7 @@ obj = "obj.unidentified_kwuarm"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 8
+numerator = 16
 denominator = 408
 
 [[main.separate_rolls.entries]]
@@ -134,7 +134,7 @@ obj = "obj.unidentified_avantoe"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 4
+numerator = 8
 denominator = 408
 
 [[main.separate_rolls.entries]]
@@ -157,7 +157,7 @@ obj = "obj.unidentified_torstol"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 2
 denominator = 25
 
 [[main.separate_rolls.entries]]

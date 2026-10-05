@@ -172,7 +172,7 @@ weight = 8
 shared = "rareDrop"
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 5
 denominator = 5
 
 [[main.separate_rolls.entries]]

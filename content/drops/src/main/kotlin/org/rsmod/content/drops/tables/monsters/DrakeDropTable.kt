@@ -21,7 +21,7 @@ public val drakeDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     preRoll = rsPlayerPrerollTable {
         1 outOf 2560 weight "obj.drake_tooth" count 1
         1 outOf 2560 weight "obj.drake_claw" count 1
-        1 outOf 10000 rolls rsPlayerWeightedTable {
+        2 outOf 10000 rolls rsPlayerWeightedTable {
             1 weight "obj.dragon_thrownaxe" count 100..200
             1 weight "obj.dragon_knife" count 100..200
         }

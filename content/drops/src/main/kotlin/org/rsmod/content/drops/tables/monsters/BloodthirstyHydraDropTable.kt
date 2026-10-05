@@ -51,21 +51,21 @@ public val bloodthirstyHydraDropTable: RSDropTable<Player, DropRollItem> = RSDro
         40 weight "obj.snapdragon_seed" count 5..8
         30 weight "obj.cert_raw_mantaray" count 40..60
         40 weight "obj.toadflax_seed" count 5..8
-        3 outOf 128 separate rsPlayerWeightedTable {
+        6 outOf 128 separate rsPlayerWeightedTable {
             3 weight "obj.black_dragonhide_chaps" count 1
             3 weight "obj.rune_kiteshield" count 1
         }
         2 outOf 128 separate "obj.cert_battlestaff" count 2..3
-        5 outOf 128 separate rsPlayerWeightedTable {
+        10 outOf 128 separate rsPlayerWeightedTable {
             5 weight "obj.fire_battlestaff" count 1
             5 weight "obj.water_battlestaff" count 1
         }
-        1 outOf 128 separate rsPlayerWeightedTable {
+        3 outOf 128 separate rsPlayerWeightedTable {
             1 weight "obj.rune_platebody" count 1
             1 weight "obj.mystic_robe_bottom" count 1
             1 weight "obj.dragon_longsword" count 1
         }
-        9 outOf 128 separate rsPlayerWeightedTable {
+        54 outOf 128 separate rsPlayerWeightedTable {
             9 weight "obj.bloodrune" count 15..45
             9 weight "obj.chaosrune" count 20..50
             9 weight "obj.deathrune" count 30..60

@@ -31,7 +31,7 @@ public val eagleRayDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         5 weight "obj.flax_seed" count 1
         3 weight "obj.hemp_seed" count 1
         2 weight "obj.cotton_seed" count 1
-        14 outOf 150 separate rsPlayerWeightedTable {
+        28 outOf 150 separate rsPlayerWeightedTable {
             14 weight "obj.cert_bucket_sand" count 10..15
             14 weight "obj.cert_seaweed" count 10..15
         }

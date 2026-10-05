@@ -32,18 +32,18 @@ public val albatrossDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         4 weight "obj.coral_umbral_frag" count 1
         65 outOf 1000 separate "obj.bird_nest_seeds_jan2019" count 1
         32 outOf 1000 separate "obj.bird_nest_ring" count 1
-        1 outOf 1000 separate rsPlayerWeightedTable {
+        3 outOf 1000 separate rsPlayerWeightedTable {
             1 weight "obj.bird_nest_egg_red" count 1
             1 weight "obj.bird_nest_egg_green" count 1
             1 weight "obj.bird_nest_egg_blue" count 1
         }
         14 outOf 50 separate "obj.feather" count 500..1000
-        5 outOf 50 separate rsPlayerWeightedTable {
+        15 outOf 50 separate rsPlayerWeightedTable {
             5 weight "obj.raw_swordfish" count 1
             5 weight "obj.diamond" count 1
             5 weight "obj.diamond_ring" count 1
         }
-        2 outOf 50 separate rsPlayerWeightedTable {
+        4 outOf 50 separate rsPlayerWeightedTable {
             2 weight "obj.raw_shark" count 1
             2 weight "obj.yew_roots" count 1
         }

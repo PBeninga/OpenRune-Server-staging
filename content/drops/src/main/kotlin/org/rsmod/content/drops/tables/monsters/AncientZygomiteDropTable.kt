@@ -40,7 +40,7 @@ public val ancientZygomiteDropTable: RSDropTable<Player, DropRollItem> = RSDropT
             // Drops Need Manual: Only dropped by ancient zygomites in the Stalker Den.
              true
         }
-        12 outOf 472 separate rsPlayerWeightedTable {
+        24 outOf 472 separate rsPlayerWeightedTable {
             12 weight "obj.unidentified_dwarf_weed" count 1
             12 weight "obj.unidentified_cadantine" count 1
         }
