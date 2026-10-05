@@ -19,15 +19,17 @@ internal fun <T, R> mergeInlineSeparateRolls(
         buildList {
             addAll(explicitEntries)
             addAll(
-                inline.map { roll ->
-                    if (roll.boosted) {
-                        RateBoostChanceRollable(roll.numerator, roll.denominator, roll.rollable)
-                    } else {
-                        ChanceRollableImpl(
-                            chance = roll.numerator.toDouble() / roll.denominator.toDouble() * 100.0,
-                            rollable = roll.rollable,
-                        )
-                    }
+                inline.flatMap { roll ->
+                    val entry =
+                        if (roll.boosted) {
+                            RateBoostChanceRollable(roll.numerator, roll.denominator, roll.rollable)
+                        } else {
+                            ChanceRollableImpl(
+                                chance = roll.numerator.toDouble() / roll.denominator.toDouble() * 100.0,
+                                rollable = roll.rollable,
+                            )
+                        }
+                    List(roll.rolls) { entry }
                 },
             )
         }

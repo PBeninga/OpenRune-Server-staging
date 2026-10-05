@@ -32,6 +32,7 @@ public object DropTableTomlWriter {
             sb.appendLine("numerator = ${roll.numerator}")
             sb.appendLine("denominator = ${roll.denominator}")
             appendBoosted(sb, roll.boosted)
+            appendRolls(sb, roll.rolls)
             sb.appendLine()
             for (entry in roll.entries) {
                 sb.appendLine("[[pre_roll_separate_rolls.entries]]")
@@ -44,6 +45,7 @@ public object DropTableTomlWriter {
             sb.appendLine("[main]")
             section.total?.let { sb.appendLine("total = $it") }
             section.name?.let { sb.appendLine("name = ${quote(it)}") }
+            appendRolls(sb, section.rolls)
             sb.appendLine()
             for (entry in section.entries) {
                 sb.appendLine("[[main.entries]]")
@@ -55,6 +57,7 @@ public object DropTableTomlWriter {
                 sb.appendLine("numerator = ${roll.numerator}")
                 sb.appendLine("denominator = ${roll.denominator}")
                 appendBoosted(sb, roll.boosted)
+                appendRolls(sb, roll.rolls)
                 sb.appendLine()
                 for (entry in roll.entries) {
                     sb.appendLine("[[main.separate_rolls.entries]]")
@@ -107,6 +110,12 @@ public object DropTableTomlWriter {
             }
         }
         appendHooks(sb, entry.toHooks())
+    }
+
+    private fun appendRolls(sb: StringBuilder, rolls: Int) {
+        if (rolls != 1) {
+            sb.appendLine("rolls = $rolls")
+        }
     }
 
     private fun appendBoosted(sb: StringBuilder, boosted: Boolean) {

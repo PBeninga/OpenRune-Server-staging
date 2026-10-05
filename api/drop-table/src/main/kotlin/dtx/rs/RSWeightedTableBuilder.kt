@@ -11,6 +11,8 @@ public class RSWeightedTableBuilder<T, R> :
 
     public var poolTotal: Int? = null
 
+    public var separateRollsScope: Int = 1
+
     internal val inlineSeparateRolls: MutableList<InlineSeparateRoll<T, R>> = mutableListOf()
 
     public fun pool(total: Int): RSWeightedTableBuilder<T, R> {
@@ -67,7 +69,7 @@ public class RSWeightedTableBuilder<T, R> :
     }
 
     private fun captureSeparateRoll(numerator: Int, denominator: Int, rollable: Rollable<T, R>) {
-        inlineSeparateRolls += InlineSeparateRoll(numerator, denominator, rollable, boostScope)
+        inlineSeparateRolls += InlineSeparateRoll(numerator, denominator, rollable, boostScope, separateRollsScope)
     }
 
     internal fun hoistInlineSeparateRolls(other: RSWeightedTableBuilder<T, R>) {
@@ -98,6 +100,7 @@ public fun <T, R> RSWeightedTableBuilder<T, R>.group(
 ): RSWeightedTableBuilder<T, R> {
     val subBuilder = RSWeightedTableBuilder<T, R>()
     subBuilder.boostScope = boostScope
+    subBuilder.separateRollsScope = separateRollsScope
     subBuilder.apply(block)
     hoistInlineSeparateRolls(subBuilder)
     absorb(subBuilder)

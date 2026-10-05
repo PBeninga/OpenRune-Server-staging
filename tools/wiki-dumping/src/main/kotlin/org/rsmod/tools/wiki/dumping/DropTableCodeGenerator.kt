@@ -38,6 +38,7 @@ data class ResolvedDropEntry(
     val brimstoneCombatRoll: Boolean = false,
     val brimstoneKonarBonus: Boolean = false,
     val boosted: Boolean = false,
+    val rolls: Int = 1,
 )
 
 data class ResolvedBonusDrop(
@@ -53,6 +54,7 @@ data class SeparateRollSpec(
     val accessDenominator: Int,
     val entries: List<ResolvedDropEntry>,
     val boosted: Boolean = false,
+    val rolls: Int = 1,
 )
 
 data class ResolvedSubtableAccess(
@@ -73,6 +75,7 @@ data class GeneratedDropTableSpec(
     val guaranteed: List<ResolvedDropEntry>,
     val main: List<ResolvedDropEntry>,
     val mainMaxRoll: Int? = null,
+    val mainRolls: Int = 1,
     val subtableAccesses: List<ResolvedSubtableAccess> = emptyList(),
     val separateRolls: List<SeparateRollSpec> = emptyList(),
     val preRoll: List<ResolvedDropEntry> = emptyList(),
@@ -191,10 +194,15 @@ data class GeneratedDropTableSpec(
             return Triple(mainEntries, primaryDenominator, separateRolls)
         }
 
+        /** The `rolls=N` every main entry shares, or 1 when they disagree. */
+        fun mainRollsOf(mainEntries: List<ResolvedDropEntry>): Int =
+            mainEntries.map { it.rolls }.distinct().singleOrNull() ?: 1
+
         /**
          * Wiki rarities are per item, so a group of k items that each drop at w/d becomes one
          * separate roll at (k*w)/d with the item picked by weight inside it. A group whose total
-         * would pass d is split into one roll per item.
+         * would pass d is split into one roll per item. Items with a different `rolls=N` go into
+         * separate groups, each made N times per kill.
          */
         internal fun buildSeparateRollSpecs(
             entries: List<ResolvedDropEntry>,
@@ -204,8 +212,9 @@ data class GeneratedDropTableSpec(
                 .groupBy { it.subsection.ifBlank { "Other" } }
                 .flatMap { (subsection, sectionEntries) ->
                     sectionEntries
-                        .groupBy { it.weight ?: 1 }
-                        .flatMap { (weight, weightEntries) ->
+                        .groupBy { (it.weight ?: 1) to it.rolls }
+                        .flatMap { (key, weightEntries) ->
+                            val (weight, rolls) = key
                             val groups =
                                 if (weight * weightEntries.size <= denominator) {
                                     listOf(weightEntries)
@@ -218,6 +227,7 @@ data class GeneratedDropTableSpec(
                                     accessNumerator = weight * group.size,
                                     accessDenominator = denominator,
                                     entries = group,
+                                    rolls = rolls,
                                 )
                             }
                         }
@@ -427,6 +437,9 @@ object DropTableCodeGenerator {
         if (spec.areaRscmKeys.isNotEmpty()) {
             appendAreaList(spec.areaRscmKeys)
         }
+        if (spec.mainRolls != 1) {
+            appendLine("    mainRolls = ${spec.mainRolls},")
+        }
 
         if (spec.guaranteed.isNotEmpty()) {
             appendLine("    guaranteed = rsPlayerGuaranteedTable {")
@@ -549,6 +562,7 @@ object DropTableCodeGenerator {
             bonusDrops = bonusDrops,
             brimstoneCombatRoll = brimstoneCombatRoll,
             brimstoneKonarBonus = brimstoneKonarBonus,
+            rolls = drop.rolls,
         )
 
     private suspend fun resolveBonusDrops(
@@ -644,6 +658,16 @@ object DropTableCodeGenerator {
         appendLine("$indent}")
     }
 
+    private fun StringBuilder.rollsIf(rolls: Int, indent: String, emit: (String) -> Unit) {
+        if (rolls == 1) {
+            emit(indent)
+            return
+        }
+        appendLine("${indent}rolls($rolls) {")
+        emit("$indent    ")
+        appendLine("$indent}")
+    }
+
     private fun ResolvedDropEntry.canUseItemChainSyntax(): Boolean = bonusDrops.isEmpty()
 
     private fun formatDropCount(count: Int, countMax: Int?, parenthesizeRange: Boolean = false): String =
@@ -708,7 +732,9 @@ object DropTableCodeGenerator {
             boostedIf(entry.boosted, "        ") { inner -> appendWeightedLine(entry, indent = inner) }
         }
         for (roll in separateRolls) {
-            boostedIf(roll.boosted, "        ") { inner -> appendInlineSeparateRoll(roll, indent = inner) }
+            rollsIf(roll.rolls, "        ") { rollsIndent ->
+                boostedIf(roll.boosted, rollsIndent) { inner -> appendInlineSeparateRoll(roll, indent = inner) }
+            }
         }
 
         if (subtableAccesses.isNotEmpty()) {

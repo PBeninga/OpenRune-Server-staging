@@ -73,6 +73,17 @@ public class DropWeightedTableScope internal constructor(
         builder.boostScope = previous
     }
 
+    /** Separate rolls declared in [block] are made [count] times per kill, like `mainRolls`. */
+    public fun rolls(count: Int, block: DropWeightedTableScope.() -> Unit) {
+        require(count >= 1) { "rolls must be at least 1: $count" }
+        flushPendingItems()
+        val previous = builder.separateRollsScope
+        builder.separateRollsScope = count
+        block()
+        flushPendingItems()
+        builder.separateRollsScope = previous
+    }
+
     public fun group(tableName: String, block: DropWeightedTableScope.() -> Unit) {
         builder.group(tableName) {
             DropWeightedTableScope(this).apply {

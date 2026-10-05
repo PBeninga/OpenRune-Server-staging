@@ -314,6 +314,7 @@ class NpcDropTableWikiDumper(
                     raw.copy(
                         main = mainEntries,
                         mainMaxRoll = reconciledMaxRoll,
+                        mainRolls = GeneratedDropTableSpec.mainRollsOf(mainEntries),
                         subtableAccesses = raw.subtableAccesses,
                         separateRolls = separateRolls,
                         preRoll = preRollEntries,
