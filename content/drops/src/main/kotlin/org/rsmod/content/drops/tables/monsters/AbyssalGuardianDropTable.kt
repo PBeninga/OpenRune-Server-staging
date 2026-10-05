@@ -35,7 +35,7 @@ public val abyssalGuardianDropTable: RSDropTable<Player, DropRollItem> = RSDropT
         4 weight "obj.cert_blankrune_high" count 10
         4 weight "obj.cert_blankrune_high" count 15
         3 weight "obj.magic_emerald_necklace" count 1
-        1 outOf 42 separate rsPlayerWeightedTable {
+        4 outOf 42 separate rsPlayerWeightedTable {
             1 weight "obj.rcu_pouch_small" count 1 condition { player ->
                 // Drops Need Manual: Players will only get a pouch if they have all the smaller pouches, and if a player has them all, they will no longer get them as a drop, unless one was lost.
                  true

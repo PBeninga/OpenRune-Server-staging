@@ -45,7 +45,7 @@ public val generalGraardorDropTable: RSDropTable<Player, DropRollItem> = RSDropT
              true
         }
         boosted {
-            1 outOf 381 separate rsPlayerWeightedTable {
+            3 outOf 381 separate rsPlayerWeightedTable {
                 1 weight "obj.bandos_chestplate" count 1
                 1 weight "obj.bandos_skirt" count 1
                 1 weight "obj.bandos_boots" count 1
@@ -54,7 +54,7 @@ public val generalGraardorDropTable: RSDropTable<Player, DropRollItem> = RSDropT
         boosted {
             1 outOf 508 separate "obj.godwars_godsword_hilt_bandos" count 1
         }
-        1 outOf 762 separate rsPlayerWeightedTable {
+        3 outOf 762 separate rsPlayerWeightedTable {
             1 weight "obj.godwars_godsword_blade1" count 1
             1 weight "obj.godwars_godsword_blade2" count 1
             1 weight "obj.godwars_godsword_blade3" count 1

@@ -64,7 +64,7 @@ public val phantomMuspahDropTable: RSDropTable<Player, DropRollItem> = RSDropTab
             // Drops Need Manual: When a Venator shard is received, no regular loot will be dropped alongside it.
              true
         }
-        1 outOf 9 separate rsPlayerWeightedTable {
+        6 outOf 9 separate rsPlayerWeightedTable {
             1 weight "obj.shark" count 4..6
             1 weight "obj.summer_pie" count 4..6
             1 weight "obj.3doseancientbrew" count 1..2
@@ -73,7 +73,7 @@ public val phantomMuspahDropTable: RSDropTable<Player, DropRollItem> = RSDropTab
             1 weight "obj.3doseprayerrestore" count 2..3
         }
         5 outOf 752 separate "obj.cert_unidentified_kwuarm" count 6
-        4 outOf 752 separate rsPlayerWeightedTable {
+        8 outOf 752 separate rsPlayerWeightedTable {
             4 weight "obj.cert_unidentified_dwarf_weed" count 6
             4 weight "obj.cert_unidentified_cadantine" count 6
         }

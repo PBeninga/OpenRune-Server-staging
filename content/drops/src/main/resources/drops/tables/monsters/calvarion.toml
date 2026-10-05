@@ -142,7 +142,7 @@ obj = "obj.wilderness_fishing_bait"
 count = 280
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 2
 denominator = 358
 
 [[main.separate_rolls.entries]]
@@ -183,7 +183,7 @@ obj = "obj.wbr_voidwaker_blade"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 6
 denominator = 18
 
 [[main.separate_rolls.entries]]

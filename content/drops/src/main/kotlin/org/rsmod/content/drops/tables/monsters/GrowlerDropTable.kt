@@ -30,7 +30,7 @@ public val growlerDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         8 weight "obj.cert_unicorn_horn" count 6
         3 outOf 16129 separate "obj.saradomin_sword" count 1
         124 outOf 16129 separate "obj.coins" count 1400..1500
-        1 outOf 1524 separate rsPlayerWeightedTable {
+        3 outOf 1524 separate rsPlayerWeightedTable {
             1 weight "obj.godwars_godsword_blade1" count 1
             1 weight "obj.godwars_godsword_blade2" count 1
             1 weight "obj.godwars_godsword_blade3" count 1

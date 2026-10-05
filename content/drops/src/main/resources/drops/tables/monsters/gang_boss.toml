@@ -75,7 +75,7 @@ weight = 41
 nothing = true
 
 [[main.separate_rolls]]
-numerator = 25
+numerator = 50
 denominator = 1024
 
 [[main.separate_rolls.entries]]

@@ -52,13 +52,13 @@ public val araxxorDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         2 weight "obj.cert_red_spiders_eggs" count 40
         2 weight "obj.araxyte_venom_sack" count 12
         1 weight "obj.cert_hollow_bark" count 15
-        1 outOf 200 separate rsPlayerWeightedTable {
+        3 outOf 200 separate rsPlayerWeightedTable {
             1 weight "obj.noxious_halberd_part_3" count 1
             1 weight "obj.noxious_halberd_part_1" count 1
             1 weight "obj.noxious_halberd_part_2" count 1
         }
         1 outOf 600 separate "obj.araxyte_fang" count 1
-        1 outOf 16 separate rsPlayerWeightedTable {
+        4 outOf 16 separate rsPlayerWeightedTable {
             1 weight "obj.araxyte_venom_sack" count 1
             1 weight "obj.1dose2combat" count 1
             1 weight "obj.shark" count 2..3

@@ -176,7 +176,7 @@ obj = "obj.cert_unidentified_kwuarm"
 count = 25
 
 [[main.separate_rolls]]
-numerator = 20
+numerator = 40
 denominator = 2224
 
 [[main.separate_rolls.entries]]

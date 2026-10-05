@@ -181,7 +181,7 @@ obj = "obj.wbr_vetion_skull"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 2
 denominator = 256
 
 [[main.separate_rolls.entries]]
@@ -213,7 +213,7 @@ obj = "obj.rotg"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 6
 denominator = 18
 
 [[main.separate_rolls.entries]]

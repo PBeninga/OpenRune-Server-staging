@@ -50,11 +50,11 @@ public val commanderZilyanaDropTable: RSDropTable<Player, DropRollItem> = RSDrop
         8 weight "obj.ranarr_seed" count 2
         1 weight "obj.magic_tree_seed" count 1
         1 outOf 254 separate "obj.saradomin_light" count 1
-        1 outOf 508 separate rsPlayerWeightedTable {
+        2 outOf 508 separate rsPlayerWeightedTable {
             1 weight "obj.acb" count 1
             1 weight "obj.godwars_godsword_hilt_saradomin" count 1
         }
-        1 outOf 762 separate rsPlayerWeightedTable {
+        3 outOf 762 separate rsPlayerWeightedTable {
             1 weight "obj.godwars_godsword_blade1" count 1
             1 weight "obj.godwars_godsword_blade2" count 1
             1 weight "obj.godwars_godsword_blade3" count 1

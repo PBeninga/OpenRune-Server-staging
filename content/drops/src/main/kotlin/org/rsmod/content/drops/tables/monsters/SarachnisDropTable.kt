@@ -54,13 +54,13 @@ public val sarachnisDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         1 weight "obj.crystal_key" count 1
         1 weight "obj.cert_village_spider_carcass" count 10
         15 outOf 800 separate "obj.cert_unidentified_kwuarm" count 10..15
-        12 outOf 800 separate rsPlayerWeightedTable {
+        24 outOf 800 separate rsPlayerWeightedTable {
             12 weight "obj.cert_unidentified_dwarf_weed" count 10..15
             12 weight "obj.cert_unidentified_cadantine" count 10..15
         }
         10 outOf 800 separate "obj.cert_unidentified_avantoe" count 5..10
         9 outOf 800 separate "obj.cert_unidentified_lantadyme" count 10..15
-        8 outOf 800 separate rsPlayerWeightedTable {
+        16 outOf 800 separate rsPlayerWeightedTable {
             8 weight "obj.cert_unidentified_snapdragon" count 5..10
             8 weight "obj.cert_unidentified_ranarr" count 5..10
         }

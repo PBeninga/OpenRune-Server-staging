@@ -170,7 +170,7 @@ obj = "obj.coins"
 count = 180
 
 [[main.separate_rolls]]
-numerator = 5
+numerator = 20
 denominator = 128
 
 [[main.separate_rolls.entries]]

@@ -91,7 +91,7 @@ weight = 3
 shared = "usefulHerb"
 
 [[main.separate_rolls]]
-numerator = 5
+numerator = 10
 denominator = 255
 
 [[main.separate_rolls.entries]]
@@ -105,7 +105,7 @@ obj = "obj.cert_unicorn_horn"
 count = "60..150"
 
 [[main.separate_rolls]]
-numerator = 10
+numerator = 30
 denominator = 255
 
 [[main.separate_rolls.entries]]
@@ -124,7 +124,7 @@ obj = "obj.cert_limpwurt_root"
 count = "60..150"
 
 [[main.separate_rolls]]
-numerator = 15
+numerator = 30
 denominator = 255
 
 [[main.separate_rolls.entries]]
@@ -138,7 +138,7 @@ obj = "obj.cert_raw_monkfish"
 count = "60..80"
 
 [[main.separate_rolls]]
-numerator = 20
+numerator = 40
 denominator = 255
 
 [[main.separate_rolls.entries]]
@@ -152,7 +152,7 @@ obj = "obj.cert_raw_shark"
 count = "60..80"
 
 [[main.separate_rolls]]
-numerator = 30
+numerator = 60
 denominator = 255
 
 [[main.separate_rolls.entries]]
@@ -166,7 +166,7 @@ obj = "obj.ranarr_seed"
 count = "8..15"
 
 [[main.separate_rolls]]
-numerator = 25
+numerator = 50
 denominator = 255
 
 [[main.separate_rolls.entries]]

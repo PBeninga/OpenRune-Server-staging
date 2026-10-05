@@ -54,7 +54,7 @@ public val hesporiDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         2 weight "obj.celastrus_tree_seed" count 1
         1 weight "obj.spirit_tree_seed" count 1
         1 weight "obj.redwood_tree_seed" count 1
-        1 outOf 3 separate rsPlayerWeightedTable {
+        3 outOf 3 separate rsPlayerWeightedTable {
             1 weight "obj.attas_seed" count 1..2
             1 weight "obj.iasor_seed" count 1..2
             1 weight "obj.kronos_seed" count 1..2

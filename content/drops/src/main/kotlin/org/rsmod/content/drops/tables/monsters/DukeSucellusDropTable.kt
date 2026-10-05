@@ -47,7 +47,7 @@ public val dukeSucellusDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         1 outOf 720 separate "obj.soulreaper_axe_eye" count 1
         3 outOf 720 separate vestigeProgressRoll("varp.duke_sucellus_vestige_progress", "obj.magus_vestige")
         3 outOf 720 separate "obj.chromium_ingot" count 1
-        1 outOf 2160 separate rsPlayerWeightedTable {
+        3 outOf 2160 separate rsPlayerWeightedTable {
             1 weight "obj.virtus_mask" count 1
             1 weight "obj.virtus_top" count 1
             1 weight "obj.virtus_legs" count 1
@@ -58,7 +58,7 @@ public val dukeSucellusDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         }
         1 outOf 49 separate "obj.dt2_awakeners_orb" count 1
         1 outOf 207 separate "obj.ice_quartz" count 1
-        1 outOf 5 separate rsPlayerWeightedTable {
+        3 outOf 5 separate rsPlayerWeightedTable {
             1 weight "obj.pineapple_pizza" count 3..4
             1 weight "obj.3doseprayerrestore" count 1
             1 weight "obj.2dose2combat" count 1

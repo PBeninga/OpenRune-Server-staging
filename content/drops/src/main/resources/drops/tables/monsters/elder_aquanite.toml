@@ -77,7 +77,7 @@ obj = "obj.rune_cannonball"
 count = "14..22"
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 5
 denominator = 16
 
 [[main.separate_rolls.entries]]
@@ -106,7 +106,7 @@ obj = "obj.cadantine_seed"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 3
 denominator = 13
 
 [[main.separate_rolls.entries]]

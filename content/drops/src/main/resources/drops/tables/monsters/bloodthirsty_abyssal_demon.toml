@@ -134,7 +134,7 @@ weight = 5
 shared = "gem"
 
 [[main.separate_rolls]]
-numerator = 5
+numerator = 10
 denominator = 435
 
 [[main.separate_rolls.entries]]
@@ -148,7 +148,7 @@ obj = "obj.cert_unicorn_horn"
 count = "60..150"
 
 [[main.separate_rolls]]
-numerator = 10
+numerator = 30
 denominator = 435
 
 [[main.separate_rolls.entries]]
@@ -167,7 +167,7 @@ obj = "obj.cert_limpwurt_root"
 count = "60..150"
 
 [[main.separate_rolls]]
-numerator = 15
+numerator = 30
 denominator = 435
 
 [[main.separate_rolls.entries]]
@@ -181,7 +181,7 @@ obj = "obj.cert_raw_monkfish"
 count = "60..80"
 
 [[main.separate_rolls]]
-numerator = 20
+numerator = 40
 denominator = 435
 
 [[main.separate_rolls.entries]]
@@ -195,7 +195,7 @@ obj = "obj.cert_raw_shark"
 count = "60..80"
 
 [[main.separate_rolls]]
-numerator = 30
+numerator = 120
 denominator = 435
 
 [[main.separate_rolls.entries]]
@@ -219,7 +219,7 @@ obj = "obj.cert_raw_mantaray"
 count = "40..60"
 
 [[main.separate_rolls]]
-numerator = 25
+numerator = 50
 denominator = 435
 
 [[main.separate_rolls.entries]]
@@ -242,7 +242,7 @@ obj = "obj.cert_magic_logs"
 count = "30..50"
 
 [[main.separate_rolls]]
-numerator = 40
+numerator = 120
 denominator = 435
 
 [[main.separate_rolls.entries]]
