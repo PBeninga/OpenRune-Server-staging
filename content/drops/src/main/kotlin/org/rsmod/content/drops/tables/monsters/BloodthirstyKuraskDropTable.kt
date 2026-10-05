@@ -39,7 +39,7 @@ public val bloodthirstyKuraskDropTable: RSDropTable<Player, DropRollItem> = RSDr
         20 weight "obj.cert_raw_shark" count 60..80
         25 weight "obj.cert_red_spiders_eggs" count 40..60
         35 weight "obj.cert_magic_logs" count 30..50
-        3 outOf 124 separate rsPlayerWeightedTable {
+        12 outOf 124 separate rsPlayerWeightedTable {
             3 weight "obj.mithril_kiteshield" count 1
             3 weight "obj.rune_longsword" count 1
             3 weight "obj.adamant_platebody" count 1
@@ -49,15 +49,15 @@ public val bloodthirstyKuraskDropTable: RSDropTable<Player, DropRollItem> = RSDr
         7 outOf 124 separate "obj.naturerune" count 15
         4 outOf 124 separate "obj.naturerune" count 30
         16 outOf 124 separate "obj.coins" count 2000..3000
-        6 outOf 124 separate rsPlayerWeightedTable {
+        12 outOf 124 separate rsPlayerWeightedTable {
             6 weight "obj.cert_flax" count 100
             6 weight "obj.cert_white_berries" count 12
         }
-        5 outOf 124 separate rsPlayerWeightedTable {
+        10 outOf 124 separate rsPlayerWeightedTable {
             5 weight "obj.cert_big_bones" count 20
             5 weight "obj.coins" count 10000
         }
-        4 outOf 124 separate rsPlayerWeightedTable {
+        8 outOf 124 separate rsPlayerWeightedTable {
             4 weight "obj.cert_papaya" count 10
             4 weight "obj.cert_coconut" count 10
         }

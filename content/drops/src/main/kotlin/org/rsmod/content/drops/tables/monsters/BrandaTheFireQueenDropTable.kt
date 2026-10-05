@@ -18,6 +18,7 @@ import org.rsmod.game.entity.Player
 public val brandaTheFireQueenDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Branda the Fire Queen Drops",
     npcs = npcs("npc.rt_fire_queen"),
+    mainRolls = 2,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.desiccated_page" count 10..19
     },

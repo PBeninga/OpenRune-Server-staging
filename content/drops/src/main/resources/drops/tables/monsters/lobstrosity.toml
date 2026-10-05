@@ -79,6 +79,7 @@ nothing = true
 [[main.separate_rolls]]
 numerator = 15
 denominator = 944
+rolls = 2
 
 [[main.separate_rolls.entries]]
 weight = 15
@@ -88,6 +89,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 9
 denominator = 944
+rolls = 2
 
 [[main.separate_rolls.entries]]
 weight = 9
@@ -97,6 +99,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 3
 denominator = 236
+rolls = 2
 
 [[main.separate_rolls.entries]]
 weight = 3
@@ -106,6 +109,7 @@ count = 1
 [[main.separate_rolls]]
 numerator = 3
 denominator = 326
+rolls = 2
 
 [[main.separate_rolls.entries]]
 weight = 3

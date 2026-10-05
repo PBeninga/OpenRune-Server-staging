@@ -48,11 +48,11 @@ public val krilTsutsarothDropTable: RSDropTable<Player, DropRollItem> = RSDropTa
         8 weight "obj.lantadyme_seed" count 3
         8 weight "obj.deathrune" count 120..125
         8 weight "obj.bloodrune" count 80..85
-        1 outOf 508 separate rsPlayerWeightedTable {
+        2 outOf 508 separate rsPlayerWeightedTable {
             1 weight "obj.sotd" count 1
             1 weight "obj.godwars_godsword_hilt_zamorak" count 1
         }
-        1 outOf 762 separate rsPlayerWeightedTable {
+        3 outOf 762 separate rsPlayerWeightedTable {
             1 weight "obj.godwars_godsword_blade1" count 1
             1 weight "obj.godwars_godsword_blade2" count 1
             1 weight "obj.godwars_godsword_blade3" count 1

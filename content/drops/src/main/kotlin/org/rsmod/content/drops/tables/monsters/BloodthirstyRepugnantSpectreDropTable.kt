@@ -42,13 +42,13 @@ public val bloodthirstyRepugnantSpectreDropTable: RSDropTable<Player, DropRollIt
         40 weight "obj.snapdragon_seed" count 5..8
         30 weight "obj.cert_raw_mantaray" count 40..60
         10 weight "obj.toadflax_seed" count 5..8
-        5 outOf 128 separate rsPlayerWeightedTable {
+        15 outOf 128 separate rsPlayerWeightedTable {
             5 weight "obj.battlestaff" count 1
             5 weight "obj.black_platelegs" count 1
             5 weight "obj.mithril_battleaxe" count 1
         }
         2 outOf 128 separate "obj.rune_full_helm" count 1
-        1 outOf 128 separate rsPlayerWeightedTable {
+        2 outOf 128 separate rsPlayerWeightedTable {
             1 weight "obj.lava_battlestaff" count 1
             1 weight "obj.rune_chainbody" count 1
         }

@@ -4,6 +4,7 @@ npcs = ["npc.superior_pyrelord"]
 [main]
 total = 128
 name = "Infernal pyrelord Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 4

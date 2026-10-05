@@ -4,6 +4,7 @@ npcs = ["npc.superior_crawling_hand"]
 [main]
 total = 128
 name = "Crushing hand Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 21

@@ -51,7 +51,7 @@ public val nechryarchDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         7 weight "obj.cert_gold_bar" count 5
         6 weight "obj.tuna" count 2
         2 weight "obj.cert_wine_of_zamorak" count 3
-        4 outOf 116 separate rsPlayerWeightedTable {
+        8 outOf 116 separate rsPlayerWeightedTable {
             4 weight "obj.adamant_platelegs" count 1
             4 weight "obj.rune_2h_sword" count 1
         }
@@ -59,7 +59,7 @@ public val nechryarchDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         2 outOf 116 separate "obj.adamant_kiteshield" count 1
         1 outOf 116 separate "obj.rune_armoured_boots" count 1
         8 outOf 116 separate "obj.chaosrune" count 37
-        6 outOf 116 separate rsPlayerWeightedTable {
+        12 outOf 116 separate rsPlayerWeightedTable {
             6 weight "obj.deathrune" count 5
             6 weight "obj.deathrune" count 10
         }
@@ -68,7 +68,7 @@ public val nechryarchDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         13 outOf 116 separate "obj.coins" count 1000..1499
         11 outOf 116 separate "obj.coins" count 1500..2000
         6 outOf 116 separate "obj.coins" count 2500..2999
-        3 outOf 116 separate rsPlayerWeightedTable {
+        6 outOf 116 separate rsPlayerWeightedTable {
             3 weight "obj.coins" count 3000..3500
             3 weight "obj.coins" count 500..999
         }

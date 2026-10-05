@@ -19,6 +19,7 @@ import org.rsmod.game.entity.Player
 public val alchemicalHydraDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Alchemical Hydra Drops",
     npcs = npcs("npc.hydraboss", "npc.hydraboss_2", "npc.hydraboss_3", "npc.hydraboss_4", "npc.hydraboss_finaldeath", "npc.hydraboss_p1_transition", "npc.hydraboss_p2_transition", "npc.hydraboss_p3_transition"),
+    mainRolls = 2,
     preRoll = rsPlayerPrerollTable {
         1 outOf 2000 weight "obj.dragon_thrownaxe" count 500..1000
     },

@@ -53,7 +53,7 @@ public val cerberusDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         2 weight "obj.torstol_seed" count 3
         2 weight "obj.ranarr_seed" count 2
         2 weight "obj.teleportscroll_cerberus" count 7
-        1 outOf 520 separate rsPlayerWeightedTable {
+        4 outOf 520 separate rsPlayerWeightedTable {
             1 weight "obj.primordial_crystal" count 1
             1 weight "obj.pegasian_crystal" count 1
             1 weight "obj.eternal_crystal" count 1

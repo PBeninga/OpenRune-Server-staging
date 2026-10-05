@@ -48,7 +48,7 @@ public val theLeviathanDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         1 outOf 768 separate "obj.soulreaper_axe_lure" count 1
         3 outOf 768 separate vestigeProgressRoll("varp.leviathan_vestige_progress", "obj.venator_vestige")
         3 outOf 768 separate "obj.chromium_ingot" count 1
-        1 outOf 2304 separate rsPlayerWeightedTable {
+        3 outOf 2304 separate rsPlayerWeightedTable {
             1 weight "obj.virtus_mask" count 1
             1 weight "obj.virtus_top" count 1
             1 weight "obj.virtus_legs" count 1
@@ -59,7 +59,7 @@ public val theLeviathanDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         }
         1 outOf 54 separate "obj.dt2_awakeners_orb" count 1
         1 outOf 206 separate "obj.smoke_quartz" count 1
-        1 outOf 5 separate rsPlayerWeightedTable {
+        3 outOf 5 separate rsPlayerWeightedTable {
             1 weight "obj.3doseprayerrestore" count 1
             1 weight "obj.2doserangerspotion" count 1
             1 weight "obj.seaturtle" count 3..4

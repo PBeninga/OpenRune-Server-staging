@@ -27,7 +27,7 @@ public val tzHaarMejDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         2 weight "obj.deathrune" count 2
         62 weight "obj.tzhaar_token" count 1..21
         2 weight "obj.tzhaar_token" count 22
-        1 outOf 4096 separate rsPlayerWeightedTable {
+        2 outOf 4096 separate rsPlayerWeightedTable {
             1 weight "obj.tzhaar_cape_obsidian" count 1
             1 weight "obj.tzhaar_staff" count 1
         }

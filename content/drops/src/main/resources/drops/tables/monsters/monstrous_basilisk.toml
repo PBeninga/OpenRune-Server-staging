@@ -9,6 +9,7 @@ should_drop_brimstone_key = true
 [main]
 total = 128
 name = "Monstrous basilisk Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 3
@@ -101,6 +102,7 @@ shared = "gem"
 [[main.separate_rolls]]
 numerator = 1
 denominator = 512
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1

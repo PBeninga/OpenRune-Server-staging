@@ -4,6 +4,7 @@ npcs = ["npc.superior_rockslug"]
 [main]
 total = 128
 name = "Giant rockslug Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 30
@@ -76,6 +77,7 @@ shared = "seed"
 [[main.separate_rolls]]
 numerator = 1
 denominator = 512
+rolls = 3
 
 [[main.separate_rolls.entries]]
 weight = 1

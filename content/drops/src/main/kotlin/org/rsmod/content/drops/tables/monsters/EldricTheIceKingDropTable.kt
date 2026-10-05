@@ -18,6 +18,7 @@ import org.rsmod.game.entity.Player
 public val eldricTheIceKingDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Eldric the Ice King Drops",
     npcs = npcs("npc.rt_ice_king"),
+    mainRolls = 2,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.desiccated_page" count 10..19
     },

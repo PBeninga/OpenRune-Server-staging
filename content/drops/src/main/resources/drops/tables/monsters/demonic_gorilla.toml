@@ -127,7 +127,7 @@ obj = "obj.ballista_frame_light"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 2
 denominator = 1500
 
 [[main.separate_rolls.entries]]

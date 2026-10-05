@@ -37,7 +37,9 @@ public val abhorrentSpectreDropTable: RSDropTable<Player, DropRollItem> = RSDrop
         1 weight "obj.rune_full_helm" count 1
         1 weight "obj.coins" count 460
         18 weight ringNothing()
-        1 outOf 512 separate "obj.mystic_robe_bottom_dark" count 1
+        rolls(3) {
+            1 outOf 512 separate "obj.mystic_robe_bottom_dark" count 1
+        }
 
         78 weight rsWeightedTable(total = 26) {
             name("Multi-roll herb drop table")

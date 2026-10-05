@@ -100,7 +100,7 @@ weight = 2
 nothing = true
 
 [[main.separate_rolls]]
-numerator = 9
+numerator = 27
 denominator = 5208
 
 [[main.separate_rolls.entries]]
@@ -119,7 +119,7 @@ obj = "obj.xbows_bolt_tips_diamond"
 count = "6..14"
 
 [[main.separate_rolls]]
-numerator = 3
+numerator = 12
 denominator = 5208
 
 [[main.separate_rolls.entries]]
@@ -152,7 +152,7 @@ obj = "obj.xbows_bolt_tips_emerald"
 count = "6..14"
 
 [[main.separate_rolls]]
-numerator = 6
+numerator = 12
 denominator = 5208
 
 [[main.separate_rolls.entries]]

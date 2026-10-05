@@ -36,15 +36,21 @@ public val ancientZygomiteDropTable: RSDropTable<Player, DropRollItem> = RSDropT
             DropRollItem("obj.fossil_calcite", 1),
         )))
         10 weight "obj.cert_mortmyremushroom" count 5
-        15 outOf 472 separate "obj.unidentified_kwuarm" count 1 condition { player ->
-            // Drops Need Manual: Only dropped by ancient zygomites in the Stalker Den.
-             true
+        rolls(2) {
+            15 outOf 472 separate "obj.unidentified_kwuarm" count 1 condition { player ->
+                // Drops Need Manual: Only dropped by ancient zygomites in the Stalker Den.
+                 true
+            }
         }
-        12 outOf 472 separate rsPlayerWeightedTable {
-            12 weight "obj.unidentified_dwarf_weed" count 1
-            12 weight "obj.unidentified_cadantine" count 1
+        rolls(2) {
+            24 outOf 472 separate rsPlayerWeightedTable {
+                12 weight "obj.unidentified_dwarf_weed" count 1
+                12 weight "obj.unidentified_cadantine" count 1
+            }
         }
-        9 outOf 472 separate "obj.unidentified_lantadyme" count 1
+        rolls(2) {
+            9 outOf 472 separate "obj.unidentified_lantadyme" count 1
+        }
         64 outOf 590 separate "obj.cert_bucket_supercompost" count 2
         16 outOf 590 separate "obj.fossil_volcanic_ash" count 2
 

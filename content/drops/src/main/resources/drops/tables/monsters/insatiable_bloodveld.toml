@@ -13,6 +13,7 @@ should_drop_brimstone_key = true
 [main]
 total = 138
 name = "Insatiable Bloodveld Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 4

@@ -19,6 +19,7 @@ import org.rsmod.game.entity.Player
 public val shellbaneGryphonDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Shellbane gryphon Drops",
     npcs = npcs("npc.gryphon_boss"),
+    mainRolls = 2,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.gryphon_feather" count 7..10
     },

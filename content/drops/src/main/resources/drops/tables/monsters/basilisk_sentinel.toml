@@ -9,6 +9,7 @@ should_drop_brimstone_key = true
 [main]
 total = 52
 name = "Basilisk Sentinel Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 1

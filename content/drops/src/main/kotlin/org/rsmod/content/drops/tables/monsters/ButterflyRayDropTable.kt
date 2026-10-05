@@ -34,7 +34,7 @@ public val butterflyRayDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         15 weight "obj.camphor_seed" count 1
         4 weight "obj.ironwood_seed" count 1
         1 weight "obj.rosewood_seed" count 1
-        6 outOf 149 separate rsPlayerWeightedTable {
+        12 outOf 149 separate rsPlayerWeightedTable {
             6 weight "obj.cert_bucket_sand" count 10..15
             6 weight "obj.cert_seaweed" count 10..15
         }

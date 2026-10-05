@@ -47,11 +47,11 @@ public val elderChaosDruidDropTable: RSDropTable<Player, DropRollItem> = RSDropT
         1 weight "obj.unholy_symbol_mould" count 1 condition {
             player -> player.hasCompletedQuest("quest_theobservatoryquest")
         }
-        4 outOf 1419 separate rsPlayerWeightedTable {
+        8 outOf 1419 separate rsPlayerWeightedTable {
             4 weight "obj.zamrobetop" count 1
             4 weight "obj.zamrobebottom" count 1
         }
-        1 outOf 1419 separate rsPlayerWeightedTable {
+        3 outOf 1419 separate rsPlayerWeightedTable {
             1 weight "obj.elderchaos_hood" count 1
             1 weight "obj.elderchaos_bottom" count 1
             1 weight "obj.elderchaos_top" count 1

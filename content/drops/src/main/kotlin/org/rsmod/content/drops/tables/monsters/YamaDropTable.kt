@@ -71,7 +71,7 @@ public val yamaDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
             // Drops Need Manual: Scales with contribution; rates and quantities are shown for 100% contribution.
              true
         }
-        1 outOf 600 separate rsPlayerWeightedTable {
+        3 outOf 600 separate rsPlayerWeightedTable {
             1 weight "obj.oathplate_helm" count 1
             1 weight "obj.oathplate_chest" count 1
             1 weight "obj.oathplate_legs" count 1

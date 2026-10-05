@@ -9,6 +9,7 @@ should_drop_brimstone_key = true
 [main]
 total = 128
 name = "Vitreous Jelly Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 11

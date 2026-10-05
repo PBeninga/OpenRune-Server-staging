@@ -20,6 +20,7 @@ import org.rsmod.game.entity.Player
 public val marbleGargoyleDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Marble gargoyle Drops",
     npcs = npcs("npc.superior_gargoyle", "npc.superior_gargoyle_dead"),
+    mainRolls = 3,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.konar_key" count 1 killCondition {
             player, npc, areaChecker -> player.shouldDropBrimstoneKey(npc, areaChecker)

@@ -22,6 +22,7 @@ import org.rsmod.game.entity.Player
 public val spikedTurothDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Spiked Turoth Drops",
     npcs = npcs("npc.superior_turoth"),
+    mainRolls = 3,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.konar_key" count 1 killCondition {
             player, npc, areaChecker -> player.shouldDropBrimstoneKey(npc, areaChecker)
@@ -41,8 +42,12 @@ public val spikedTurothDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         29 weight "obj.coins" count 44
         12 weight "obj.coins" count 132
         1 weight "obj.coins" count 440
-        1 outOf 500 separate "obj.leafbladed_sword" count 1
-        1 outOf 512 separate "obj.mystic_robe_bottom_light" count 1
+        rolls(3) {
+            1 outOf 500 separate "obj.leafbladed_sword" count 1
+        }
+        rolls(3) {
+            1 outOf 512 separate "obj.mystic_robe_bottom_light" count 1
+        }
 
         31 weight rsWeightedTable(total = 31) {
             15 weight herbDropTable

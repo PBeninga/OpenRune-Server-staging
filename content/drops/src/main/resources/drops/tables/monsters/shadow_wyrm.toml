@@ -33,6 +33,7 @@ count = "75..150"
 [main]
 total = 76
 name = "Shadow Wyrm Drops"
+rolls = 3
 
 [[main.entries]]
 weight = 2

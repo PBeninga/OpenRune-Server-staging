@@ -51,21 +51,21 @@ public val bloodthirstyMutatedBloodveldDropTable: RSDropTable<Player, DropRollIt
         5 weight "obj.meat_pie" count 1
         5 weight "obj.mithril_bar" count 1
         2 weight "obj.strung_ruby_amulet" count 1
-        5 outOf 166 separate rsPlayerWeightedTable {
+        10 outOf 166 separate rsPlayerWeightedTable {
             5 weight "obj.cert_raw_lobster" count 60..80
             5 weight "obj.cert_unicorn_horn" count 60..150
         }
-        10 outOf 166 separate rsPlayerWeightedTable {
+        30 outOf 166 separate rsPlayerWeightedTable {
             10 weight "obj.cert_snape_grass" count 60..150
             10 weight "obj.irit_seed" count 10..15
             10 weight "obj.cert_limpwurt_root" count 60..150
         }
-        15 outOf 166 separate rsPlayerWeightedTable {
+        30 outOf 166 separate rsPlayerWeightedTable {
             15 weight "obj.cert_yew_logs" count 70..90
             15 weight "obj.cert_raw_monkfish" count 60..80
         }
         20 outOf 166 separate "obj.cert_white_berries" count 60..150
-        30 outOf 166 separate rsPlayerWeightedTable {
+        60 outOf 166 separate rsPlayerWeightedTable {
             30 weight "obj.kwuarm_seed" count 8..15
             30 weight "obj.ranarr_seed" count 8..15
         }

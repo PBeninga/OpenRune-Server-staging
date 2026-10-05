@@ -93,7 +93,7 @@ obj = "obj.zenyte_shard"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 2
 denominator = 5000
 
 [[main.separate_rolls.entries]]
@@ -116,7 +116,7 @@ obj = "obj.ballista_frame_light"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 2
 denominator = 15000
 
 [[main.separate_rolls.entries]]

@@ -50,35 +50,35 @@ public val bloodthirstyNightBeastDropTable: RSDropTable<Player, DropRollItem> = 
         3 weight "obj.shark" count 1
         1 weight "obj.shark" count 2
         1 weight "obj.death_talisman" count 1
-        5 outOf 435 separate rsPlayerWeightedTable {
+        10 outOf 435 separate rsPlayerWeightedTable {
             5 weight "obj.cert_raw_lobster" count 60..80
             5 weight "obj.cert_unicorn_horn" count 60..150
         }
-        10 outOf 435 separate rsPlayerWeightedTable {
+        30 outOf 435 separate rsPlayerWeightedTable {
             10 weight "obj.cert_snape_grass" count 60..150
             10 weight "obj.irit_seed" count 10..15
             10 weight "obj.cert_limpwurt_root" count 60..150
         }
-        15 outOf 435 separate rsPlayerWeightedTable {
+        30 outOf 435 separate rsPlayerWeightedTable {
             15 weight "obj.cert_yew_logs" count 70..90
             15 weight "obj.cert_raw_monkfish" count 60..80
         }
-        20 outOf 435 separate rsPlayerWeightedTable {
+        40 outOf 435 separate rsPlayerWeightedTable {
             20 weight "obj.cert_white_berries" count 60..150
             20 weight "obj.cert_raw_shark" count 60..80
         }
-        30 outOf 435 separate rsPlayerWeightedTable {
+        120 outOf 435 separate rsPlayerWeightedTable {
             30 weight "obj.kwuarm_seed" count 8..15
             30 weight "obj.ranarr_seed" count 8..15
             30 weight "obj.cert_wine_of_zamorak" count 30..50
             30 weight "obj.cert_raw_mantaray" count 40..60
         }
-        25 outOf 435 separate rsPlayerWeightedTable {
+        50 outOf 435 separate rsPlayerWeightedTable {
             25 weight "obj.cert_blue_dragon_scale" count 20..40
             25 weight "obj.cert_red_spiders_eggs" count 40..60
         }
         35 outOf 435 separate "obj.cert_magic_logs" count 30..50
-        40 outOf 435 separate rsPlayerWeightedTable {
+        120 outOf 435 separate rsPlayerWeightedTable {
             40 weight "obj.dwarf_weed_seed" count 5..8
             40 weight "obj.snapdragon_seed" count 5..8
             40 weight "obj.toadflax_seed" count 5..8
