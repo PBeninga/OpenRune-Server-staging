@@ -2,3 +2,10 @@
 # gameval name in the cache, so give it one.
 [gamevals.enum]
 talent_tree_node_order = 5942
+
+# Server-only player state of the pact rules (block 62090-62099). The cache vars hold the tree
+# itself; these hold what the DemonicPacts API grants and how many resets were used.
+[gamevals.varp]
+demonic_pacts_points_granted = 62090
+demonic_pacts_resets_granted = 62091
+demonic_pacts_resets_used = 62092

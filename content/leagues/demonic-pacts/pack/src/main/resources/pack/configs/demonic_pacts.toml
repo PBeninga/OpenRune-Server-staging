@@ -1,0 +1,47 @@
+# The talent_* effect varbits ("Active Pact Info") live in these varps. They are derived from the
+# owned pacts, so they are rebuilt on login instead of being saved.
+
+[[varp]]
+id = "varp.talent_active_temp_0"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_1"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_2"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_3"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_4"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_5"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_6"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_7"
+scope = "Temp"
+transmit = "OnSetAlways"
+
+[[varp]]
+id = "varp.talent_active_temp_8"
+scope = "Temp"
+transmit = "OnSetAlways"
