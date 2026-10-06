@@ -6,6 +6,7 @@ import org.rsmod.api.combat.accuracy.player.PlayerMagicAccuracy
 import org.rsmod.api.combat.commons.styles.AttackStyle
 import org.rsmod.api.combat.commons.styles.MagicAttackStyle
 import org.rsmod.api.combat.formulas.accuracy.AccuracyOperations
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
 import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatSpellAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatStaffAttributes
@@ -181,12 +182,17 @@ public object MagicAccuracyOperations {
     // differentiate between player and npc targets.
     public fun modifyStaffAttackRoll(attackRoll: Int): Int = attackRoll
 
-    public fun calculateEffectiveMagic(player: Player, attackStyle: MagicAttackStyle?): Int =
+    public fun calculateEffectiveMagic(
+        player: Player,
+        attackStyle: MagicAttackStyle?,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
+    ): Int =
         calculateEffectiveMagic(
             visLevel = player.magicLvl,
             vars = player.vars,
             worn = player.worn,
             attackStyle = attackStyle,
+            rollModifier = rollModifier,
         )
 
     private fun calculateEffectiveMagic(
@@ -194,9 +200,10 @@ public object MagicAccuracyOperations {
         vars: VarPlayerIntMap,
         worn: Inventory,
         attackStyle: MagicAttackStyle?,
+        rollModifier: AccuracyRollModifier,
     ): Int {
         val styleBonus = attackStyle.offensiveStyleBonus()
-        val prayerBonus = vars.offensivePrayerBonus()
+        val prayerBonus = rollModifier.modifyPrayerBonus(vars.offensivePrayerBonus())
         val voidBonus = worn.offensiveVoidBonus()
         return PlayerMagicAccuracy.calculateEffectiveMagic(
             visibleMagicLvl = visLevel,

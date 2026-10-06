@@ -6,6 +6,7 @@ import kotlin.math.max
 import org.rsmod.api.combat.commons.styles.MeleeAttackStyle
 import org.rsmod.api.combat.formulas.attributes.CombatMeleeAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.combat.formulas.scale
 import org.rsmod.api.combat.maxhit.player.PlayerMeleeMaxHit
 import org.rsmod.api.player.righthand
@@ -204,7 +205,11 @@ public object MeleeMaxHitOperations {
         return modified
     }
 
-    public fun calculateEffectiveStrength(player: Player, attackStyle: MeleeAttackStyle?): Int {
+    public fun calculateEffectiveStrength(
+        player: Player,
+        attackStyle: MeleeAttackStyle?,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
+    ): Int {
         val strengthLevel = player.stat("stat.strength")
         val soulreaperAxe = EquipmentChecks.isSoulreaperAxe(player.righthand)
         val soulStackBonus = if (soulreaperAxe) player.vars.soulStackBonus() else 1.0
@@ -214,6 +219,7 @@ public object MeleeMaxHitOperations {
             vars = player.vars,
             worn = player.worn,
             attackStyle = attackStyle,
+            maxHitModifier = maxHitModifier,
         )
     }
 
@@ -223,9 +229,10 @@ public object MeleeMaxHitOperations {
         vars: VarPlayerIntMap,
         worn: Inventory,
         attackStyle: MeleeAttackStyle?,
+        maxHitModifier: MaxHitModifier,
     ): Int {
         val styleBonus = attackStyle.styleBonus()
-        val prayerBonus = vars.prayerBonus()
+        val prayerBonus = maxHitModifier.modifyPrayerBonus(vars.prayerBonus())
         val voidBonus = worn.voidBonus()
         return PlayerMeleeMaxHit.calculateEffectiveStrength(
             visibleStrengthLvl = visLevel,

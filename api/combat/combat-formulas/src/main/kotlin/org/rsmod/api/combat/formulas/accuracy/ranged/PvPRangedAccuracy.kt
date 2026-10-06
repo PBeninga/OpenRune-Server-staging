@@ -6,6 +6,7 @@ import org.rsmod.api.combat.accuracy.player.PlayerRangedAccuracy
 import org.rsmod.api.combat.commons.styles.RangedAttackStyle
 import org.rsmod.api.combat.commons.types.RangedAttackType
 import org.rsmod.api.combat.formulas.accuracy.AccuracyOperations
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
 import org.rsmod.api.combat.formulas.attributes.CombatRangedAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatRangedAttributeCollector
 import org.rsmod.api.combat.weapon.styles.AttackStyles
@@ -25,6 +26,7 @@ constructor(
         attackType: RangedAttackType?,
         attackStyle: RangedAttackStyle?,
         specialMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
         val targetDistance = player.coords.chebyshevDistance(target.coords)
         return computeHitChance(
@@ -34,6 +36,7 @@ constructor(
             attackType = attackType,
             attackStyle = attackStyle,
             specialMultiplier = specialMultiplier,
+            rollModifier = rollModifier,
         )
     }
 
@@ -44,14 +47,18 @@ constructor(
         attackType: RangedAttackType?,
         attackStyle: RangedAttackStyle?,
         specialMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
         val rangeAttributes = rangedAttributes.collect(source, attackType, attackStyle)
 
-        val baseAttackRoll = computeAttackRoll(source, targetDistance, attackStyle, rangeAttributes)
-        val attackRoll = (baseAttackRoll * specialMultiplier).toInt()
+        val baseAttackRoll =
+            computeAttackRoll(source, targetDistance, attackStyle, rangeAttributes, rollModifier)
+        val specAttackRoll = (baseAttackRoll * specialMultiplier).toInt()
+        val attackRoll = rollModifier.modifyAttackRoll(specAttackRoll)
+        val defenceRoll = rollModifier.modifyDefenceRoll(computeDefenceRoll(target))
 
-        val defenceRoll = computeDefenceRoll(target)
-        return AccuracyOperations.calculateHitChance(attackRoll, defenceRoll)
+        val hitChance = AccuracyOperations.calculateHitChance(attackRoll, defenceRoll)
+        return rollModifier.modifyHitChance(hitChance, attackRoll, defenceRoll)
     }
 
     public fun computeAttackRoll(
@@ -59,9 +66,11 @@ constructor(
         targetDistance: Int,
         attackStyle: RangedAttackStyle?,
         rangeAttributes: EnumSet<CombatRangedAttributes>,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
-        val effectiveRanged = RangedAccuracyOperations.calculateEffectiveRanged(source, attackStyle)
-        val rangedBonus = bonuses.offensiveRangedBonus(source)
+        val effectiveRanged =
+            RangedAccuracyOperations.calculateEffectiveRanged(source, attackStyle, rollModifier)
+        val rangedBonus = rollModifier.modifyAttackBonus(bonuses.offensiveRangedBonus(source))
         val attackRoll = PlayerRangedAccuracy.calculateBaseAttackRoll(effectiveRanged, rangedBonus)
         return RangedAccuracyOperations.modifyAttackRoll(
             attackRoll = attackRoll,

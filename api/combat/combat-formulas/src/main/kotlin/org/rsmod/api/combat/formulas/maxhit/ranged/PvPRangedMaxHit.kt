@@ -8,6 +8,7 @@ import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatRangedAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatRangedAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.DamageReductionAttributeCollector
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.combat.formulas.maxhit.MaxHitOperations
 import org.rsmod.api.combat.maxhit.player.PlayerRangedMaxHit
 import org.rsmod.api.combat.weapon.WeaponSpeeds
@@ -46,6 +47,7 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specialMultiplier: Double,
         boltSpecDamage: Int,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val maxHit =
             computeMaxHit(
@@ -55,6 +57,7 @@ constructor(
                 attackStyle = attackStyle,
                 specialMultiplier = specialMultiplier,
                 boltSpecDamage = boltSpecDamage,
+                maxHitModifier = maxHitModifier,
             )
         player.maxHit = maxHit
         return maxHit
@@ -67,11 +70,13 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specialMultiplier: Double,
         boltSpecDamage: Int,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val npcAttributes = EnumSet.noneOf(CombatNpcAttributes::class.java)
         val rangeAttributes = rangedAttributes.collect(source, attackType, attackStyle)
 
-        val modifiedDamage = computeModifiedDamage(source, attackStyle, rangeAttributes)
+        val modifiedDamage =
+            computeModifiedDamage(source, attackStyle, rangeAttributes, maxHitModifier)
         val specMaxHit = (modifiedDamage * specialMultiplier).toInt()
         val finalMaxHit =
             modifyPostSpec(source, specMaxHit, boltSpecDamage, rangeAttributes, npcAttributes)
@@ -84,9 +89,11 @@ constructor(
         source: Player,
         attackStyle: RangedAttackStyle?,
         rangeAttributes: EnumSet<CombatRangedAttributes>,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
-        val effectiveRanged = RangedMaxHitOperations.calculateEffectiveRanged(source, attackStyle)
-        val rangedBonus = bonuses.rangedStrengthBonus(source)
+        val effectiveRanged =
+            RangedMaxHitOperations.calculateEffectiveRanged(source, attackStyle, maxHitModifier)
+        val rangedBonus = maxHitModifier.modifyStrengthBonus(bonuses.rangedStrengthBonus(source))
         val baseDamage = PlayerRangedMaxHit.calculateBaseDamage(effectiveRanged, rangedBonus)
         return RangedMaxHitOperations.modifyBaseDamage(baseDamage, rangeAttributes)
     }

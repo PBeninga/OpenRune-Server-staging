@@ -7,6 +7,7 @@ import org.rsmod.api.combat.commons.styles.MeleeAttackStyle
 import org.rsmod.api.combat.commons.styles.RangedAttackStyle
 import org.rsmod.api.combat.commons.types.MeleeAttackType
 import org.rsmod.api.combat.commons.types.RangedAttackType
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.combat.formulas.maxhit.magic.NvNMagicMaxHit
 import org.rsmod.api.combat.formulas.maxhit.magic.NvPMagicMaxHit
 import org.rsmod.api.combat.formulas.maxhit.magic.PvNMagicMaxHit
@@ -46,6 +47,7 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         specMultiplier: Double,
         roundUp: Boolean = false,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int =
         pvnMeleeMaxHit.getMaxHit(
             player = player,
@@ -54,6 +56,7 @@ constructor(
             attackStyle = attackStyle,
             specialMultiplier = specMultiplier,
             roundUp = roundUp,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [PvPMeleeMaxHit.getMaxHit] */
@@ -64,6 +67,7 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         specMultiplier: Double,
         roundUp: Boolean = false,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int =
         pvpMeleeMaxHit.getMaxHit(
             player = player,
@@ -72,6 +76,7 @@ constructor(
             attackStyle = attackStyle,
             specialMultiplier = specMultiplier,
             roundUp = roundUp,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [NvPMeleeMaxHit.getMaxHit] */
@@ -89,6 +94,7 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specMultiplier: Double,
         boltSpecDamage: Int,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int =
         pvnRangedMaxHit.getMaxHit(
             player = player,
@@ -97,6 +103,7 @@ constructor(
             attackStyle = attackStyle,
             specialMultiplier = specMultiplier,
             boltSpecDamage = boltSpecDamage,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [PvPRangedMaxHit.getMaxHit] */
@@ -107,6 +114,7 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specMultiplier: Double,
         boltSpecDamage: Int,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int =
         pvpRangedMaxHit.getMaxHit(
             player = player,
@@ -115,6 +123,7 @@ constructor(
             attackStyle = attackStyle,
             specialMultiplier = specMultiplier,
             boltSpecDamage = boltSpecDamage,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [NvPRangedMaxHit.getMaxHit] */
@@ -133,6 +142,7 @@ constructor(
         baseMaxHit: Int,
         attackRate: Int,
         usedSunfireRune: Boolean,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): IntRange =
         pvnMagicMaxHit.getSpellMaxHit(
             player = player,
@@ -142,6 +152,7 @@ constructor(
             baseMaxHit = baseMaxHit,
             attackRate = attackRate,
             usedSunfireRune = usedSunfireRune,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [PvPMagicMaxHit.getSpellMaxHit] */
@@ -152,6 +163,7 @@ constructor(
         spellbook: Spellbook?,
         baseMaxHit: Int,
         usedSunfireRune: Boolean,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): IntRange =
         pvpMagicMaxHit.getSpellMaxHit(
             player = player,
@@ -160,6 +172,7 @@ constructor(
             spell = spell,
             baseMaxHit = baseMaxHit,
             usedSunfireRune = usedSunfireRune,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [PvNMagicMaxHit.getStaffMaxHit] */
@@ -168,12 +181,14 @@ constructor(
         target: Npc,
         baseMaxHit: Int,
         specialMultiplier: Double,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int =
         pvnMagicMaxHit.getStaffMaxHit(
             player = player,
             target = target,
             baseMaxHit = baseMaxHit,
             specialMultiplier = specialMultiplier,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [PvPMagicMaxHit.getStaffMaxHit] */
@@ -182,12 +197,14 @@ constructor(
         target: Player,
         baseMaxHit: Int,
         specialMultiplier: Double,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int =
         pvpMagicMaxHit.getStaffMaxHit(
             player = player,
             target = target,
             baseMaxHit = baseMaxHit,
             specialMultiplier = specialMultiplier,
+            maxHitModifier = maxHitModifier,
         )
 
     /** @see [NvPMagicMaxHit.getMaxHit] */

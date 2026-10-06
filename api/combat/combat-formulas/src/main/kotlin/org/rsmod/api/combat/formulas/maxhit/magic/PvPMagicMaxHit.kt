@@ -7,6 +7,7 @@ import org.rsmod.api.combat.commons.magic.Spellbook
 import org.rsmod.api.combat.formulas.attributes.CombatSpellAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatMagicAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.DamageReductionAttributeCollector
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.combat.formulas.maxhit.MaxHitOperations
 import org.rsmod.api.player.bonus.WornBonuses
 import org.rsmod.api.player.stat.magicLvl
@@ -48,6 +49,7 @@ constructor(
         spellbook: Spellbook?,
         baseMaxHit: Int,
         usedSunfireRune: Boolean,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): IntRange {
         val maxHit =
             computeSpellMaxHit(
@@ -57,6 +59,7 @@ constructor(
                 baseMaxHit = baseMaxHit,
                 spellbook = spellbook,
                 usedSunfireRune = usedSunfireRune,
+                maxHitModifier = maxHitModifier,
             )
         player.maxHit = maxHit.last
         return maxHit
@@ -69,11 +72,13 @@ constructor(
         baseMaxHit: Int,
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): IntRange {
         val spellAttributes =
             magicAttributes.spellCollect(source, spell, spellbook, usedSunfireRune, random)
 
-        val modifiedDamage = computeSpellModifiedDamage(source, baseMaxHit, spellAttributes)
+        val modifiedDamage =
+            computeSpellModifiedDamage(source, baseMaxHit, spellAttributes, maxHitModifier)
         val modifiedDamageRange =
             MagicMaxHitOperations.modifySpellDamageRange(modifiedDamage, spellAttributes)
 
@@ -106,9 +111,14 @@ constructor(
         source: Player,
         baseDamage: Int,
         spellAttributes: EnumSet<CombatSpellAttributes>,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
-        val magicDmgBonus = bonuses.magicDamageBonusBase(source)
-        val prayerDmgBonus = MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+        val magicDmgBonus =
+            maxHitModifier.modifyMagicDamageBonus(bonuses.magicDamageBonusBase(source))
+        val prayerDmgBonus =
+            maxHitModifier.modifyMagicPrayerDamageBonus(
+                MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+            )
         return MagicMaxHitOperations.modifySpellBaseDamage(
             baseDamage = baseDamage,
             sourceMagic = source.magicLvl,
@@ -136,8 +146,10 @@ constructor(
         target: Player,
         baseMaxHit: Int,
         specialMultiplier: Double,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
-        val maxHit = computeStaffMaxHit(player, target, baseMaxHit, specialMultiplier)
+        val maxHit =
+            computeStaffMaxHit(player, target, baseMaxHit, specialMultiplier, maxHitModifier)
         player.maxHit = maxHit
         return maxHit
     }
@@ -147,8 +159,9 @@ constructor(
         target: Player,
         baseMaxHit: Int,
         specialMultiplier: Double,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
-        val modifiedDamage = computeStaffModifiedDamage(source, baseMaxHit)
+        val modifiedDamage = computeStaffModifiedDamage(source, baseMaxHit, maxHitModifier)
         val specMaxHit = (modifiedDamage * specialMultiplier).toInt()
 
         val defenceBonus = bonuses.defensiveMagicBonus(target)
@@ -161,9 +174,17 @@ constructor(
         )
     }
 
-    public fun computeStaffModifiedDamage(source: Player, baseDamage: Int): Int {
-        val magicDmgBonus = bonuses.magicDamageBonusBase(source)
-        val prayerDmgBonus = MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+    public fun computeStaffModifiedDamage(
+        source: Player,
+        baseDamage: Int,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
+    ): Int {
+        val magicDmgBonus =
+            maxHitModifier.modifyMagicDamageBonus(bonuses.magicDamageBonusBase(source))
+        val prayerDmgBonus =
+            maxHitModifier.modifyMagicPrayerDamageBonus(
+                MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+            )
         return MagicMaxHitOperations.modifyStaffBaseDamage(
             baseDamage = baseDamage,
             sourceBaseMagicDmgBonus = magicDmgBonus,
