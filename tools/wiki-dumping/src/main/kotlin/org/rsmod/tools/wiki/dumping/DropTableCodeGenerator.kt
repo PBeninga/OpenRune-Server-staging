@@ -191,7 +191,12 @@ data class GeneratedDropTableSpec(
             return Triple(mainEntries, primaryDenominator, separateRolls)
         }
 
-        private fun buildSeparateRollSpecs(
+        /**
+         * Wiki rarities are per item, so a group of k items that each drop at w/d becomes one
+         * separate roll at (k*w)/d with the item picked by weight inside it. A group whose total
+         * would pass d is split into one roll per item.
+         */
+        internal fun buildSeparateRollSpecs(
             entries: List<ResolvedDropEntry>,
             denominator: Int,
         ): List<SeparateRollSpec> {
@@ -200,13 +205,21 @@ data class GeneratedDropTableSpec(
                 .flatMap { (subsection, sectionEntries) ->
                     sectionEntries
                         .groupBy { it.weight ?: 1 }
-                        .map { (accessNumerator, weightEntries) ->
-                            SeparateRollSpec(
-                                subsection = subsection,
-                                accessNumerator = accessNumerator,
-                                accessDenominator = denominator,
-                                entries = weightEntries,
-                            )
+                        .flatMap { (weight, weightEntries) ->
+                            val groups =
+                                if (weight * weightEntries.size <= denominator) {
+                                    listOf(weightEntries)
+                                } else {
+                                    weightEntries.map(::listOf)
+                                }
+                            groups.map { group ->
+                                SeparateRollSpec(
+                                    subsection = subsection,
+                                    accessNumerator = weight * group.size,
+                                    accessDenominator = denominator,
+                                    entries = group,
+                                )
+                            }
                         }
                 }
         }
