@@ -8,6 +8,7 @@ import org.rsmod.api.combat.commons.magic.MagicSpell
 import org.rsmod.api.combat.commons.magic.SpellQuestRequirement
 import org.rsmod.api.combat.commons.magic.Spellbook
 import org.rsmod.api.config.refs.BaseParams
+import org.rsmod.api.invtx.invAdd
 import org.rsmod.api.invtx.invDelAll
 import org.rsmod.api.player.output.mes
 import org.rsmod.api.player.stat.magicLvl
@@ -180,6 +181,39 @@ constructor(
         val usedSunfire = consume.any { it.isType("obj.sunfirerune") }
         return CastResult.Success.Consumed(usedSunfire)
     }
+
+    /**
+     * Gives [player] [count] [rune]s that no spell spent, for effects that regenerate runes (for
+     * example when a charged weapon regenerates a charge). The runes go into the rune pouch slot
+     * that already holds [rune] while it has room, otherwise into the inventory.
+     *
+     * @return `false` if neither has room, in which case nothing is added.
+     */
+    public fun addRunes(player: Player, rune: ItemServerType, count: Int = 1): Boolean {
+        require(count > 0) { "`count` must be greater than 0. (count=$count)" }
+        val compactId = compact[rune]
+        val pouch = player.currentRunePouch()
+        if (compactId != null && pouch != null) {
+            val varbit = pouch.countVarBitOf(compactId)
+            if (varbit != null) {
+                val total = player.vars[varbit] + count
+                if (total <= RUNE_POUCH_SLOT_CAPACITY) {
+                    VarPlayerIntMapSetter.set(player, varbit, total)
+                    return true
+                }
+            }
+        }
+        return player.invAdd(player.inv, rune.id, count).success
+    }
+
+    private fun MagicRunes.RunePouch.countVarBitOf(compactId: Int): String? =
+        when (compactId) {
+            compactId1 -> countVarBit1
+            compactId2 -> countVarBit2
+            compactId3 -> countVarBit3
+            compactId4 -> countVarBit4
+            else -> null
+        }
 
     public fun validateSpell(player: Player, spell: MagicSpell): List<MagicRunes.Validation> {
         val runePack = validateRunePack(player, spell.obj)
@@ -379,6 +413,9 @@ constructor(
     }
 
     public companion object {
+        /** The most runes a single rune pouch slot holds. */
+        public const val RUNE_POUCH_SLOT_CAPACITY: Int = 16_000
+
         public fun CastResult.isFailure(): Boolean {
             contract { returns(true) implies (this@isFailure is CastResult.Failure) }
             return this is CastResult.Failure
