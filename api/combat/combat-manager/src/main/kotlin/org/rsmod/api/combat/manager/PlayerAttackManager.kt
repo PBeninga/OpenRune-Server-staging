@@ -28,6 +28,12 @@ import org.rsmod.api.combat.commons.types.MeleeAttackType
 import org.rsmod.api.combat.commons.types.RangedAttackType
 import org.rsmod.api.combat.formulas.AccuracyFormulae
 import org.rsmod.api.combat.formulas.MaxHitFormulae
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
+import org.rsmod.api.combat.modifiers.AttackModifiers
+import org.rsmod.api.combat.modifiers.CombatModifierPipeline
+import org.rsmod.api.combat.modifiers.CombatStyle
+import org.rsmod.api.combat.modifiers.ModifierMath
 import org.rsmod.api.config.refs.params
 import org.rsmod.api.death.PvPPlayerHitHook
 import org.rsmod.api.npc.hit.isStyleImmuneTo
@@ -45,6 +51,7 @@ import org.rsmod.api.player.output.soundSynth
 import org.rsmod.api.player.protect.clearPendingAction
 import org.rsmod.api.player.stat.hitpoints
 import org.rsmod.api.player.stat.statAdvance
+import org.rsmod.api.player.vars.intVarp
 import org.rsmod.api.random.GameRandom
 import org.rsmod.api.repo.world.WorldRepository
 import org.rsmod.events.EventBus
@@ -74,7 +81,10 @@ constructor(
     private val playerInteractions: PlayerInteractions,
     private val playerTInteractions: PlayerTInteractions,
     private val pvpPlayerHitHooks: Set<PvPPlayerHitHook>,
+    private val modifiers: CombatModifierPipeline,
 ) {
+    private var Player.displayedMaxHit by intVarp("varp.com_maxhit")
+
     /**
      * Determines if the player is still under an active attack delay.
      *
@@ -97,7 +107,7 @@ constructor(
      * @param cycles The number of cycles to wait before the next attack can be performed.
      */
     public fun setNextAttackDelay(player: Player, cycles: Int) {
-        player.actionDelay = player.currentMapClock + cycles
+        player.actionDelay = player.currentMapClock + modifiers.modifyAttackDelay(player, cycles)
     }
 
     /**
@@ -504,6 +514,18 @@ constructor(
         blockType: MeleeAttackType? = attack.type,
         roundMaxHitUp: Boolean = false,
     ): Int {
+        if (target is Npc) {
+            modifiers.recordDamageRoll(source, target) { npc ->
+                rollMeleeMaxHit(
+                    source,
+                    npc,
+                    attackType,
+                    attackStyle,
+                    maxHitMultiplier,
+                    roundMaxHitUp,
+                )
+            }
+        }
         val successfulAccuracyRoll =
             rollMeleeAccuracy(
                 source = source,
@@ -572,8 +594,11 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         blockType: MeleeAttackType?,
         specMultiplier: Double,
-    ): Boolean =
-        accuracy.rollMeleeAccuracy(
+    ): Boolean {
+        modifiers.recordAccuracyRoll(source, target) { npc ->
+            rollMeleeAccuracy(source, npc, attackType, attackStyle, blockType, specMultiplier)
+        }
+        return accuracy.rollMeleeAccuracy(
             player = source,
             target = target,
             attackType = attackType,
@@ -581,7 +606,9 @@ constructor(
             blockType = blockType,
             specMultiplier = specMultiplier,
             random = random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Melee),
         )
+    }
 
     private fun rollMeleeAccuracy(
         source: Player,
@@ -599,6 +626,7 @@ constructor(
             blockType = blockType,
             specMultiplier = specMultiplier,
             random = random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Melee),
         )
 
     /**
@@ -628,7 +656,7 @@ constructor(
         if (source.adminMaxHit) {
             return maxHit
         }
-        return random.of(1..maxHit)
+        return rollHit(source, target, CombatStyle.Melee, maxHit)
     }
 
     /**
@@ -668,8 +696,20 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         specMultiplier: Double,
         roundUp: Boolean,
-    ): Int =
-        maxHits.getMeleeMaxHit(source, target, attackType, attackStyle, specMultiplier, roundUp)
+    ): Int {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Melee)
+        val maxHit =
+            maxHits.getMeleeMaxHit(
+                source,
+                target,
+                attackType,
+                attackStyle,
+                specMultiplier,
+                roundUp,
+                maxHitTermsModifier(attackModifiers, CombatStyle.Melee),
+            )
+        return modifiedMaxHit(source, attackModifiers, maxHit)
+    }
 
     private fun calculateMeleeMaxHit(
         source: Player,
@@ -678,8 +718,20 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         specMultiplier: Double,
         roundUp: Boolean,
-    ): Int =
-        maxHits.getMeleeMaxHit(source, target, attackType, attackStyle, specMultiplier, roundUp)
+    ): Int {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Melee)
+        val maxHit =
+            maxHits.getMeleeMaxHit(
+                source,
+                target,
+                attackType,
+                attackStyle,
+                specMultiplier,
+                roundUp,
+                maxHitTermsModifier(attackModifiers, CombatStyle.Melee),
+            )
+        return modifiedMaxHit(source, attackModifiers, maxHit)
+    }
 
     /**
      * Queues a melee hit on [target], applying damage after the specified [delay].
@@ -715,13 +767,16 @@ constructor(
         }
 
     private fun queueMeleeHit(source: Player, target: Npc, damage: Int, delay: Int): Hit {
+        val outgoing = modifiers.resolveOutgoing(source, target, CombatStyle.Melee, damage)
+
         // Note: Retaliation must be queued _before_ the hit. If queued after, every hit would
         // trigger the "speed-up" death mechanic, since the hit queues would no longer be the
         // last entries in the queue list at the time of processing.
         target.queueCombatRetaliate(source)
 
-        val hit = target.queueHit(source, delay, HitType.Melee, damage, npcHitModifier)
+        val hit = target.queueHit(source, delay, HitType.Melee, outgoing.damage, npcHitModifier)
         target.combatPlayDefendAnim()
+        modifiers.onBaseHitQueued(outgoing, hit, delay)
         return hit
     }
 
@@ -731,7 +786,9 @@ constructor(
         // last entries in the queue list at the time of processing.
         target.queueCombatRetaliate(source)
 
-        val hit = target.queueHit(source, delay, HitType.Melee, damage, playerHitModifier)
+        val modifier =
+            modifiers.pvpHitModifier(source, target, CombatStyle.Melee, playerHitModifier)
+        val hit = target.queueHit(source, delay, HitType.Melee, damage, modifier)
         notifyPlayerHit(source, target, damage)
         target.combatPlayDefendAnim()
         return hit
@@ -771,6 +828,18 @@ constructor(
         blockType: RangedAttackType? = attack.type,
         boltSpecDamage: Int = 0,
     ): Int {
+        if (target is Npc) {
+            modifiers.recordDamageRoll(source, target) { npc ->
+                rollRangedMaxHit(
+                    source,
+                    npc,
+                    attackType,
+                    attackStyle,
+                    maxHitMultiplier,
+                    boltSpecDamage,
+                )
+            }
+        }
         val successfulAccuracyRoll =
             rollRangedAccuracy(
                 source = source,
@@ -835,8 +904,11 @@ constructor(
         attackStyle: RangedAttackStyle?,
         blockType: RangedAttackType?,
         specMultiplier: Double,
-    ): Boolean =
-        accuracy.rollRangedAccuracy(
+    ): Boolean {
+        modifiers.recordAccuracyRoll(source, target) { npc ->
+            rollRangedAccuracy(source, npc, attackType, attackStyle, blockType, specMultiplier)
+        }
+        return accuracy.rollRangedAccuracy(
             player = source,
             target = target,
             attackType = attackType,
@@ -844,7 +916,9 @@ constructor(
             blockType = blockType,
             specMultiplier = specMultiplier,
             random = random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Ranged),
         )
+    }
 
     private fun rollRangedAccuracy(
         source: Player,
@@ -860,6 +934,7 @@ constructor(
             attackStyle = attackStyle,
             specMultiplier = specMultiplier,
             random = random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Ranged),
         )
 
     /**
@@ -898,7 +973,7 @@ constructor(
         if (source.adminMaxHit) {
             return maxHit
         }
-        return random.of(1..maxHit)
+        return rollHit(source, target, CombatStyle.Ranged, maxHit)
     }
 
     /**
@@ -955,15 +1030,20 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specMultiplier: Double,
         boltSpecDamage: Int,
-    ): Int =
-        maxHits.getRangedMaxHit(
-            player = source,
-            target = target,
-            attackType = attackType,
-            attackStyle = attackStyle,
-            specMultiplier = specMultiplier,
-            boltSpecDamage = boltSpecDamage,
-        )
+    ): Int {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Ranged)
+        val maxHit =
+            maxHits.getRangedMaxHit(
+                player = source,
+                target = target,
+                attackType = attackType,
+                attackStyle = attackStyle,
+                specMultiplier = specMultiplier,
+                boltSpecDamage = boltSpecDamage,
+                maxHitModifier = maxHitTermsModifier(attackModifiers, CombatStyle.Ranged),
+            )
+        return modifiedMaxHit(source, attackModifiers, maxHit)
+    }
 
     private fun calculateRangedMaxHit(
         source: Player,
@@ -972,15 +1052,20 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specMultiplier: Double,
         boltSpecDamage: Int,
-    ): Int =
-        maxHits.getRangedMaxHit(
-            player = source,
-            target = target,
-            attackType = attackType,
-            attackStyle = attackStyle,
-            specMultiplier = specMultiplier,
-            boltSpecDamage = boltSpecDamage,
-        )
+    ): Int {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Ranged)
+        val maxHit =
+            maxHits.getRangedMaxHit(
+                player = source,
+                target = target,
+                attackType = attackType,
+                attackStyle = attackStyle,
+                specMultiplier = specMultiplier,
+                boltSpecDamage = boltSpecDamage,
+                maxHitModifier = maxHitTermsModifier(attackModifiers, CombatStyle.Ranged),
+            )
+        return modifiedMaxHit(source, attackModifiers, maxHit)
+    }
 
     /**
      * Queues a ranged hit on [target], applying damage after the specified [hitDelay].
@@ -1033,6 +1118,8 @@ constructor(
         clientDelay: Int,
         hitDelay: Int,
     ): Hit {
+        val outgoing = modifiers.resolveOutgoing(source, target, CombatStyle.Ranged, damage)
+
         // Note: Retaliation must be queued _before_ the hit. If queued after, every hit would
         // trigger the "speed-up" death mechanic, since the hit queues would no longer be the
         // last entries in the queue list at the time of processing.
@@ -1043,12 +1130,13 @@ constructor(
                 source = source,
                 delay = hitDelay,
                 type = HitType.Ranged,
-                damage = damage,
+                damage = outgoing.damage,
                 modifier = npcHitModifier,
                 sourceSecondary = ammo,
             )
         target.combatPlayDefendAnim(clientDelay)
         target.combatPlayDefendSpot(ammo, clientDelay)
+        modifiers.onBaseHitQueued(outgoing, hit, hitDelay)
         return hit
     }
 
@@ -1071,7 +1159,8 @@ constructor(
                 delay = hitDelay,
                 type = HitType.Ranged,
                 damage = damage,
-                modifier = playerHitModifier,
+                modifier =
+                    modifiers.pvpHitModifier(source, target, CombatStyle.Ranged, playerHitModifier),
                 sourceSecondary = ammo,
             )
         notifyPlayerHit(source, target, damage)
@@ -1124,7 +1213,8 @@ constructor(
                 delay = hitDelay,
                 type = HitType.Ranged,
                 damage = damage,
-                modifier = playerHitModifier,
+                modifier =
+                    modifiers.pvpHitModifier(source, target, CombatStyle.Ranged, playerHitModifier),
                 sourceSecondary = ammo,
             )
         return hit
@@ -1137,15 +1227,17 @@ constructor(
         damage: Int,
         hitDelay: Int,
     ): Hit {
+        val outgoing = modifiers.resolveOutgoing(source, target, CombatStyle.Ranged, damage)
         val hit =
             target.queueHit(
                 source = source,
                 delay = hitDelay,
                 type = HitType.Ranged,
-                damage = damage,
+                damage = outgoing.damage,
                 modifier = npcHitModifier,
                 sourceSecondary = ammo,
             )
+        modifiers.onBaseHitQueued(outgoing, hit, hitDelay)
         return hit
     }
 
@@ -1184,15 +1276,20 @@ constructor(
         spell: ItemServerType,
         spellbook: Spellbook?,
         sunfireRune: Boolean,
-    ): Boolean =
-        accuracy.rollSpellAccuracy(
+    ): Boolean {
+        modifiers.recordAccuracyRoll(source, target) { npc ->
+            rollSpellAccuracy(source, npc, spell, spellbook, sunfireRune)
+        }
+        return accuracy.rollSpellAccuracy(
             player = source,
             target = target,
             spell = spell,
             spellbook = spellbook,
             usedSunfireRune = sunfireRune,
             random = random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Magic, spell),
         )
+    }
 
     private fun rollSpellAccuracy(
         source: Player,
@@ -1208,6 +1305,7 @@ constructor(
             spellbook = spellbook,
             usedSunfireRune = sunfireRune,
             random = random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Magic, spell),
         )
 
     /**
@@ -1238,6 +1336,19 @@ constructor(
         attackRate: Int,
         sunfireRune: Boolean,
     ): Int {
+        if (target is Npc) {
+            modifiers.recordDamageRoll(source, target) { npc ->
+                rollSpellMaxHit(
+                    source,
+                    npc,
+                    spell,
+                    spellbook,
+                    baseMaxHit,
+                    attackRate,
+                    sunfireRune,
+                )
+            }
+        }
         val hitRange =
             calculateSpellMaxHit(
                 source = source,
@@ -1251,7 +1362,7 @@ constructor(
         if (source.adminMaxHit) {
             return hitRange.last
         }
-        return random.of(hitRange)
+        return rollHitRange(source, target, CombatStyle.Magic, hitRange, spell)
     }
 
     /**
@@ -1313,16 +1424,21 @@ constructor(
         baseMaxHit: Int,
         attackRate: Int,
         sunfireRune: Boolean,
-    ): IntRange =
-        maxHits.getSpellMaxHitRange(
-            player = source,
-            target = target,
-            spell = spell,
-            spellbook = spellbook,
-            baseMaxHit = baseMaxHit,
-            attackRate = attackRate,
-            usedSunfireRune = sunfireRune,
-        )
+    ): IntRange {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Magic, spell)
+        val range =
+            maxHits.getSpellMaxHitRange(
+                player = source,
+                target = target,
+                spell = spell,
+                spellbook = spellbook,
+                baseMaxHit = baseMaxHit,
+                attackRate = attackRate,
+                usedSunfireRune = sunfireRune,
+                maxHitModifier = maxHitTermsModifier(attackModifiers, CombatStyle.Magic),
+            )
+        return modifiedHitRange(source, attackModifiers, range)
+    }
 
     private fun calculateSpellMaxHit(
         source: Player,
@@ -1331,15 +1447,20 @@ constructor(
         spellbook: Spellbook?,
         baseMaxHit: Int,
         sunfireRune: Boolean,
-    ): IntRange =
-        maxHits.getSpellMaxHitRange(
-            player = source,
-            target = target,
-            spell = spell,
-            spellbook = spellbook,
-            baseMaxHit = baseMaxHit,
-            usedSunfireRune = sunfireRune,
-        )
+    ): IntRange {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Magic, spell)
+        val range =
+            maxHits.getSpellMaxHitRange(
+                player = source,
+                target = target,
+                spell = spell,
+                spellbook = spellbook,
+                baseMaxHit = baseMaxHit,
+                usedSunfireRune = sunfireRune,
+                maxHitModifier = maxHitTermsModifier(attackModifiers, CombatStyle.Magic),
+            )
+        return modifiedHitRange(source, attackModifiers, range)
+    }
 
     /**
      * Determines whether the **built-in spell** from a **powered staff** used by [source] will
@@ -1371,14 +1492,19 @@ constructor(
         target: Npc,
         attackStyle: MagicAttackStyle?,
         specMultiplier: Double,
-    ): Boolean =
-        accuracy.rollStaffAccuracy(
+    ): Boolean {
+        modifiers.recordAccuracyRoll(source, target) { npc ->
+            rollStaffAccuracy(source, npc, attackStyle, specMultiplier)
+        }
+        return accuracy.rollStaffAccuracy(
             player = source,
             target = target,
             attackStyle,
             specMultiplier,
             random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Magic),
         )
+    }
 
     private fun rollStaffAccuracy(
         source: Player,
@@ -1392,6 +1518,7 @@ constructor(
             attackStyle,
             specMultiplier,
             random,
+            rollModifier = attackRollModifier(source, target, CombatStyle.Magic),
         )
 
     /**
@@ -1414,10 +1541,15 @@ constructor(
         multiplier: Double,
     ): Int {
         val maxHit = calculateStaffMaxHit(source, target, baseMaxHit, multiplier)
+        if (target is Npc) {
+            modifiers.recordDamageRoll(source, target) { npc ->
+                rollStaffMaxHit(source, npc, baseMaxHit, multiplier)
+            }
+        }
         if (source.adminMaxHit) {
             return maxHit
         }
-        return random.of(1..maxHit)
+        return rollHit(source, target, CombatStyle.Magic, maxHit)
     }
 
     /**
@@ -1450,26 +1582,36 @@ constructor(
         target: Npc,
         baseMaxHit: Int,
         specMultiplier: Double,
-    ): Int =
-        maxHits.getStaffMaxHit(
-            player = source,
-            target = target,
-            baseMaxHit = baseMaxHit,
-            specialMultiplier = specMultiplier,
-        )
+    ): Int {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Magic)
+        val maxHit =
+            maxHits.getStaffMaxHit(
+                player = source,
+                target = target,
+                baseMaxHit = baseMaxHit,
+                specialMultiplier = specMultiplier,
+                maxHitModifier = maxHitTermsModifier(attackModifiers, CombatStyle.Magic),
+            )
+        return modifiedMaxHit(source, attackModifiers, maxHit)
+    }
 
     private fun calculateSpellMaxHit(
         source: Player,
         target: Player,
         baseMaxHit: Int,
         specMultiplier: Double,
-    ): Int =
-        maxHits.getStaffMaxHit(
-            player = source,
-            target = target,
-            baseMaxHit = baseMaxHit,
-            specialMultiplier = specMultiplier,
-        )
+    ): Int {
+        val attackModifiers = modifiers.attackModifiers(source, target, CombatStyle.Magic)
+        val maxHit =
+            maxHits.getStaffMaxHit(
+                player = source,
+                target = target,
+                baseMaxHit = baseMaxHit,
+                specialMultiplier = specMultiplier,
+                maxHitModifier = maxHitTermsModifier(attackModifiers, CombatStyle.Magic),
+            )
+        return modifiedMaxHit(source, attackModifiers, maxHit)
+    }
 
     /**
      * Queues a magic hit on [target], applying damage after the specified [hitDelay].
@@ -1546,6 +1688,8 @@ constructor(
         hitDelay: Int,
         retaliationDelay: Int,
     ): Hit {
+        val outgoing = modifiers.resolveOutgoing(source, target, CombatStyle.Magic, damage, spell)
+
         // Note: Retaliation must be queued _before_ the hit. If queued after, every hit would
         // trigger the "speed-up" death mechanic, since the hit queues would no longer be the
         // last entries in the queue list at the time of processing.
@@ -1556,11 +1700,12 @@ constructor(
                 source = source,
                 delay = hitDelay,
                 type = HitType.Magic,
-                damage = damage,
+                damage = outgoing.damage,
                 modifier = npcHitModifier,
                 sourceSecondary = spell,
             )
         target.combatPlayDefendAnim(clientDelay)
+        modifiers.onBaseHitQueued(outgoing, hit, hitDelay)
         return hit
     }
 
@@ -1578,13 +1723,15 @@ constructor(
         // last entries in the queue list at the time of processing.
         target.queueCombatRetaliate(source, retaliationDelay)
 
+        val modifier =
+            modifiers.pvpHitModifier(source, target, CombatStyle.Magic, playerHitModifier, spell)
         val hit =
             target.queueHit(
                 source = source,
                 delay = hitDelay,
                 type = HitType.Magic,
                 damage = damage,
-                modifier = playerHitModifier,
+                modifier = modifier,
                 sourceSecondary = spell,
             )
         notifyPlayerHit(source, target, damage)
@@ -2114,4 +2261,127 @@ constructor(
             radius = radius,
             size = size,
         )
+
+    // Combat modifier pipeline helpers. Each returns the unmodified value, and rolls no random
+    // value, when nothing is registered with the pipeline.
+
+    private fun attackRollModifier(
+        source: Player,
+        target: PathingEntity,
+        style: CombatStyle,
+        spell: ItemServerType? = null,
+    ): AccuracyRollModifier {
+        val attackModifiers = modifiers.attackModifiers(source, target, style, spell)
+        if (!attackModifiers.affectsAccuracy) {
+            return AccuracyRollModifier.NONE
+        }
+        return PipelineRollModifier(attackModifiers)
+    }
+
+    private fun maxHitTermsModifier(attackModifiers: AttackModifiers, style: CombatStyle): MaxHitModifier {
+        if (!attackModifiers.affectsMaxHitTerms) {
+            return MaxHitModifier.NONE
+        }
+        return PipelineMaxHitModifier(attackModifiers, style)
+    }
+
+    private fun modifiedMaxHit(source: Player, attackModifiers: AttackModifiers, maxHit: Int): Int {
+        if (!attackModifiers.affectsMaxHit) {
+            return maxHit
+        }
+        val modified = attackModifiers.modifyMaxHit(maxHit)
+        source.displayedMaxHit = modified
+        return modified
+    }
+
+    private fun modifiedHitRange(
+        source: Player,
+        attackModifiers: AttackModifiers,
+        range: IntRange,
+    ): IntRange {
+        if (attackModifiers == AttackModifiers.NONE) {
+            return range
+        }
+        val maxHit = attackModifiers.modifyMaxHit(range.last)
+        if (attackModifiers.affectsMaxHit) {
+            source.displayedMaxHit = maxHit
+        }
+        val minHit =
+            if (attackModifiers.minHitFlat > range.first) {
+                min(attackModifiers.minHitFlat, maxHit)
+            } else {
+                min(range.first, maxHit)
+            }
+        return minHit..maxHit
+    }
+
+    private fun rollHit(
+        source: Player,
+        target: PathingEntity,
+        style: CombatStyle,
+        maxHit: Int,
+    ): Int {
+        if (target !is Npc || !modifiers.isActive) {
+            return random.of(1..maxHit)
+        }
+        if (maxHit <= 0) {
+            return 0
+        }
+        val attackModifiers = modifiers.attackModifiers(source, target, style)
+        if (modifiers.roll(attackModifiers.maxHitChancePercent)) {
+            return maxHit
+        }
+        return random.of(attackModifiers.minHit(maxHit)..maxHit)
+    }
+
+    private fun rollHitRange(
+        source: Player,
+        target: PathingEntity,
+        style: CombatStyle,
+        range: IntRange,
+        spell: ItemServerType,
+    ): Int {
+        if (target !is Npc || !modifiers.isActive || range.isEmpty()) {
+            return random.of(range)
+        }
+        val attackModifiers = modifiers.attackModifiers(source, target, style, spell)
+        if (modifiers.roll(attackModifiers.maxHitChancePercent)) {
+            return range.last
+        }
+        return random.of(range)
+    }
+
+    private class PipelineRollModifier(private val modifiers: AttackModifiers) :
+        AccuracyRollModifier {
+        override fun modifyAttackBonus(attackBonus: Int): Int =
+            modifiers.modifyAttackBonus(attackBonus)
+
+        override fun modifyAttackRoll(attackRoll: Int): Int = modifiers.scaleAttackRoll(attackRoll)
+
+        override fun modifyDefenceRoll(defenceRoll: Int): Int =
+            modifiers.scaleDefenceRoll(defenceRoll)
+
+        override fun modifyPrayerBonus(prayerBonus: Double): Double =
+            modifiers.modifyPrayerBonus(prayerBonus)
+
+        override fun modifyHitChance(hitChance: Int, attackRoll: Int, defenceRoll: Int): Int =
+            modifiers.modifyHitChance(hitChance, attackRoll, defenceRoll)
+    }
+
+    private class PipelineMaxHitModifier(
+        private val modifiers: AttackModifiers,
+        private val style: CombatStyle,
+    ) : MaxHitModifier {
+        override fun modifyStrengthBonus(strengthBonus: Int): Int =
+            strengthBonus + modifiers.strengthFlat(style)
+
+        override fun modifyMagicDamageBonus(magicDamageBonus: Int): Int =
+            ModifierMath.magicDamageBonus(magicDamageBonus, modifiers.magicDamagePercent)
+
+        override fun modifyPrayerBonus(prayerBonus: Double): Double =
+            modifiers.modifyPrayerBonus(prayerBonus)
+
+        override fun modifyMagicPrayerDamageBonus(prayerDamageBonus: Int): Int =
+            ModifierMath.prayerDamageBonus(prayerDamageBonus, modifiers.prayerEffectPercent)
+    }
 }

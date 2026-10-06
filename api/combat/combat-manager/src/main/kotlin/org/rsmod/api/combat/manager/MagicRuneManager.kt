@@ -1,5 +1,8 @@
 package org.rsmod.api.combat.manager
 
+import dev.openrune.ServerCacheManager
+import dev.openrune.rscm.RSCM.asRSCM
+import dev.openrune.rscm.RSCMType
 import dev.openrune.types.ItemServerType
 import jakarta.inject.Inject
 import kotlin.collections.any
@@ -7,6 +10,8 @@ import kotlin.contracts.contract
 import org.rsmod.api.combat.commons.magic.MagicSpell
 import org.rsmod.api.combat.commons.magic.SpellQuestRequirement
 import org.rsmod.api.combat.commons.magic.Spellbook
+import org.rsmod.api.combat.modifiers.CombatModifierPipeline
+import org.rsmod.api.combat.modifiers.ResourceKind
 import org.rsmod.api.config.refs.BaseParams
 import org.rsmod.api.invtx.invAdd
 import org.rsmod.api.invtx.invDelAll
@@ -26,6 +31,7 @@ import org.rsmod.game.entity.Player
 import org.rsmod.game.inv.InvObj
 import org.rsmod.game.inv.isAnyType
 import org.rsmod.game.inv.isType
+import org.rsmod.game.type.getInvObj
 
 public class MagicRuneManager
 @Inject
@@ -37,6 +43,7 @@ constructor(
     private val staffSubs: StaffSubstituteRepository,
     private val runeSubs: RuneSubstituteRepository,
     private val questRequirements: Set<SpellQuestRequirement>,
+    private val modifiers: CombatModifierPipeline,
 ) {
     private val Player.spellbook by enumVarBit<Spellbook>("varbit.spellbook")
 
@@ -164,16 +171,20 @@ constructor(
             consume += invObj.copy(count = required)
         }
 
-        // When every rune comes from the rune pouch there is nothing to delete from the inventory,
-        // and an empty transaction never succeeds.
-        if (consume.isNotEmpty()) {
-            val transaction = player.invDelAll(player.inv, consume, strict = true)
+        val usedSunfire = consume.any { it.isType("obj.sunfirerune") }
+        val consumeInv = consume.filterNot { isRuneRefunded(player, it) }
+        val consumeVarBits = varbitSources.filterNot { isRuneRefunded(player, it) }
+
+        // Nothing is left to delete when every rune comes from the pouch or was refunded, and
+        // an empty transaction never succeeds.
+        if (consumeInv.isNotEmpty()) {
+            val transaction = player.invDelAll(player.inv, consumeInv, strict = true)
             if (!transaction.success) {
                 return CastResult.Failure.NotEnoughInvObj
             }
         }
 
-        for (source in varbitSources) {
+        for (source in consumeVarBits) {
             val result = player.vars[source.varbit] - source.count
             check(result >= 0) {
                 "Expected result to be positive: " +
@@ -182,8 +193,15 @@ constructor(
             VarPlayerIntMapSetter.set(player, source.varbit, result)
         }
 
-        val usedSunfire = consume.any { it.isType("obj.sunfirerune") }
         return CastResult.Success.Consumed(usedSunfire)
+    }
+
+    private fun isRuneRefunded(player: Player, rune: InvObj): Boolean =
+        modifiers.isRefunded(player, ResourceKind.Rune, getInvObj(rune), rune.count)
+
+    private fun isRuneRefunded(player: Player, source: MagicRunes.Source.VarBitSource): Boolean {
+        val rune = source.obj?.let { ServerCacheManager.getItem(it.asRSCM(RSCMType.OBJ)) }
+        return modifiers.isRefunded(player, ResourceKind.Rune, rune, source.count)
     }
 
     /**

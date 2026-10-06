@@ -6,17 +6,18 @@ import jakarta.inject.Inject
 import org.rsmod.api.combat.commons.CombatAttack
 import org.rsmod.api.combat.manager.PlayerAttackManager
 import org.rsmod.api.combat.manager.RangedAmmoManager
+import org.rsmod.api.combat.modifiers.CombatModifierPipeline
 import org.rsmod.api.combat.player.activateMagicSpecial
 import org.rsmod.api.combat.player.activateMeleeSpecial
 import org.rsmod.api.combat.player.activateRangedSpecial
 import org.rsmod.api.combat.player.activateShieldSpecial
 import org.rsmod.api.combat.player.setPkVars
 import org.rsmod.api.combat.player.specialAttackType
-import org.rsmod.api.death.PvPSkullHook
-import org.rsmod.api.death.PvPSpecialAttackHook
 import org.rsmod.api.combat.weapon.WeaponSpeeds
 import org.rsmod.api.config.constants
 import org.rsmod.api.config.refs.params
+import org.rsmod.api.death.PvPSkullHook
+import org.rsmod.api.death.PvPSpecialAttackHook
 import org.rsmod.api.player.isValidTarget
 import org.rsmod.api.player.lefthand
 import org.rsmod.api.player.protect.ProtectedAccess
@@ -45,13 +46,17 @@ constructor(
     private val spellsReg: SpellAttackRegistry,
     private val skullHooks: Set<PvPSkullHook>,
     private val specialAttackHooks: Set<PvPSpecialAttackHook>,
+    private val modifiers: CombatModifierPipeline,
 ) {
     suspend fun attack(access: ProtectedAccess, target: Player, attack: CombatAttack.PlayerAttack) {
-        when (attack) {
-            is CombatAttack.Melee -> access.attackMelee(target, attack)
-            is CombatAttack.Ranged -> access.attackRanged(target, attack)
-            is CombatAttack.Spell -> access.attackMagicSpell(target, attack)
-            is CombatAttack.Staff -> access.attackMagicStaff(target, attack)
+        val spell = (attack as? CombatAttack.Spell)?.spell?.obj
+        modifiers.withAttack(access.player, target, attack.combatStyle(), spell) {
+            when (attack) {
+                is CombatAttack.Melee -> access.attackMelee(target, attack)
+                is CombatAttack.Ranged -> access.attackRanged(target, attack)
+                is CombatAttack.Spell -> access.attackMagicSpell(target, attack)
+                is CombatAttack.Staff -> access.attackMagicStaff(target, attack)
+            }
         }
     }
 
@@ -91,7 +96,10 @@ constructor(
         // attack.
         if (specialAttackType == SpecialAttackType.Weapon) {
             specialAttackType = SpecialAttackType.None
-            val activatedSpec = activateMeleeSpecial(target, attack, specialsReg, specialEnergy)
+            val activatedSpec =
+                modifiers.withSpecialAttack(player) {
+                    activateMeleeSpecial(target, attack, specialsReg, specialEnergy)
+                }
             if (activatedSpec) {
                 applySpecialAttackHooks(target)
                 applyPkVars(target)
@@ -149,7 +157,10 @@ constructor(
         // attack.
         if (specialAttackType == SpecialAttackType.Weapon) {
             specialAttackType = SpecialAttackType.None
-            val activatedSpec = activateRangedSpecial(target, attack, specialsReg, specialEnergy)
+            val activatedSpec =
+                modifiers.withSpecialAttack(player) {
+                    activateRangedSpecial(target, attack, specialsReg, specialEnergy)
+                }
             if (activatedSpec) {
                 applySpecialAttackHooks(target)
                 applyPkVars(target)
@@ -220,7 +231,7 @@ constructor(
             return
         }
 
-        val projanimType = RSCM.getReverseMapping(RSCMType.PROJANIM,projectileID)
+        val projanimType = RSCM.getReverseMapping(RSCMType.PROJANIM, projectileID)
 
         // All valid ranged weapons require an `attack_anim_stance1` seq type param to be used in
         // combat.
@@ -237,7 +248,7 @@ constructor(
         // has no `proj_launch` param, a "null" (-1) spotanim will still be sent in the same slot
         // and height as usual.
         val launchSpotanim = weaponType.paramOrNull(params.proj_launch)?.id ?: NULL_SPOTANIM_ID
-        player.spotanim(RSCM.getReverseMapping(RSCMType.SPOTANIM,launchSpotanim), height = 96, slot = constants.spotanim_slot_combat)
+        player.spotanim(RSCM.getReverseMapping(RSCMType.SPOTANIM, launchSpotanim), height = 96, slot = constants.spotanim_slot_combat)
 
         val projanim = manager.spawnProjectile(player, target, travelSpotanim, projanimType)
         val (serverDelay, clientDelay) = projanim.durations
@@ -283,7 +294,7 @@ constructor(
         val attackRate = MAGIC_SPELL_ATTACK_RATE
         manager.setNextAttackDelay(player, attackRate)
 
-        val spell = spellsReg[RSCM.getReverseMapping(RSCMType.OBJ,attack.spell.obj.id)]
+        val spell = spellsReg[RSCM.getReverseMapping(RSCMType.OBJ, attack.spell.obj.id)]
         if (spell != null) {
             applyPkVars(target)
             spell.attack(this, target, attack)
@@ -318,7 +329,10 @@ constructor(
         // attack.
         if (specialAttackType == SpecialAttackType.Weapon) {
             specialAttackType = SpecialAttackType.None
-            val activatedSpec = activateMagicSpecial(target, attack, specialsReg, specialEnergy)
+            val activatedSpec =
+                modifiers.withSpecialAttack(player) {
+                    activateMagicSpecial(target, attack, specialsReg, specialEnergy)
+                }
             if (activatedSpec) {
                 applySpecialAttackHooks(target)
                 applyPkVars(target)
