@@ -1,0 +1,4 @@
+# The Demonic Pacts tree's node order (enum_5942: node index -> dbtable.talent_tree row) has no
+# gameval name in the cache, so give it one.
+[gamevals.enum]
+talent_tree_node_order = 5942

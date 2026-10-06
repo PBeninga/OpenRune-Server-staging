@@ -1,0 +1,5579 @@
+{
+ "source": {
+  "retrieved": "2026-10-05",
+  "cache": "rev-240 LIVE cache (.data/cache/LIVE): dbtable.talent_tree (216), enum_5942 (node bit order), interface talent_tree (647)",
+  "wiki": [
+   "https://oldschool.runescape.wiki/w/Demonic_Pacts_League/Demonic_Pacts (raw, final post-6-May-2026 values)",
+   "https://oldschool.runescape.wiki/w/Module:Demonic_Pacts/data (node ids, wiki coords)"
+  ],
+  "cs2": "Joshua-F/osrs-dumps: [proc,script9458] (effect id -> talent varbit), [proc,talent_tree_tracking_get_set_unlocked] (bit storage), [proc,script9383] (commit), [clientscript,script7898] (reset)",
+  "license": "Wiki text CC BY-NC-SA 3.0; cache data (c) Jagex, for reference"
+ },
+ "counts": {
+  "nodes": 132,
+  "edges": 164,
+  "effectIds": 73
+ },
+ "nodes": [
+  {
+   "id": "AA",
+   "bit": 0,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 0,
+   "dbrow": 15404,
+   "debugName": "node1",
+   "size": "md",
+   "kind": "root",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7563,
+   "drawCoord": [
+    0,
+    0
+   ],
+   "wikiCoord": [
+    0.0,
+    0.0
+   ],
+   "links": [
+    "B1",
+    "B2",
+    "B3",
+    "BA",
+    "BB",
+    "BC"
+   ],
+   "effects": [
+    {
+     "effect": 1,
+     "value": 50,
+     "varbit": "talent_regen_ammo_chance"
+    }
+   ],
+   "cacheText": "+50% chance to Regenerate runes, ammo and charges\n\nRegenerate: Whenever you use runes to cast a spell, fire ammunition from a ranged weapon or consume charges with a charged weapon there is a % chance to generate an additional resource spent.",
+   "wikiText": "50% chance to Regenerate* runes, ammo and charges\n\n*Regenerate: Whenever you use runes to cast a spell, fire ammunition from a ranged weapon or consume charges with a charged weapon there is a % chance to generate an additional resource spent",
+   "wikiStyle": "Varied",
+   "wikiIcon": "AA"
+  },
+  {
+   "id": "B2",
+   "bit": 1,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 1,
+   "dbrow": 15405,
+   "debugName": "node2",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7551,
+   "drawCoord": [
+    0,
+    50
+   ],
+   "wikiCoord": [
+    0.0,
+    280.304
+   ],
+   "links": [
+    "AA",
+    "E1",
+    "E2",
+    "E3"
+   ],
+   "effects": [
+    {
+     "effect": 11,
+     "value": 25,
+     "varbit": "talent_ranged_regen_echo_chance"
+    }
+   ],
+   "cacheText": "Whenever you Regenerate ammo, you have a +25% chance to fire a Ranged echo against the enemy.\n\nRanged echo: An additional ranged attack which rolls with your ranged accuracy against the targets ranged defence. Echo attacks cannot trigger additional echo attacks and will not trigger on special attacks.",
+   "wikiText": "Whenever you Regenerate ammo, you have a +25% chance to fire a Ranged echo* against the enemy\n\n*Ranged echo: An additional ranged attack which rolls with your ranged accuracy against the targets ranged defence. Echo attacks cannot trigger additional echo attacks and will not trigger on special attacks.",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "B2"
+  },
+  {
+   "id": "E1",
+   "bit": 2,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 2,
+   "dbrow": 15406,
+   "debugName": "node3",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7552,
+   "drawCoord": [
+    -100,
+    100
+   ],
+   "wikiCoord": [
+    -564.968,
+    648.054
+   ],
+   "links": [
+    "B2",
+    "EA"
+   ],
+   "effects": [
+    {
+     "effect": 9,
+     "value": 1,
+     "varbit": "talent_bow_echo_pass_accuracy"
+    }
+   ],
+   "cacheText": "While a bow is equipped, Ranged echoes never miss.\n\nAll bow pacts will not work with an Eclipse Atlatl.",
+   "wikiText": "While a bow is equipped, Ranged echoes never miss\n\nAll bow pacts will not work with an Eclipse Atlatl",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "E1"
+  },
+  {
+   "id": "E2",
+   "bit": 3,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 3,
+   "dbrow": 15407,
+   "debugName": "node4",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7558,
+   "drawCoord": [
+    0,
+    100
+   ],
+   "wikiCoord": [
+    0.0,
+    650.824
+   ],
+   "links": [
+    "B2",
+    "EB"
+   ],
+   "effects": [
+    {
+     "effect": 8,
+     "value": 15,
+     "varbit": "talent_crossbow_echo_reproc_chance"
+    }
+   ],
+   "cacheText": "While a crossbow is equipped, you have a +15% chance to trigger Ranged echoes\n\nAll crossbow weapon pacts will work with ballistae.",
+   "wikiText": "While a crossbow is equipped, you have a +15% chance to trigger Ranged echoes",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "E2"
+  },
+  {
+   "id": "E3",
+   "bit": 4,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 4,
+   "dbrow": 15408,
+   "debugName": "node5",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7557,
+   "drawCoord": [
+    100,
+    100
+   ],
+   "wikiCoord": [
+    578.603,
+    653.579
+   ],
+   "links": [
+    "B2",
+    "EC"
+   ],
+   "effects": [
+    {
+     "effect": 10,
+     "value": 20,
+     "varbit": "talent_thrown_maxhit_echoes"
+    }
+   ],
+   "cacheText": "While a thrown weapon is equipped, Ranged echoes have a 20% chance to max hit\n\nAll thrown weapon pacts will work with an Eclipse Atlatl.",
+   "wikiText": "While a thrown weapon is equipped, Ranged echoes have a 20% chance to max hit\n\nAll thrown weapon pacts will work with an Eclipse Atlatl",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "E3"
+  },
+  {
+   "id": "EA",
+   "bit": 5,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 5,
+   "dbrow": 15409,
+   "debugName": "node6",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    -100,
+    150
+   ],
+   "wikiCoord": [
+    -565.116,
+    997.169
+   ],
+   "links": [
+    "E1",
+    "H1",
+    "H2",
+    "H5"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "EB",
+   "bit": 6,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 6,
+   "dbrow": 15410,
+   "debugName": "node7",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7544,
+   "drawCoord": [
+    0,
+    150
+   ],
+   "wikiCoord": [
+    0.0,
+    997.169
+   ],
+   "links": [
+    "E2",
+    "H2",
+    "H3"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 25,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+25% accuracy in all combat styles.",
+   "wikiText": "+25% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "CA"
+  },
+  {
+   "id": "EC",
+   "bit": 7,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 7,
+   "dbrow": 15411,
+   "debugName": "node8",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    100,
+    150
+   ],
+   "wikiCoord": [
+    578.603,
+    997.169
+   ],
+   "links": [
+    "E3",
+    "H3",
+    "H4",
+    "H8"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "H1",
+   "bit": 8,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 8,
+   "dbrow": 15412,
+   "debugName": "node9",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7544,
+   "drawCoord": [
+    -150,
+    200
+   ],
+   "wikiCoord": [
+    -863.896,
+    1315.634
+   ],
+   "links": [
+    "EA",
+    "HA"
+   ],
+   "effects": [
+    {
+     "effect": 57,
+     "value": 1,
+     "varbit": "talent_max_accuracy_roll_from_range"
+    }
+   ],
+   "cacheText": "You have a 5% chance per attack in any style to roll max accuracy, this is increased by 5% for each tile distance between you and your target.",
+   "wikiText": "You have a 5% chance per attack in any style to roll max accuracy, this is increased by 5% for each tile distance between you and your target",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H1"
+  },
+  {
+   "id": "H2",
+   "bit": 9,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 9,
+   "dbrow": 15413,
+   "debugName": "node10",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7563,
+   "drawCoord": [
+    -50,
+    200
+   ],
+   "wikiCoord": [
+    -307.085,
+    1315.634
+   ],
+   "links": [
+    "EA",
+    "EB",
+    "HB"
+   ],
+   "effects": [
+    {
+     "effect": 1,
+     "value": 30,
+     "varbit": "talent_regen_ammo_chance"
+    }
+   ],
+   "cacheText": "+30% chance to Regenerate runes, ammo and charges.",
+   "wikiText": "+30% chance to Regenerate runes, ammo and charges",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F3"
+  },
+  {
+   "id": "H3",
+   "bit": 10,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 10,
+   "dbrow": 15414,
+   "debugName": "node11",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7544,
+   "drawCoord": [
+    50,
+    200
+   ],
+   "wikiCoord": [
+    285.347,
+    1315.634
+   ],
+   "links": [
+    "EB",
+    "EC",
+    "HC"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 50,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+50% accuracy in all combat styles.",
+   "wikiText": "+50% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F1"
+  },
+  {
+   "id": "H4",
+   "bit": 11,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 11,
+   "dbrow": 15415,
+   "debugName": "node12",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 2928,
+   "drawCoord": [
+    150,
+    200
+   ],
+   "wikiCoord": [
+    879.437,
+    1315.634
+   ],
+   "links": [
+    "EC",
+    "HD"
+   ],
+   "effects": [
+    {
+     "effect": 16,
+     "value": 1,
+     "varbit": "talent_offhand_stat_boost"
+    }
+   ],
+   "cacheText": "While an off-hand item is equipped, gain +5 melee strength, +5 ranged strength and +2% magic damage.",
+   "wikiText": "While an off-hand item is equipped, gain +5 melee strength, +5 ranged strength and +2% magic damage",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H4"
+  },
+  {
+   "id": "HA",
+   "bit": 12,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 12,
+   "dbrow": 15416,
+   "debugName": "node13",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    -150,
+    250
+   ],
+   "wikiCoord": [
+    -863.896,
+    1634.475
+   ],
+   "links": [
+    "H1",
+    "K1",
+    "K4"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "K1",
+   "bit": 13,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 13,
+   "dbrow": 15417,
+   "debugName": "node14",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 2927,
+   "drawCoord": [
+    -100,
+    250
+   ],
+   "wikiCoord": [
+    -595.233,
+    1634.475
+   ],
+   "links": [
+    "HA",
+    "HB"
+   ],
+   "effects": [
+    {
+     "effect": 58,
+     "value": 1,
+     "varbit": "talent_buffed_ranged_prayers"
+    }
+   ],
+   "cacheText": "Ranged prayers are 30% more effective.",
+   "wikiText": "Ranged prayers are 30% more effective",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K1"
+  },
+  {
+   "id": "HB",
+   "bit": 14,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 14,
+   "dbrow": 15418,
+   "debugName": "node15",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    -50,
+    250
+   ],
+   "wikiCoord": [
+    -307.085,
+    1634.475
+   ],
+   "links": [
+    "H2",
+    "K1",
+    "K2",
+    "K8"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "K2",
+   "bit": 15,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 15,
+   "dbrow": 15419,
+   "debugName": "node16",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7555,
+   "drawCoord": [
+    0,
+    250
+   ],
+   "wikiCoord": [
+    0.0,
+    1634.475
+   ],
+   "links": [
+    "HB",
+    "HC"
+   ],
+   "effects": [
+    {
+     "effect": 49,
+     "value": 1,
+     "varbit": "talent_ranged_strength_hp_difference"
+    }
+   ],
+   "cacheText": "Ranged strength is increased by 1 for every 10 hitpoints difference between your current hitpoints and Hitpoints level.",
+   "wikiText": "Ranged strength is increased by 1 for every 10 hitpoints difference between your current hitpoints and Hitpoints level",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K2"
+  },
+  {
+   "id": "HC",
+   "bit": 16,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 16,
+   "dbrow": 15420,
+   "debugName": "node17",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    50,
+    250
+   ],
+   "wikiCoord": [
+    285.347,
+    1634.475
+   ],
+   "links": [
+    "H3",
+    "K2",
+    "K3",
+    "K8"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "K3",
+   "bit": 17,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 17,
+   "dbrow": 15421,
+   "debugName": "node18",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7555,
+   "drawCoord": [
+    100,
+    250
+   ],
+   "wikiCoord": [
+    578.603,
+    1634.475
+   ],
+   "links": [
+    "HC",
+    "HD"
+   ],
+   "effects": [
+    {
+     "effect": 52,
+     "value": 1,
+     "varbit": "talent_ranged_echo_cyclical"
+    }
+   ],
+   "cacheText": "Ranged echoes can now trigger additional Ranged echoes at half your chance to trigger them (up to 4 times).",
+   "wikiText": "Ranged echoes can now trigger additional Ranged echoes at half your chance to trigger them (up to 4 times)",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K3"
+  },
+  {
+   "id": "HD",
+   "bit": 18,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 18,
+   "dbrow": 15422,
+   "debugName": "node19",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    150,
+    250
+   ],
+   "wikiCoord": [
+    879.437,
+    1634.475
+   ],
+   "links": [
+    "H4",
+    "K3",
+    "K6"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "K4",
+   "bit": 19,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 19,
+   "dbrow": 15423,
+   "debugName": "node20",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7555,
+   "drawCoord": [
+    -150,
+    300
+   ],
+   "wikiCoord": [
+    -863.896,
+    1921.094
+   ],
+   "links": [
+    "HA",
+    "K5",
+    "KA"
+   ],
+   "effects": [
+    {
+     "effect": 53,
+     "value": 1,
+     "varbit": "talent_bow_fast_hits"
+    }
+   ],
+   "cacheText": "Bows attack 1 tick (0.6s) faster.",
+   "wikiText": "Bows attack 1 tick (0.6s) faster",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K4"
+  },
+  {
+   "id": "K8",
+   "bit": 20,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 20,
+   "dbrow": 15424,
+   "debugName": "node21",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7555,
+   "drawCoord": [
+    0,
+    300
+   ],
+   "wikiCoord": [
+    0.0,
+    1921.094
+   ],
+   "links": [
+    "HB",
+    "HC",
+    "KB"
+   ],
+   "effects": [
+    {
+     "effect": 50,
+     "value": 1,
+     "varbit": "talent_crossbow_slow_big_hits"
+    }
+   ],
+   "cacheText": "Crossbows attack 2 ticks (1.2s) slower, but deal +70% damage.",
+   "wikiText": "Crossbows attack 2 ticks (1.2s) slower, but deal +70% damage",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K8"
+  },
+  {
+   "id": "K6",
+   "bit": 21,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 21,
+   "dbrow": 15425,
+   "debugName": "node22",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7555,
+   "drawCoord": [
+    150,
+    300
+   ],
+   "wikiCoord": [
+    879.437,
+    1921.094
+   ],
+   "links": [
+    "HD",
+    "K7",
+    "KC"
+   ],
+   "effects": [
+    {
+     "effect": 17,
+     "value": 1,
+     "varbit": "talent_thrown_weapon_melee_str_scale"
+    }
+   ],
+   "cacheText": "While a thrown weapon is equipped, ranged strength is also increased by your 80% of your melee strength.",
+   "wikiText": "While a thrown weapon is equipped, ranged strength is also increased by your 80% of your melee strength",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K6"
+  },
+  {
+   "id": "KA",
+   "bit": 22,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 22,
+   "dbrow": 15426,
+   "debugName": "node23",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    -150,
+    350
+   ],
+   "wikiCoord": [
+    -863.896,
+    2239.296
+   ],
+   "links": [
+    "K4",
+    "K9",
+    "N1"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "KB",
+   "bit": 23,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 23,
+   "dbrow": 15427,
+   "debugName": "node24",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    0,
+    350
+   ],
+   "wikiCoord": [
+    0.0,
+    2239.296
+   ],
+   "links": [
+    "K10",
+    "K8",
+    "K9",
+    "N2"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "KC",
+   "bit": 24,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 24,
+   "dbrow": 15428,
+   "debugName": "node25",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    150,
+    350
+   ],
+   "wikiCoord": [
+    879.437,
+    2239.296
+   ],
+   "links": [
+    "K10",
+    "K6",
+    "N3"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "N4",
+   "bit": 25,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 25,
+   "dbrow": 15429,
+   "debugName": "node26",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 3,
+   "spriteId": 7555,
+   "drawCoord": [
+    -185,
+    450
+   ],
+   "wikiCoord": [
+    -1136.648,
+    2871.011
+   ],
+   "links": [
+    "N1"
+   ],
+   "effects": [
+    {
+     "effect": 59,
+     "value": 1,
+     "varbit": "talent_bow_min_hit_stacking_increase"
+    }
+   ],
+   "cacheText": "Hitting with a bow increases your bows minimum hit by 1, capping at 15% of your base maximum hit. This bonus is halved when you take damage that you didn't or couldn't pray against.",
+   "wikiText": "Hitting with a bow increases your bows minimum hit by 1, capping at 15% of your base maximum hit. This bonus is halved when you take damage that you didn't or couldn't pray against",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "N4"
+  },
+  {
+   "id": "N1",
+   "bit": 26,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 26,
+   "dbrow": 15430,
+   "debugName": "node27",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    -150,
+    400
+   ],
+   "wikiCoord": [
+    -863.896,
+    2613.419
+   ],
+   "links": [
+    "KA",
+    "N4",
+    "N5"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "N5",
+   "bit": 27,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 27,
+   "dbrow": 15431,
+   "debugName": "node28",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 3,
+   "spriteId": 7555,
+   "drawCoord": [
+    -115,
+    450
+   ],
+   "wikiCoord": [
+    -595.233,
+    2871.011
+   ],
+   "links": [
+    "N1"
+   ],
+   "effects": [
+    {
+     "effect": 60,
+     "value": 1,
+     "varbit": "talent_bow_max_hit_stacking_increase"
+    }
+   ],
+   "cacheText": "Hitting with a bow increases your bows maximum hit by 1, capping at 15% of your base maximum hit. This bonus is halved when you take damage that you didn't or couldn't pray against.",
+   "wikiText": "Hitting with a bow increases your bows maximum hit by 1, capping at 15% of your base maximum hit. This bonus is halved when you take damage that you didn't or couldn't pray against",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "N5"
+  },
+  {
+   "id": "N6",
+   "bit": 28,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 28,
+   "dbrow": 15432,
+   "debugName": "node29",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 3,
+   "spriteId": 7555,
+   "drawCoord": [
+    -35,
+    450
+   ],
+   "wikiCoord": [
+    -276.968,
+    2871.011
+   ],
+   "links": [
+    "N2"
+   ],
+   "effects": [
+    {
+     "effect": 51,
+     "value": 1,
+     "varbit": "talent_crossbow_max_hit"
+    }
+   ],
+   "cacheText": "Crossbow hits always max hit.",
+   "wikiText": "Crossbow hits always max hit",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "N6"
+  },
+  {
+   "id": "N2",
+   "bit": 29,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 29,
+   "dbrow": 15433,
+   "debugName": "node30",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    0,
+    400
+   ],
+   "wikiCoord": [
+    0.0,
+    2613.419
+   ],
+   "links": [
+    "KB",
+    "N6",
+    "N7"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "N7",
+   "bit": 30,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 30,
+   "dbrow": 15434,
+   "debugName": "node31",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 3,
+   "spriteId": 7555,
+   "drawCoord": [
+    35,
+    450
+   ],
+   "wikiCoord": [
+    285.347,
+    2871.011
+   ],
+   "links": [
+    "N2"
+   ],
+   "effects": [
+    {
+     "effect": 82,
+     "value": 1,
+     "varbit": "talent_crossbow_double_accuracy_roll"
+    }
+   ],
+   "cacheText": "Crossbows attacks roll accuracy twice.",
+   "wikiText": "Crossbows attacks roll accuracy twice",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "N7"
+  },
+  {
+   "id": "N8",
+   "bit": 31,
+   "varp": "combat_mastery_perm_0",
+   "bitInVarp": 31,
+   "dbrow": 15435,
+   "debugName": "node32",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 3,
+   "spriteId": 7555,
+   "drawCoord": [
+    115,
+    450
+   ],
+   "wikiCoord": [
+    619.422,
+    2871.011
+   ],
+   "links": [
+    "N3"
+   ],
+   "effects": [
+    {
+     "effect": 55,
+     "value": 60,
+     "varbit": "talent_thrown_weapon_accuracy"
+    }
+   ],
+   "cacheText": "While a thrown weapon is equipped, increase your ranged accuracy by 60.",
+   "wikiText": "While a thrown weapon is equipped, increase your ranged accuracy by 60",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "N8"
+  },
+  {
+   "id": "N3",
+   "bit": 32,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 0,
+   "dbrow": 15436,
+   "debugName": "node33",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 2,
+   "spriteId": 7555,
+   "drawCoord": [
+    150,
+    400
+   ],
+   "wikiCoord": [
+    879.437,
+    2613.419
+   ],
+   "links": [
+    "KC",
+    "N8",
+    "N9"
+   ],
+   "effects": [
+    {
+     "effect": 15,
+     "value": 1,
+     "varbit": "talent_percentage_ranged_damage"
+    }
+   ],
+   "cacheText": "+1% Ranged damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Ranged damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "HA"
+  },
+  {
+   "id": "N9",
+   "bit": 33,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 1,
+   "dbrow": 15437,
+   "debugName": "node34",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": 3,
+   "spriteId": 7555,
+   "drawCoord": [
+    185,
+    450
+   ],
+   "wikiCoord": [
+    1140.41,
+    2871.011
+   ],
+   "links": [
+    "N3"
+   ],
+   "effects": [
+    {
+     "effect": 56,
+     "value": 1,
+     "varbit": "talent_thrown_weapon_multi"
+    }
+   ],
+   "cacheText": "When attacking with a thrown weapon, you now throw at an additional nearby target.",
+   "wikiText": "When attacking with a thrown weapon, you now throw at an additional nearby target",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "N9"
+  },
+  {
+   "id": "K9",
+   "bit": 34,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 2,
+   "dbrow": 15438,
+   "debugName": "node38",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7555,
+   "drawCoord": [
+    -75,
+    360
+   ],
+   "wikiCoord": [
+    -462.632,
+    2319.958
+   ],
+   "links": [
+    "KA",
+    "KB"
+   ],
+   "effects": [
+    {
+     "effect": 11,
+     "value": 5,
+     "varbit": "talent_ranged_regen_echo_chance"
+    }
+   ],
+   "cacheText": "Whenever you Regenerate ammo, you have a +5% chance to fire a Ranged echo against the enemy.\n\nRanged echo: An additional ranged attack which rolls with your ranged accuracy against the targets ranged defence. Echo attacks cannot trigger additional echo attacks and will not trigger on special attacks.",
+   "wikiText": "Whenever you Regenerate ammo, you have a +5% chance to fire a Ranged echo against the enemy",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K10"
+  },
+  {
+   "id": "K10",
+   "bit": 35,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 3,
+   "dbrow": 15439,
+   "debugName": "node39",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 4,
+   "nodeSize": null,
+   "spriteId": 7555,
+   "drawCoord": [
+    75,
+    360
+   ],
+   "wikiCoord": [
+    480.489,
+    2319.958
+   ],
+   "links": [
+    "KB",
+    "KC"
+   ],
+   "effects": [
+    {
+     "effect": 11,
+     "value": 5,
+     "varbit": "talent_ranged_regen_echo_chance"
+    }
+   ],
+   "cacheText": "Whenever you Regenerate ammo, you have a +5% chance to fire a Ranged echo against the enemy.\n\nRanged echo: An additional ranged attack which rolls with your ranged accuracy against the targets ranged defence. Echo attacks cannot trigger additional echo attacks and will not trigger on special attacks.",
+   "wikiText": "Whenever you Regenerate ammo, you have a +5% chance to fire a Ranged echo against the enemy",
+   "wikiStyle": "Ranged",
+   "wikiIcon": "K10"
+  },
+  {
+   "id": "D4",
+   "bit": 36,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 4,
+   "dbrow": 15440,
+   "debugName": "node43",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7534,
+   "drawCoord": [
+    237,
+    -63
+   ],
+   "wikiCoord": [
+    1287.615,
+    -327.579
+   ],
+   "links": [
+    "B3",
+    "DC"
+   ],
+   "effects": [
+    {
+     "effect": 20,
+     "value": 2,
+     "varbit": "talent_melee_range_multiplier"
+    }
+   ],
+   "cacheText": "Melee range is doubled whilst using two handed weapons.",
+   "wikiText": "Melee range is doubled whilst using two handed weapons",
+   "wikiStyle": "Melee",
+   "wikiIcon": "D4"
+  },
+  {
+   "id": "B1",
+   "bit": 37,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 5,
+   "dbrow": 15441,
+   "debugName": "node44",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7569,
+   "drawCoord": [
+    -88,
+    -63
+   ],
+   "wikiCoord": [
+    -512.699,
+    -320.733
+   ],
+   "links": [
+    "AA",
+    "C1",
+    "C2",
+    "C3",
+    "C4"
+   ],
+   "effects": [
+    {
+     "effect": 78,
+     "value": 10,
+     "varbit": "talent_regen_magic_level_boost"
+    }
+   ],
+   "cacheText": "Whenever your combat spells Regenerate runes, your Magic level is boosted by 1 for 30 ticks (18s).\n\nThis boost cannot exceed 10 Magic levels and additional triggers reset the duration.",
+   "wikiText": "Whenever your combat spells Regenerate runes, your Magic level is boosted by 1 for 30 ticks (18s)\n\nThis boost cannot exceed 10 Magic levels and additional triggers reset the duration",
+   "wikiStyle": "Magic",
+   "wikiIcon": "B1"
+  },
+  {
+   "id": "C1",
+   "bit": 38,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 6,
+   "dbrow": 15442,
+   "debugName": "node45",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7575,
+   "drawCoord": [
+    -237,
+    -63
+   ],
+   "wikiCoord": [
+    -1313.56,
+    -337.846
+   ],
+   "links": [
+    "B1",
+    "CA"
+   ],
+   "effects": [
+    {
+     "effect": 3,
+     "value": 15,
+     "varbit": "talent_airrune_regen_prayer_restore"
+    }
+   ],
+   "cacheText": "Whenever your combat spells Regenerate air runes, you have a 15% chance to restore 1 prayer point per rune regenerated.",
+   "wikiText": "Whenever your combat spells Regenerate air runes, you have a 15% chance to restore 1 prayer point per rune regenerated",
+   "wikiStyle": "Magic",
+   "wikiIcon": "C1"
+  },
+  {
+   "id": "C2",
+   "bit": 39,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 7,
+   "dbrow": 15443,
+   "debugName": "node46",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7576,
+   "drawCoord": [
+    -200,
+    -100
+   ],
+   "wikiCoord": [
+    -1116.721,
+    -519.094
+   ],
+   "links": [
+    "B1",
+    "CB"
+   ],
+   "effects": [
+    {
+     "effect": 4,
+     "value": 1,
+     "varbit": "talent_waterrune_regen_healing"
+    }
+   ],
+   "cacheText": "Whenever your combat spells Regenerate water runes, you're healed for 1 per rune regenerated.",
+   "wikiText": "Whenever your combat spells Regenerate water runes, you're healed for 1 per rune regenerated",
+   "wikiStyle": "Magic",
+   "wikiIcon": "C2"
+  },
+  {
+   "id": "C3",
+   "bit": 40,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 8,
+   "dbrow": 15444,
+   "debugName": "node47",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7578,
+   "drawCoord": [
+    -125,
+    -175
+   ],
+   "wikiCoord": [
+    -700.32,
+    -926.728
+   ],
+   "links": [
+    "B1",
+    "CB"
+   ],
+   "effects": [
+    {
+     "effect": 5,
+     "value": 1,
+     "varbit": "talent_firerune_regen_damage_boost"
+    }
+   ],
+   "cacheText": "Whenever your combat spells Regenerate fire runes, the damage of your next spell hit is increased by 1 per rune regenerated.",
+   "wikiText": "Whenever your combat spells Regenerate fire runes, the damage of your next spell hit is increased by 1 per rune regenerated",
+   "wikiStyle": "Magic",
+   "wikiIcon": "C3"
+  },
+  {
+   "id": "C4",
+   "bit": 41,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 9,
+   "dbrow": 15445,
+   "debugName": "node48",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7577,
+   "drawCoord": [
+    -88,
+    -212
+   ],
+   "wikiCoord": [
+    -522.967,
+    -1112.068
+   ],
+   "links": [
+    "B1",
+    "CC"
+   ],
+   "effects": [
+    {
+     "effect": 6,
+     "value": 1,
+     "varbit": "talent_earthrune_regen_defence_boost"
+    }
+   ],
+   "cacheText": "Whenever your combat spells Regenerate earth runes, your Defence level is boosted by 1 per rune regenerated for 30 ticks (18s).\n\nThis boost cannot exceed 20% of your base Defence level and additional triggers reset the duration.",
+   "wikiText": "Whenever your combat spells Regenerate earth runes, your Defence level is boosted by 1 per rune regenerated for 30 ticks (18s)",
+   "wikiStyle": "Magic",
+   "wikiIcon": "C4"
+  },
+  {
+   "id": "F5",
+   "bit": 42,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 10,
+   "dbrow": 15446,
+   "debugName": "node53",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7571,
+   "drawCoord": [
+    -313,
+    -137
+   ],
+   "wikiCoord": [
+    -1726.276,
+    -790.929
+   ],
+   "links": [
+    "F6",
+    "FB"
+   ],
+   "effects": [
+    {
+     "effect": 35,
+     "value": 1,
+     "varbit": "talent_regen_stave_charges_water"
+    }
+   ],
+   "cacheText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 water rune.",
+   "wikiText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 water rune",
+   "wikiStyle": "Magic",
+   "wikiIcon": "F5"
+  },
+  {
+   "id": "F10",
+   "bit": 43,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 11,
+   "dbrow": 15447,
+   "debugName": "node54",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7571,
+   "drawCoord": [
+    -213,
+    -337
+   ],
+   "wikiCoord": [
+    -1101.706,
+    -1744.227
+   ],
+   "links": [
+    "F9",
+    "FC"
+   ],
+   "effects": [
+    {
+     "effect": 36,
+     "value": 1,
+     "varbit": "talent_regen_stave_charges_fire"
+    }
+   ],
+   "cacheText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 fire rune.",
+   "wikiText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 fire rune",
+   "wikiStyle": "Magic",
+   "wikiIcon": "F10"
+  },
+  {
+   "id": "CA",
+   "bit": 44,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 12,
+   "dbrow": 15448,
+   "debugName": "node55",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7544,
+   "drawCoord": [
+    -287,
+    -112
+   ],
+   "wikiCoord": [
+    -1586.829,
+    -609.093
+   ],
+   "links": [
+    "C1",
+    "F1",
+    "F2"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 25,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+25% accuracy in all combat styles.",
+   "wikiText": "+25% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "CA"
+  },
+  {
+   "id": "CB",
+   "bit": 45,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 13,
+   "dbrow": 15449,
+   "debugName": "node56",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7544,
+   "drawCoord": [
+    -213,
+    -187
+   ],
+   "wikiCoord": [
+    -1171.922,
+    -1017.935
+   ],
+   "links": [
+    "C2",
+    "C3",
+    "F2",
+    "F3"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 25,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+25% accuracy in all combat styles.",
+   "wikiText": "+25% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "CA"
+  },
+  {
+   "id": "CC",
+   "bit": 46,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 14,
+   "dbrow": 15450,
+   "debugName": "node57",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7544,
+   "drawCoord": [
+    -138,
+    -262
+   ],
+   "wikiCoord": [
+    -778.218,
+    -1380.521
+   ],
+   "links": [
+    "C4",
+    "F3",
+    "F4"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 25,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+25% accuracy in all combat styles.",
+   "wikiText": "+25% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "CA"
+  },
+  {
+   "id": "F1",
+   "bit": 47,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 15,
+   "dbrow": 15451,
+   "debugName": "node58",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7544,
+   "drawCoord": [
+    -325,
+    -75
+   ],
+   "wikiCoord": [
+    -1780.611,
+    -419.052
+   ],
+   "links": [
+    "CA",
+    "F11",
+    "FA"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 50,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+50% accuracy in all combat styles.",
+   "wikiText": "+50% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F1"
+  },
+  {
+   "id": "F2",
+   "bit": 48,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 16,
+   "dbrow": 15452,
+   "debugName": "node59",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7546,
+   "drawCoord": [
+    -250,
+    -150
+   ],
+   "wikiCoord": [
+    -1374.64,
+    -811.262
+   ],
+   "links": [
+    "CA",
+    "CB",
+    "FB"
+   ],
+   "effects": [
+    {
+     "effect": 18,
+     "value": 30,
+     "varbit": "talent_overhealing_via_talents"
+    }
+   ],
+   "cacheText": "Healing with Demonic Pacts overheals you, up to +30% of your base Hitpoints level.",
+   "wikiText": "Healing with Demonic Pacts overheals you, up to +30% of your base Hitpoints level",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F13"
+  },
+  {
+   "id": "F3",
+   "bit": 49,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 17,
+   "dbrow": 15453,
+   "debugName": "node60",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7563,
+   "drawCoord": [
+    -175,
+    -225
+   ],
+   "wikiCoord": [
+    -975.776,
+    -1197.549
+   ],
+   "links": [
+    "CB",
+    "CC",
+    "FC"
+   ],
+   "effects": [
+    {
+     "effect": 1,
+     "value": 30,
+     "varbit": "talent_regen_ammo_chance"
+    }
+   ],
+   "cacheText": "+30% chance to Regenerate runes, ammo and charges.",
+   "wikiText": "+30% chance to Regenerate runes, ammo and charges",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F3"
+  },
+  {
+   "id": "F4",
+   "bit": 50,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 18,
+   "dbrow": 15454,
+   "debugName": "node61",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7545,
+   "drawCoord": [
+    -100,
+    -300
+   ],
+   "wikiCoord": [
+    -595.233,
+    -1553.898
+   ],
+   "links": [
+    "CC",
+    "F12",
+    "FD"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 15,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+15 permanent Defence level boost.",
+   "wikiText": "+15 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F4"
+  },
+  {
+   "id": "BB",
+   "bit": 51,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 19,
+   "dbrow": 15455,
+   "debugName": "node62",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7563,
+   "drawCoord": [
+    -200,
+    25
+   ],
+   "wikiCoord": [
+    -1136.648,
+    239.624
+   ],
+   "links": [
+    "AA",
+    "F11",
+    "H5"
+   ],
+   "effects": [
+    {
+     "effect": 1,
+     "value": 5,
+     "varbit": "talent_regen_ammo_chance"
+    }
+   ],
+   "cacheText": "+5% chance to Regenerate runes, ammo and charges.",
+   "wikiText": "+5% chance to Regenerate runes, ammo and charges",
+   "wikiStyle": "Varied",
+   "wikiIcon": "BA"
+  },
+  {
+   "id": "F11",
+   "bit": 52,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 20,
+   "dbrow": 15456,
+   "debugName": "node63",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    -325,
+    25
+   ],
+   "wikiCoord": [
+    -1780.611,
+    239.625
+   ],
+   "links": [
+    "BB",
+    "F1"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "H5",
+   "bit": 53,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 21,
+   "dbrow": 15457,
+   "debugName": "node64",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    -200,
+    150
+   ],
+   "wikiCoord": [
+    -1136.648,
+    997.169
+   ],
+   "links": [
+    "BB",
+    "EA",
+    "H6"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "H6",
+   "bit": 54,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 22,
+   "dbrow": 15458,
+   "debugName": "node65",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 3571,
+   "drawCoord": [
+    -262,
+    212
+   ],
+   "wikiCoord": [
+    -1417.18,
+    1256.974
+   ],
+   "links": [
+    "H5",
+    "H7"
+   ],
+   "effects": [
+    {
+     "effect": 76,
+     "value": 1,
+     "varbit": "talent_max_hit_style_swap"
+    }
+   ],
+   "cacheText": "Whenever you max hit from at least 3 tiles away, your next hit from a different style deals +25% damage.",
+   "wikiText": "Whenever you max hit from at least 3 tiles away, your next hit from a different style deals +25% damage",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H6"
+  },
+  {
+   "id": "H7",
+   "bit": 55,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 23,
+   "dbrow": 15459,
+   "debugName": "node66",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    -325,
+    150
+   ],
+   "wikiCoord": [
+    -1699.167,
+    997.169
+   ],
+   "links": [
+    "H6",
+    "I6"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "FA",
+   "bit": 56,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 24,
+   "dbrow": 15460,
+   "debugName": "node67",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -375,
+    -125
+   ],
+   "wikiCoord": [
+    -2022.834,
+    -662.965
+   ],
+   "links": [
+    "F1",
+    "F6",
+    "I1"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "FB",
+   "bit": 57,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 25,
+   "dbrow": 15461,
+   "debugName": "node68",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -300,
+    -200
+   ],
+   "wikiCoord": [
+    -1586.829,
+    -1042.434
+   ],
+   "links": [
+    "F2",
+    "F5",
+    "F7",
+    "F8",
+    "I2"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "FC",
+   "bit": 58,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 26,
+   "dbrow": 15462,
+   "debugName": "node69",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -225,
+    -275
+   ],
+   "wikiCoord": [
+    -1186.469,
+    -1410.497
+   ],
+   "links": [
+    "F10",
+    "F3",
+    "F7",
+    "F8",
+    "I3"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "FD",
+   "bit": 59,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 27,
+   "dbrow": 15463,
+   "debugName": "node70",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -150,
+    -350
+   ],
+   "wikiCoord": [
+    -820.694,
+    -1786.053
+   ],
+   "links": [
+    "F4",
+    "F9",
+    "I4"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "D1",
+   "bit": 60,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 28,
+   "dbrow": 15464,
+   "debugName": "node71",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7562,
+   "drawCoord": [
+    88,
+    -212
+   ],
+   "wikiCoord": [
+    488.851,
+    -1101.066
+   ],
+   "links": [
+    "B3",
+    "DA"
+   ],
+   "effects": [
+    {
+     "effect": 19,
+     "value": 3,
+     "varbit": "talent_thorns_damage"
+    }
+   ],
+   "cacheText": "While you have a shield equipped you gain the Thorns effect\n\nThorns: Whenever you're attacked enemies will be instantly hit with 3 melee damage. This effect can only trigger once per hit-splat and will trigger if you take 0 damage. Other pacts will specify if they effect Thorns.",
+   "wikiText": "While you have a shield equipped you gain the Thorns* effect\n\n*Thorns: Whenever you're attacked enemies will be instantly hit with 3 melee damage. This effect can only trigger once per hit-splat and will trigger if you take 0 damage. Other pacts will specify if they effect{{sic}} Thorns",
+   "wikiStyle": "Varied",
+   "wikiIcon": "D1"
+  },
+  {
+   "id": "D2",
+   "bit": 61,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 29,
+   "dbrow": 15465,
+   "debugName": "node72",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7560,
+   "drawCoord": [
+    125,
+    -175
+   ],
+   "wikiCoord": [
+    722.784,
+    -916.461
+   ],
+   "links": [
+    "B3",
+    "DB"
+   ],
+   "effects": [
+    {
+     "effect": 43,
+     "value": 1,
+     "varbit": "talent_light_weapon_doublehit"
+    }
+   ],
+   "cacheText": "Melee weapons under 1kg always trigger an additional melee hit using 40% of your base max hit (minimum of 1)\n\nThis will not trigger on special attacks.",
+   "wikiText": "Melee weapons under 1kg always trigger an additional melee hit using 40% of your base max hit (minimum of 1)\n\nThis will not trigger on special attacks",
+   "wikiStyle": "Melee",
+   "wikiIcon": "D2"
+  },
+  {
+   "id": "D3",
+   "bit": 62,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 30,
+   "dbrow": 15466,
+   "debugName": "node73",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7543,
+   "drawCoord": [
+    200,
+    -100
+   ],
+   "wikiCoord": [
+    1091.929,
+    -519.094
+   ],
+   "links": [
+    "B3",
+    "DB"
+   ],
+   "effects": [
+    {
+     "effect": 44,
+     "value": 15,
+     "varbit": "talent_free_random_weapon_attack_chance"
+    }
+   ],
+   "cacheText": "Each melee attack with a heavy melee weapon (>=1kg) has a 15% chance to trigger an instant Blindbag attack.\n\nBlindbag: Automatically attack your current target with a random heavy melee weapon in your inventory as though you have equipped it, ignoring all stat requirements and attack delay. Blindbag attacks can trigger additional Blindbag attacks but cannot trigger from special attacks.",
+   "wikiText": "Each melee attack with a heavy melee weapon (>=1kg) has a 15% chance to trigger an instant Blindbag* attack\n\n*Blindbag: Automatically attack your current target with a random heavy melee weapon in your inventory as though you have equipped it, ignoring all stat requirements and attack delay. Blindbag attacks can trigger additional Blindbag attacks but cannot trigger from special attacks",
+   "wikiStyle": "Melee",
+   "wikiIcon": "D3"
+  },
+  {
+   "id": "B3",
+   "bit": 63,
+   "varp": "combat_mastery_perm_1",
+   "bitInVarp": 31,
+   "dbrow": 15467,
+   "debugName": "node74",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7539,
+   "drawCoord": [
+    88,
+    -63
+   ],
+   "wikiCoord": [
+    480.488,
+    -320.733
+   ],
+   "links": [
+    "AA",
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+   ],
+   "effects": [
+    {
+     "effect": 25,
+     "value": 3,
+     "varbit": "talent_distance_melee_minhit"
+    }
+   ],
+   "cacheText": "Your minimum hit when attacking with a melee weapon is increased by 3.\n\nThis minimum hit is further increased by # for each additional tile between you and the target.",
+   "wikiText": "Your minimum hit when attacking with a melee weapon is increased by 3\n\nThis minimum hit is further increased by 3 for each additional tile between you and the target",
+   "wikiStyle": "Melee",
+   "wikiIcon": "B3"
+  },
+  {
+   "id": "G6",
+   "bit": 64,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 0,
+   "dbrow": 15468,
+   "debugName": "node79",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 4237,
+   "drawCoord": [
+    213,
+    -337
+   ],
+   "wikiCoord": [
+    1181.742,
+    -1772.59
+   ],
+   "links": [
+    "G5",
+    "GB"
+   ],
+   "effects": [
+    {
+     "effect": 77,
+     "value": 1,
+     "varbit": "talent_multi_hit_str_increase"
+    }
+   ],
+   "cacheText": "Melee weapons that are under 1kg or one handed, increase your melee strength by 20% of your Strength level.",
+   "wikiText": "Melee weapons that are under 1kg or one handed, increase your melee strength by 20% of your Strength level",
+   "wikiStyle": "Melee",
+   "wikiIcon": "G6"
+  },
+  {
+   "id": "G10",
+   "bit": 65,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 1,
+   "dbrow": 15469,
+   "debugName": "node80",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7546,
+   "drawCoord": [
+    362,
+    -187
+   ],
+   "wikiCoord": [
+    1957.993,
+    -997.008
+   ],
+   "links": [
+    "G9",
+    "GD"
+   ],
+   "effects": [
+    {
+     "effect": 26,
+     "value": 10,
+     "varbit": "talent_melee_distance_healing_chance"
+    }
+   ],
+   "cacheText": "Attacking with a melee weapon or Thorns has a +10% chance to heal you based off your distance between you and your target (1 tile = 1 health).",
+   "wikiText": "Attacking with a melee weapon or Thorns has a +10% chance to heal you based off your distance between you and your target (1 tile = 1 health)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "G10"
+  },
+  {
+   "id": "DA",
+   "bit": 66,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 2,
+   "dbrow": 15470,
+   "debugName": "node81",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    138,
+    -262
+   ],
+   "wikiCoord": [
+    770.657,
+    -1380.521
+   ],
+   "links": [
+    "D1",
+    "G1",
+    "G2"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "DB",
+   "bit": 67,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 3,
+   "dbrow": 15471,
+   "debugName": "node82",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7544,
+   "drawCoord": [
+    213,
+    -187
+   ],
+   "wikiCoord": [
+    1181.742,
+    -1017.935
+   ],
+   "links": [
+    "D2",
+    "D3",
+    "G2",
+    "G3"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 25,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+25% accuracy in all combat styles.",
+   "wikiText": "+25% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "CA"
+  },
+  {
+   "id": "DC",
+   "bit": 68,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 4,
+   "dbrow": 15472,
+   "debugName": "node83",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7544,
+   "drawCoord": [
+    287,
+    -112
+   ],
+   "wikiCoord": [
+    1601.552,
+    -623.381
+   ],
+   "links": [
+    "D4",
+    "G3",
+    "G4"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 25,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+25% accuracy in all combat styles.",
+   "wikiText": "+25% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "CA"
+  },
+  {
+   "id": "G1",
+   "bit": 69,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 5,
+   "dbrow": 15473,
+   "debugName": "node84",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 4556,
+   "drawCoord": [
+    100,
+    -300
+   ],
+   "wikiCoord": [
+    578.603,
+    -1553.898
+   ],
+   "links": [
+    "DA",
+    "G11",
+    "GA"
+   ],
+   "effects": [
+    {
+     "effect": 23,
+     "value": 1,
+     "varbit": "talent_shield_reflect"
+    }
+   ],
+   "cacheText": "While you have a shield equipped, you have a 0.1% chance per Defence level to reflect all damage back to the attacker.",
+   "wikiText": "While you have a shield equipped, you have a 0.1% chance per Defence level to reflect all damage back to the attacker",
+   "wikiStyle": "Varied",
+   "wikiIcon": "G1"
+  },
+  {
+   "id": "G2",
+   "bit": 70,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 6,
+   "dbrow": 15474,
+   "debugName": "node85",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7550,
+   "drawCoord": [
+    175,
+    -225
+   ],
+   "wikiCoord": [
+    982.553,
+    -1189.064
+   ],
+   "links": [
+    "DA",
+    "DB",
+    "GB"
+   ],
+   "effects": [
+    {
+     "effect": 24,
+     "value": 20,
+     "varbit": "talent_spec_for_free"
+    }
+   ],
+   "cacheText": "Special attacks have a 20% chance to not consume any energy.",
+   "wikiText": "Special attacks have a 20% chance to not consume any energy",
+   "wikiStyle": "Varied",
+   "wikiIcon": "G2"
+  },
+  {
+   "id": "G3",
+   "bit": 71,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 7,
+   "dbrow": 15475,
+   "debugName": "node86",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7544,
+   "drawCoord": [
+    250,
+    -150
+   ],
+   "wikiCoord": [
+    1398.942,
+    -811.262
+   ],
+   "links": [
+    "DB",
+    "DC",
+    "GC"
+   ],
+   "effects": [
+    {
+     "effect": 12,
+     "value": 50,
+     "varbit": "talent_all_style_accuracy"
+    }
+   ],
+   "cacheText": "+50% accuracy in all combat styles.",
+   "wikiText": "+50% accuracy in all combat styles",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F1"
+  },
+  {
+   "id": "J6",
+   "bit": 72,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 8,
+   "dbrow": 15476,
+   "debugName": "node87",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7563,
+   "drawCoord": [
+    262,
+    87
+   ],
+   "wikiCoord": [
+    1442.367,
+    712.849
+   ],
+   "links": [
+    "H10",
+    "J5"
+   ],
+   "effects": [
+    {
+     "effect": 1,
+     "value": 30,
+     "varbit": "talent_regen_ammo_chance"
+    }
+   ],
+   "cacheText": "+30% chance to Regenerate runes, ammo and charges.",
+   "wikiText": "+30% chance to Regenerate runes, ammo and charges",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F3"
+  },
+  {
+   "id": "G4",
+   "bit": 73,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 9,
+   "dbrow": 15477,
+   "debugName": "node88",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 1610,
+   "drawCoord": [
+    325,
+    -75
+   ],
+   "wikiCoord": [
+    1825.202,
+    -419.052
+   ],
+   "links": [
+    "DC",
+    "G12",
+    "GD"
+   ],
+   "effects": [
+    {
+     "effect": 62,
+     "value": 1,
+     "varbit": "talent_restore_sa_energy_from_distance"
+    }
+   ],
+   "cacheText": "Whenever you attack an enemy from at least 2 tiles away with any style, you restore 2% special attack energy.",
+   "wikiText": "Whenever you attack an enemy from at least 2 tiles away with any style, you restore 2% special attack energy",
+   "wikiStyle": "Varied",
+   "wikiIcon": "G4"
+  },
+  {
+   "id": "K7",
+   "bit": 74,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 10,
+   "dbrow": 15478,
+   "debugName": "node91",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    425,
+    300
+   ],
+   "wikiCoord": [
+    2314.71,
+    1921.094
+   ],
+   "links": [
+    "J5",
+    "K6"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "BA",
+   "bit": 75,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 11,
+   "dbrow": 15479,
+   "debugName": "node92",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7563,
+   "drawCoord": [
+    0,
+    -200
+   ],
+   "wikiCoord": [
+    0.0,
+    -997.007
+   ],
+   "links": [
+    "AA",
+    "F12",
+    "G11"
+   ],
+   "effects": [
+    {
+     "effect": 1,
+     "value": 5,
+     "varbit": "talent_regen_ammo_chance"
+    }
+   ],
+   "cacheText": "+5% chance to Regenerate runes, ammo and charges.",
+   "wikiText": "+5% chance to Regenerate runes, ammo and charges",
+   "wikiStyle": "Varied",
+   "wikiIcon": "BA"
+  },
+  {
+   "id": "BC",
+   "bit": 76,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 12,
+   "dbrow": 15480,
+   "debugName": "node93",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7563,
+   "drawCoord": [
+    200,
+    25
+   ],
+   "wikiCoord": [
+    1140.409,
+    239.624
+   ],
+   "links": [
+    "AA",
+    "G12",
+    "H8"
+   ],
+   "effects": [
+    {
+     "effect": 1,
+     "value": 5,
+     "varbit": "talent_regen_ammo_chance"
+    }
+   ],
+   "cacheText": "+5% chance to Regenerate runes, ammo and charges.",
+   "wikiText": "+5% chance to Regenerate runes, ammo and charges",
+   "wikiStyle": "Varied",
+   "wikiIcon": "BA"
+  },
+  {
+   "id": "F12",
+   "bit": 77,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 13,
+   "dbrow": 15481,
+   "debugName": "node94",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    -50,
+    -250
+   ],
+   "wikiCoord": [
+    -296.82,
+    -1287.001
+   ],
+   "links": [
+    "BA",
+    "F13",
+    "F4"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "G11",
+   "bit": 78,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 14,
+   "dbrow": 15482,
+   "debugName": "node95",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    50,
+    -250
+   ],
+   "wikiCoord": [
+    273.083,
+    -1289.574
+   ],
+   "links": [
+    "BA",
+    "G1"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "F13",
+   "bit": 79,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 15,
+   "dbrow": 15483,
+   "debugName": "node96",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7546,
+   "drawCoord": [
+    0,
+    -300
+   ],
+   "wikiCoord": [
+    -20.044,
+    -1559.539
+   ],
+   "links": [
+    "F12",
+    "J9"
+   ],
+   "effects": [
+    {
+     "effect": 18,
+     "value": 30,
+     "varbit": "talent_overhealing_via_talents"
+    }
+   ],
+   "cacheText": "Healing with Demonic Pacts overheals you, up to +30% of your base Hitpoints level.",
+   "wikiText": "Healing with Demonic Pacts overheals you, up to +30% of your base Hitpoints level",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F13"
+  },
+  {
+   "id": "J9",
+   "bit": 80,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 16,
+   "dbrow": 15484,
+   "debugName": "node97",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    -50,
+    -350
+   ],
+   "wikiCoord": [
+    -289.497,
+    -1799.165
+   ],
+   "links": [
+    "F13",
+    "J8"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "G12",
+   "bit": 81,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 17,
+   "dbrow": 15485,
+   "debugName": "node98",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    325,
+    25
+   ],
+   "wikiCoord": [
+    1825.202,
+    239.625
+   ],
+   "links": [
+    "BC",
+    "G4"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "H8",
+   "bit": 82,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 18,
+   "dbrow": 15486,
+   "debugName": "node99",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 7545,
+   "drawCoord": [
+    200,
+    150
+   ],
+   "wikiCoord": [
+    1140.41,
+    997.169
+   ],
+   "links": [
+    "BC",
+    "EC",
+    "H9"
+   ],
+   "effects": [
+    {
+     "effect": 13,
+     "value": 5,
+     "varbit": "talent_defence_boost"
+    }
+   ],
+   "cacheText": "+5 permanent Defence level boost.",
+   "wikiText": "+5 permanent Defence level boost",
+   "wikiStyle": "Varied",
+   "wikiIcon": "DA"
+  },
+  {
+   "id": "H9",
+   "bit": 83,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 19,
+   "dbrow": 15487,
+   "debugName": "node100",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 7546,
+   "drawCoord": [
+    262,
+    212
+   ],
+   "wikiCoord": [
+    1447.795,
+    1267.83
+   ],
+   "links": [
+    "H10",
+    "H8"
+   ],
+   "effects": [
+    {
+     "effect": 18,
+     "value": 30,
+     "varbit": "talent_overhealing_via_talents"
+    }
+   ],
+   "cacheText": "Healing with Demonic Pacts overheals you, up to +30% of your base Hitpoints level.",
+   "wikiText": "Healing with Demonic Pacts overheals you, up to +30% of your base Hitpoints level",
+   "wikiStyle": "Varied",
+   "wikiIcon": "F13"
+  },
+  {
+   "id": "H10",
+   "bit": 84,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 20,
+   "dbrow": 15488,
+   "debugName": "node101",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    325,
+    150
+   ],
+   "wikiCoord": [
+    1750.161,
+    997.169
+   ],
+   "links": [
+    "H9",
+    "J6"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "I6",
+   "bit": 85,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 21,
+   "dbrow": 15489,
+   "debugName": "node102",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 4240,
+   "drawCoord": [
+    -262,
+    87
+   ],
+   "wikiCoord": [
+    -1417.18,
+    701.993
+   ],
+   "links": [
+    "H7",
+    "I5"
+   ],
+   "effects": [
+    {
+     "effect": 61,
+     "value": 1,
+     "varbit": "talent_prayer_restore_no_overhead"
+    }
+   ],
+   "cacheText": "While protection prayers are not active, you restore 1 Prayer point every 15 ticks (9s), this is sped up by 1 tick (0.6s) for every 7 worn prayer bonus you have.",
+   "wikiText": "While protection prayers are not active, you restore 1 Prayer point every 15 ticks (9s), this is sped up by 1 tick (0.6s) for every 7 worn prayer bonus you have",
+   "wikiStyle": "Varied",
+   "wikiIcon": "I6"
+  },
+  {
+   "id": "K5",
+   "bit": 86,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 22,
+   "dbrow": 15490,
+   "debugName": "node103",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    -425,
+    300
+   ],
+   "wikiCoord": [
+    -2244.928,
+    1921.094
+   ],
+   "links": [
+    "I5",
+    "K4"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "I5",
+   "bit": 87,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 23,
+   "dbrow": 15491,
+   "debugName": "node106",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    -425,
+    87
+   ],
+   "wikiCoord": [
+    -2244.928,
+    701.993
+   ],
+   "links": [
+    "I1",
+    "I6",
+    "K5"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "I1",
+   "bit": 88,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 24,
+   "dbrow": 15492,
+   "debugName": "node107",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7575,
+   "drawCoord": [
+    -425,
+    -175
+   ],
+   "wikiCoord": [
+    -2244.928,
+    -886.769
+   ],
+   "links": [
+    "FA",
+    "I5",
+    "IA"
+   ],
+   "effects": [
+    {
+     "effect": 83,
+     "value": 7,
+     "varbit": "talent_air_spell_damage_active_prayers"
+    }
+   ],
+   "cacheText": "Air spells deal +7% damage for each active prayer.",
+   "wikiText": "Air spells deal +7% damage for each active prayer",
+   "wikiStyle": "Magic",
+   "wikiIcon": "I1"
+  },
+  {
+   "id": "IA",
+   "bit": 89,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 25,
+   "dbrow": 15493,
+   "debugName": "node108",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -475,
+    -225
+   ],
+   "wikiCoord": [
+    -2466.927,
+    -1112.068
+   ],
+   "links": [
+    "I1",
+    "L1",
+    "L5"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "L1",
+   "bit": 90,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 26,
+   "dbrow": 15494,
+   "debugName": "node109",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 3,
+   "spriteId": 7575,
+   "drawCoord": [
+    -525,
+    -275
+   ],
+   "wikiCoord": [
+    -2795.23,
+    -1436.191
+   ],
+   "links": [
+    "IA"
+   ],
+   "effects": [
+    {
+     "effect": 30,
+     "value": 1,
+     "varbit": "talent_air_spell_max_hit_prayer_bonus"
+    }
+   ],
+   "cacheText": "Air spells have a +1% chance to max hit for every 1 prayer bonus, this chance is doubled against enemies weak to air spells.",
+   "wikiText": "Air spells have a +1% chance to max hit for every 1 prayer bonus, this chance is doubled against enemies weak to air spells",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L1"
+  },
+  {
+   "id": "L5",
+   "bit": 91,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 27,
+   "dbrow": 15495,
+   "debugName": "node111",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7579,
+   "drawCoord": [
+    -437,
+    -262
+   ],
+   "wikiCoord": [
+    -2244.928,
+    -1309.954
+   ],
+   "links": [
+    "IA"
+   ],
+   "effects": [
+    {
+     "effect": 45,
+     "value": 1,
+     "varbit": "talent_smoke_counts_as_air"
+    }
+   ],
+   "cacheText": "Smoke spells now count as 'air' spells.",
+   "wikiText": "Smoke spells now count as 'air' spells",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L5"
+  },
+  {
+   "id": "I2",
+   "bit": 92,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 28,
+   "dbrow": 15496,
+   "debugName": "node112",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7576,
+   "drawCoord": [
+    -350,
+    -250
+   ],
+   "wikiCoord": [
+    -1796.844,
+    -1266.96
+   ],
+   "links": [
+    "FB",
+    "IB"
+   ],
+   "effects": [
+    {
+     "effect": 29,
+     "value": 1,
+     "varbit": "talent_water_spell_damage_high_hp"
+    }
+   ],
+   "cacheText": "Water spells deal increased damage the higher health percentage you have (+20% damage at 100% health).",
+   "wikiText": "Water spells deal increased damage the higher health percentage you have (+20% damage at 100% health)",
+   "wikiStyle": "Magic",
+   "wikiIcon": "I2"
+  },
+  {
+   "id": "IB",
+   "bit": 93,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 29,
+   "dbrow": 15497,
+   "debugName": "node113",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -400,
+    -300
+   ],
+   "wikiCoord": [
+    -1989.995,
+    -1468.999
+   ],
+   "links": [
+    "I2",
+    "L2",
+    "L6"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "L2",
+   "bit": 94,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 30,
+   "dbrow": 15498,
+   "debugName": "node114",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 3,
+   "spriteId": 7576,
+   "drawCoord": [
+    -450,
+    -350
+   ],
+   "wikiCoord": [
+    -2319.644,
+    -1822.445
+   ],
+   "links": [
+    "IB"
+   ],
+   "effects": [
+    {
+     "effect": 31,
+     "value": 1,
+     "varbit": "talent_water_spell_bouce_heal"
+    }
+   ],
+   "cacheText": "Water spell hits bounce back to you, healing you for the 60% of the damage dealt to your target.",
+   "wikiText": "Water spell hits bounce back to you, healing you for the 60% of the damage dealt to your target",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L2"
+  },
+  {
+   "id": "I3",
+   "bit": 95,
+   "varp": "combat_mastery_perm_2",
+   "bitInVarp": 31,
+   "dbrow": 15499,
+   "debugName": "node117",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7578,
+   "drawCoord": [
+    -275,
+    -325
+   ],
+   "wikiCoord": [
+    -1396.799,
+    -1631.734
+   ],
+   "links": [
+    "FC",
+    "IC"
+   ],
+   "effects": [
+    {
+     "effect": 32,
+     "value": 1,
+     "varbit": "talent_fire_hp_consume_for_damage"
+    }
+   ],
+   "cacheText": "Fire spell casts burn up to 6% of your maximum Hitpoints to increase your damage dealt by double the amount burned for.\n\nThis effect cannot kill you directly.",
+   "wikiText": "Fire spell casts burn up to 6% of your maximum Hitpoints to increase your damage dealt by double the amount burned for.\n\nThis effect cannot kill you directly.",
+   "wikiStyle": "Magic",
+   "wikiIcon": "I3"
+  },
+  {
+   "id": "IC",
+   "bit": 96,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 0,
+   "dbrow": 15500,
+   "debugName": "node118",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -325,
+    -375
+   ],
+   "wikiCoord": [
+    -1613.481,
+    -1845.835
+   ],
+   "links": [
+    "I3",
+    "L3",
+    "L7"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "L3",
+   "bit": 97,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 1,
+   "dbrow": 15501,
+   "debugName": "node119",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 3,
+   "spriteId": 7578,
+   "drawCoord": [
+    -375,
+    -425
+   ],
+   "wikiCoord": [
+    -1945.888,
+    -2187.542
+   ],
+   "links": [
+    "IC"
+   ],
+   "effects": [
+    {
+     "effect": 33,
+     "value": 1,
+     "varbit": "talent_fire_spell_burn_bounce"
+    }
+   ],
+   "cacheText": "Fire spell hits apply 1 burn (max 5) and bounce to up to 2 nearby targets.",
+   "wikiText": "Fire spell hits apply 1 burn (max 5) and bounce to up to 2 nearby targets",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L3"
+  },
+  {
+   "id": "F7",
+   "bit": 98,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 2,
+   "dbrow": 15502,
+   "debugName": "node122",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7573,
+   "drawCoord": [
+    -288,
+    -262
+   ],
+   "wikiCoord": [
+    -1495.494,
+    -1352.819
+   ],
+   "links": [
+    "FB",
+    "FC"
+   ],
+   "effects": [
+    {
+     "effect": 34,
+     "value": 2,
+     "varbit": "talent_magic_attack_speed_traditional"
+    }
+   ],
+   "cacheText": "Attack rate with combat spells in a spellbook is sped up by 2 ticks.\n\nThis cannot reduce attack rate below 2 ticks (1.2s).",
+   "wikiText": "Attack rate with combat spells in a spellbook is sped up by 2 ticks\n\nThis cannot reduce attack rate below 2 ticks (1.2s)",
+   "wikiStyle": "Magic",
+   "wikiIcon": "F7"
+  },
+  {
+   "id": "L6",
+   "bit": 99,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 3,
+   "dbrow": 15503,
+   "debugName": "node123",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7582,
+   "drawCoord": [
+    -338,
+    -312
+   ],
+   "wikiCoord": [
+    -1693.565,
+    -1570.705
+   ],
+   "links": [
+    "IB"
+   ],
+   "effects": [
+    {
+     "effect": 46,
+     "value": 1,
+     "varbit": "talent_ice_counts_as_water"
+    }
+   ],
+   "cacheText": "Ice spells now count as 'water' spells.",
+   "wikiText": "Ice spells now count as 'water' spells",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L6"
+  },
+  {
+   "id": "L7",
+   "bit": 100,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 4,
+   "dbrow": 15504,
+   "debugName": "node124",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7581,
+   "drawCoord": [
+    -388,
+    -362
+   ],
+   "wikiCoord": [
+    -1892.535,
+    -1786.595
+   ],
+   "links": [
+    "IC"
+   ],
+   "effects": [
+    {
+     "effect": 47,
+     "value": 1,
+     "varbit": "talent_blood_counts_as_fire"
+    }
+   ],
+   "cacheText": "Blood spells now count as 'fire' spells.",
+   "wikiText": "Blood spells now count as 'fire' spells",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L7"
+  },
+  {
+   "id": "I4",
+   "bit": 101,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 5,
+   "dbrow": 15505,
+   "debugName": "node127",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7577,
+   "drawCoord": [
+    -200,
+    -400
+   ],
+   "wikiCoord": [
+    -1038.395,
+    -1980.037
+   ],
+   "links": [
+    "FD",
+    "I7",
+    "ID"
+   ],
+   "effects": [
+    {
+     "effect": 42,
+     "value": 1,
+     "varbit": "talent_earth_reduce_defence"
+    }
+   ],
+   "cacheText": "Earth spell hits reduce the enemies Defence & Magic Defence levels by 2.",
+   "wikiText": "Earth spell hits reduce the enemies Defence & Magic Defence levels by 2",
+   "wikiStyle": "Magic",
+   "wikiIcon": "I4"
+  },
+  {
+   "id": "ID",
+   "bit": 102,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 6,
+   "dbrow": 15506,
+   "debugName": "node128",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 2,
+   "spriteId": 4241,
+   "drawCoord": [
+    -250,
+    -450
+   ],
+   "wikiCoord": [
+    -1249.592,
+    -2183.336
+   ],
+   "links": [
+    "I4",
+    "L4",
+    "L8"
+   ],
+   "effects": [
+    {
+     "effect": 7,
+     "value": 1,
+     "varbit": "talent_percentage_magic_damage"
+    }
+   ],
+   "cacheText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Magic damage\n\nThis bonus is multiplied by the Tumeken's Shadow special effect\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Magic",
+   "wikiIcon": "FA"
+  },
+  {
+   "id": "L4",
+   "bit": 103,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 7,
+   "dbrow": 15507,
+   "debugName": "node129",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": 3,
+   "spriteId": 7577,
+   "drawCoord": [
+    -300,
+    -500
+   ],
+   "wikiCoord": [
+    -1569.443,
+    -2488.145
+   ],
+   "links": [
+    "ID"
+   ],
+   "effects": [
+    {
+     "effect": 41,
+     "value": 12,
+     "varbit": "talent_earth_scale_defence_stat"
+    }
+   ],
+   "cacheText": "Earth spells deal additional flat damage based on your current Defence level (+1 damage per 12 Defence levels).",
+   "wikiText": "Earth spells deal additional flat damage based on your current Defence level (+1 damage per 12 Defence levels)",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L4"
+  },
+  {
+   "id": "L8",
+   "bit": 104,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 8,
+   "dbrow": 15508,
+   "debugName": "node131",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7580,
+   "drawCoord": [
+    -288,
+    -412
+   ],
+   "wikiCoord": [
+    -1417.18,
+    -2025.044
+   ],
+   "links": [
+    "ID"
+   ],
+   "effects": [
+    {
+     "effect": 48,
+     "value": 1,
+     "varbit": "talent_shadow_counts_as_earth"
+    }
+   ],
+   "cacheText": "Shadow spells, now count as 'earth' spells.",
+   "wikiText": "Shadow spells, now count as 'earth' spells",
+   "wikiStyle": "Magic",
+   "wikiIcon": "L8"
+  },
+  {
+   "id": "F8",
+   "bit": 105,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 9,
+   "dbrow": 15509,
+   "debugName": "node133",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7573,
+   "drawCoord": [
+    -238,
+    -212
+   ],
+   "wikiCoord": [
+    -1297.381,
+    -1143.586
+   ],
+   "links": [
+    "FB",
+    "FC"
+   ],
+   "effects": [
+    {
+     "effect": 81,
+     "value": 3,
+     "varbit": "talent_magic_attack_speed_powered"
+    }
+   ],
+   "cacheText": "Attack rate with powered staves is sped up by 3 ticks.\nAll one handed powered staves have their max hit reduced by 8\n\nThis cannot reduce attack rate below 1 tick (0.6s).",
+   "wikiText": "Attack rate with powered staves is sped up by 3 ticks\nAll one handed powered staves have their max hit reduced by 8\n\nThis cannot reduce attack rate below 1 tick (0.6s)",
+   "wikiStyle": "Magic",
+   "wikiIcon": "F8"
+  },
+  {
+   "id": "I7",
+   "bit": 106,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 10,
+   "dbrow": 15510,
+   "debugName": "node134",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    -100,
+    -500
+   ],
+   "wikiCoord": [
+    -431.712,
+    -2395.429
+   ],
+   "links": [
+    "I4",
+    "J7"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "J8",
+   "bit": 107,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 11,
+   "dbrow": 15511,
+   "debugName": "node135",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": null,
+   "spriteId": 1358,
+   "drawCoord": [
+    0,
+    -400
+   ],
+   "wikiCoord": [
+    -66.145,
+    -2024.976
+   ],
+   "links": [
+    "J7",
+    "J9"
+   ],
+   "effects": [
+    {
+     "effect": 75,
+     "value": 1,
+     "varbit": "talent_shield_block_heal"
+    }
+   ],
+   "cacheText": "Whenever an attack deals 0 damage to you while either a two-handed shield or an off-hand is equipped, you're healed for 2 and restore 2 prayer points.",
+   "wikiText": "Whenever an attack deals 0 damage to you while either a two-handed shield or an off-hand is equipped, you're healed for 2 and restore 2 prayer points",
+   "wikiStyle": "Varied",
+   "wikiIcon": "J8"
+  },
+  {
+   "id": "J7",
+   "bit": 108,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 12,
+   "dbrow": 15512,
+   "debugName": "node136",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    100,
+    -500
+   ],
+   "wikiCoord": [
+    369.755,
+    -2395.429
+   ],
+   "links": [
+    "I7",
+    "J1",
+    "J8"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "J1",
+   "bit": 109,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 13,
+   "dbrow": 15513,
+   "debugName": "node139",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 760,
+   "drawCoord": [
+    200,
+    -400
+   ],
+   "wikiCoord": [
+    1085.361,
+    -2045.716
+   ],
+   "links": [
+    "GA",
+    "J7",
+    "JA"
+   ],
+   "effects": [
+    {
+     "effect": 64,
+     "value": 1,
+     "varbit": "talent_defence_recoil_scaling"
+    }
+   ],
+   "cacheText": "All recoil & Thorns style effects deal additional damage equal to 1% of your total defence bonuses.",
+   "wikiText": "All recoil & Thorns style effects deal additional damage equal to 1% of your total defence bonuses",
+   "wikiStyle": "Varied",
+   "wikiIcon": "J1"
+  },
+  {
+   "id": "JA",
+   "bit": 110,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 14,
+   "dbrow": 15514,
+   "debugName": "node140",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    250,
+    -450
+   ],
+   "wikiCoord": [
+    1387.271,
+    -2346.821
+   ],
+   "links": [
+    "J1",
+    "M1"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "M1",
+   "bit": 111,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 15,
+   "dbrow": 15515,
+   "debugName": "node141",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 3,
+   "spriteId": 760,
+   "drawCoord": [
+    300,
+    -500
+   ],
+   "wikiCoord": [
+    1620.98,
+    -2580.074
+   ],
+   "links": [
+    "JA"
+   ],
+   "effects": [
+    {
+     "effect": 84,
+     "value": 1,
+     "varbit": "talent_thorns_double_hit"
+    }
+   ],
+   "cacheText": "When the Thorns effect triggers, it will always hit twice, dealing 50% of its damage in the second hit.",
+   "wikiText": "When the Thorns effect triggers, it will always hit twice, dealing 50% of its damage in the second hit.",
+   "wikiStyle": "Varied",
+   "wikiIcon": "M1"
+  },
+  {
+   "id": "J2",
+   "bit": 112,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 16,
+   "dbrow": 15516,
+   "debugName": "node142",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 3386,
+   "drawCoord": [
+    275,
+    -325
+   ],
+   "wikiCoord": [
+    1470.514,
+    -1719.396
+   ],
+   "links": [
+    "GB",
+    "JB"
+   ],
+   "effects": [
+    {
+     "effect": 65,
+     "value": 1,
+     "varbit": "talent_light_weapon_faster"
+    }
+   ],
+   "cacheText": "Melee weapons under 1kg attack 1 tick (0.6s) faster.",
+   "wikiText": "Melee weapons under 1kg attack 1 tick (0.6s) faster",
+   "wikiStyle": "Melee",
+   "wikiIcon": "J2"
+  },
+  {
+   "id": "JB",
+   "bit": 113,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 17,
+   "dbrow": 15517,
+   "debugName": "node143",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    325,
+    -375
+   ],
+   "wikiCoord": [
+    1777.931,
+    -2027.457
+   ],
+   "links": [
+    "J2",
+    "M2"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "M2",
+   "bit": 114,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 18,
+   "dbrow": 15518,
+   "debugName": "node144",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 3,
+   "spriteId": 1359,
+   "drawCoord": [
+    375,
+    -425
+   ],
+   "wikiCoord": [
+    2012.299,
+    -2263.964
+   ],
+   "links": [
+    "JB"
+   ],
+   "effects": [
+    {
+     "effect": 66,
+     "value": 2,
+     "varbit": "talent_hit_restore_spec_energy"
+    }
+   ],
+   "cacheText": "Whenever you deal damage with a melee weapon, you restore 2% special attack energy per hit.",
+   "wikiText": "Whenever you deal damage with a melee weapon, you restore 2% special attack energy per hit",
+   "wikiStyle": "Melee",
+   "wikiIcon": "M2"
+  },
+  {
+   "id": "GA",
+   "bit": 115,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 19,
+   "dbrow": 15519,
+   "debugName": "node145",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    150,
+    -350
+   ],
+   "wikiCoord": [
+    841.779,
+    -1803.165
+   ],
+   "links": [
+    "G1",
+    "G5",
+    "J1"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "G5",
+   "bit": 116,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 20,
+   "dbrow": 15520,
+   "debugName": "node146",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7546,
+   "drawCoord": [
+    163,
+    -287
+   ],
+   "wikiCoord": [
+    957.939,
+    -1553.898
+   ],
+   "links": [
+    "G6",
+    "GA"
+   ],
+   "effects": [
+    {
+     "effect": 26,
+     "value": 10,
+     "varbit": "talent_melee_distance_healing_chance"
+    }
+   ],
+   "cacheText": "Attacking with a melee weapon or Thorns has a +10% chance to heal you based off your distance between you and your target (1 tile = 1 health).",
+   "wikiText": "Attacking with a melee weapon or Thorns has a +10% chance to heal you based off your distance between you and your target (1 tile = 1 health)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "G10"
+  },
+  {
+   "id": "J3",
+   "bit": 117,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 21,
+   "dbrow": 15521,
+   "debugName": "node150",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7543,
+   "drawCoord": [
+    350,
+    -250
+   ],
+   "wikiCoord": [
+    1912.48,
+    -1323.041
+   ],
+   "links": [
+    "GC",
+    "JC"
+   ],
+   "effects": [
+    {
+     "effect": 72,
+     "value": 1,
+     "varbit": "talent_unique_blindbag_chance"
+    }
+   ],
+   "cacheText": "For each unique heavy melee weapon (>=1kg) in your inventory, your chance of a Blindbag trigger is increased by 2% up to a maximum of 10% (5 weapons).",
+   "wikiText": "For each unique heavy melee weapon (>=1kg) in your inventory, your chance of a Blindbag trigger is increased by 2% up to a maximum of 10% (5 weapons)",
+   "wikiStyle": "Melee",
+   "wikiIcon": "J3"
+  },
+  {
+   "id": "JC",
+   "bit": 118,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 22,
+   "dbrow": 15522,
+   "debugName": "node151",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    400,
+    -300
+   ],
+   "wikiCoord": [
+    2205.574,
+    -1635.905
+   ],
+   "links": [
+    "J3",
+    "M3"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "M3",
+   "bit": 119,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 23,
+   "dbrow": 15523,
+   "debugName": "node152",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 3,
+   "spriteId": 7543,
+   "drawCoord": [
+    450,
+    -350
+   ],
+   "wikiCoord": [
+    2453.917,
+    -1893.819
+   ],
+   "links": [
+    "JC"
+   ],
+   "effects": [
+    {
+     "effect": 68,
+     "value": 2,
+     "varbit": "talent_unique_blindbag_damage"
+    }
+   ],
+   "cacheText": "For each unique heavy melee weapon (>=1kg) in your inventory, the max hit of your Blindbag attacks is increased by 2% up to a maximum of 10% (5 weapons).",
+   "wikiText": "For each unique heavy melee weapon (>=1kg) in your inventory, the max hit of your Blindbag attacks is increased by 2% up to a maximum of 10% (5 weapons)",
+   "wikiStyle": "Melee",
+   "wikiIcon": "M3"
+  },
+  {
+   "id": "J4",
+   "bit": 120,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 24,
+   "dbrow": 15524,
+   "debugName": "node153",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 4237,
+   "drawCoord": [
+    425,
+    -175
+   ],
+   "wikiCoord": [
+    2317.584,
+    -973.219
+   ],
+   "links": [
+    "GD",
+    "J5",
+    "JD"
+   ],
+   "effects": [
+    {
+     "effect": 70,
+     "value": 4,
+     "varbit": "talent_percentage_melee_maxhit_distance"
+    }
+   ],
+   "cacheText": "Your maximum hit when attacking with a melee weapon is increased by 4% and an additional #% for every 3 tiles of distance between you and your target.",
+   "wikiText": "Your maximum hit when attacking with a melee weapon is increased by 4% and an additional 4% for every 3 tiles of distance between you and your target",
+   "wikiStyle": "Melee",
+   "wikiIcon": "J4"
+  },
+  {
+   "id": "JD",
+   "bit": 121,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 25,
+   "dbrow": 15525,
+   "debugName": "node154",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    475,
+    -225
+   ],
+   "wikiCoord": [
+    2603.968,
+    -1279.796
+   ],
+   "links": [
+    "J4",
+    "M4"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "M4",
+   "bit": 122,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 26,
+   "dbrow": 15526,
+   "debugName": "node155",
+   "size": "lg",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 3,
+   "spriteId": 7539,
+   "drawCoord": [
+    525,
+    -275
+   ],
+   "wikiCoord": [
+    2833.136,
+    -1526.149
+   ],
+   "links": [
+    "JD"
+   ],
+   "effects": [
+    {
+     "effect": 69,
+     "value": 1,
+     "varbit": "talent_melee_range_conditional_boost"
+    }
+   ],
+   "cacheText": "If your melee attack range is at least 4, it is increased to 7\n\nAll halberds slower than 5 ticks have their attack rate set to 5 ticks (3.0s).",
+   "wikiText": "If your melee attack range is at least 4, it is increased to 7\nAll halberds slower than 5 ticks have their attack rate set to 5 ticks (3.0s)",
+   "wikiStyle": "Melee",
+   "wikiIcon": "M4"
+  },
+  {
+   "id": "GD",
+   "bit": 123,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 27,
+   "dbrow": 15527,
+   "debugName": "node156",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    375,
+    -125
+   ],
+   "wikiCoord": [
+    2039.778,
+    -662.965
+   ],
+   "links": [
+    "G10",
+    "G4",
+    "J4"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "G9",
+   "bit": 124,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 28,
+   "dbrow": 15528,
+   "debugName": "node157",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 7551,
+   "drawCoord": [
+    312,
+    -137
+   ],
+   "wikiCoord": [
+    1743.192,
+    -771.41
+   ],
+   "links": [
+    "G10",
+    "GC"
+   ],
+   "effects": [
+    {
+     "effect": 71,
+     "value": 1,
+     "varbit": "talent_2h_melee_echos"
+    }
+   ],
+   "cacheText": "When hitting a target with a two handed melee weapon, you have a 5% chance to trigger a Ranged echo as if you have a bow, crossbow and thrown weapon equipped.\n\nRanged echo: An additional ranged attack which rolls with your melee stats instead of ranged. Echo attacks cannot trigger additional echo attacks and will not trigger on special attacks.",
+   "wikiText": "When hitting a target with a two handed melee weapon, you have a 5% chance to trigger a Ranged echo as if you have a bow, crossbow and thrown weapon equipped",
+   "wikiStyle": "Melee",
+   "wikiIcon": "G9"
+  },
+  {
+   "id": "GC",
+   "bit": 125,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 29,
+   "dbrow": 15529,
+   "debugName": "node161",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    300,
+    -200
+   ],
+   "wikiCoord": [
+    1652.454,
+    -1063.934
+   ],
+   "links": [
+    "G3",
+    "G8",
+    "G9",
+    "J3"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "G7",
+   "bit": 126,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 30,
+   "dbrow": 15530,
+   "debugName": "node162",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 2927,
+   "drawCoord": [
+    238,
+    -212
+   ],
+   "wikiCoord": [
+    1336.084,
+    -1169.935
+   ],
+   "links": [
+    "G8",
+    "GB"
+   ],
+   "effects": [
+    {
+     "effect": 73,
+     "value": 1,
+     "varbit": "talent_melee_strength_prayer_bonus"
+    }
+   ],
+   "cacheText": "Melee strength is increased by 50% of your worn prayer bonus.",
+   "wikiText": "Melee strength is increased by 50% of your worn prayer bonus",
+   "wikiStyle": "Melee",
+   "wikiIcon": "G7"
+  },
+  {
+   "id": "GB",
+   "bit": 127,
+   "varp": "combat_mastery_perm_3",
+   "bitInVarp": 31,
+   "dbrow": 15531,
+   "debugName": "node163",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": 2,
+   "spriteId": 4237,
+   "drawCoord": [
+    225,
+    -275
+   ],
+   "wikiCoord": [
+    1230.548,
+    -1444.516
+   ],
+   "links": [
+    "G2",
+    "G6",
+    "G7",
+    "J2"
+   ],
+   "effects": [
+    {
+     "effect": 14,
+     "value": 1,
+     "varbit": "talent_percentage_melee_damage"
+    }
+   ],
+   "cacheText": "+1% Melee damage.\n\n+10% accuracy in all combat styles.",
+   "wikiText": "+1% Melee damage\n\n+10% accuracy in all combat styles",
+   "wikiStyle": "Melee",
+   "wikiIcon": "GA"
+  },
+  {
+   "id": "J5",
+   "bit": 128,
+   "varp": "combat_mastery_perm_4",
+   "bitInVarp": 0,
+   "dbrow": 15532,
+   "debugName": "node164",
+   "size": "sm",
+   "kind": "branch",
+   "nodeType": null,
+   "nodeSize": 2,
+   "spriteId": 2927,
+   "drawCoord": [
+    425,
+    87
+   ],
+   "wikiCoord": [
+    2309.281,
+    696.565
+   ],
+   "links": [
+    "J4",
+    "J6",
+    "K7"
+   ],
+   "effects": [
+    {
+     "effect": 40,
+     "value": 25,
+     "varbit": "talent_prayer_pen_all"
+    }
+   ],
+   "cacheText": "All attacks have +25% Prayer penetration (up to 100%).",
+   "wikiText": "All attacks have +25% Prayer penetration (up to 100%)",
+   "wikiStyle": "Varied",
+   "wikiIcon": "H10"
+  },
+  {
+   "id": "G8",
+   "bit": 129,
+   "varp": "combat_mastery_perm_4",
+   "bitInVarp": 1,
+   "dbrow": 15533,
+   "debugName": "node165",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 3,
+   "nodeSize": null,
+   "spriteId": 1645,
+   "drawCoord": [
+    288,
+    -262
+   ],
+   "wikiCoord": [
+    1571.676,
+    -1410.497
+   ],
+   "links": [
+    "G7",
+    "GC"
+   ],
+   "effects": [
+    {
+     "effect": 67,
+     "value": 1,
+     "varbit": "talent_overheal_consumption_boost"
+    }
+   ],
+   "cacheText": "Attacks with a melee weapon can consume 5 overhealed hitpoints (if available), increasing your minimum hit on that attack by 5.",
+   "wikiText": "Attacks with a melee weapon can consume 5 overhealed hitpoints (if available), increasing your minimum hit on that attack by 5",
+   "wikiStyle": "Melee",
+   "wikiIcon": "G8"
+  },
+  {
+   "id": "F6",
+   "bit": 130,
+   "varp": "combat_mastery_perm_4",
+   "bitInVarp": 2,
+   "dbrow": 15534,
+   "debugName": "node166",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7571,
+   "drawCoord": [
+    -363,
+    -187
+   ],
+   "wikiCoord": [
+    -1914.944,
+    -997.008
+   ],
+   "links": [
+    "F5",
+    "FA"
+   ],
+   "effects": [
+    {
+     "effect": 79,
+     "value": 1,
+     "varbit": "talent_regen_stave_charges_air"
+    }
+   ],
+   "cacheText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 air rune.",
+   "wikiText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 air rune",
+   "wikiStyle": "Magic",
+   "wikiIcon": "F6"
+  },
+  {
+   "id": "F9",
+   "bit": 131,
+   "varp": "combat_mastery_perm_4",
+   "bitInVarp": 3,
+   "dbrow": 15535,
+   "debugName": "node167",
+   "size": "md",
+   "kind": "branch",
+   "nodeType": 5,
+   "nodeSize": null,
+   "spriteId": 7571,
+   "drawCoord": [
+    -163,
+    -287
+   ],
+   "wikiCoord": [
+    -911.205,
+    -1517.054
+   ],
+   "links": [
+    "F10",
+    "FD"
+   ],
+   "effects": [
+    {
+     "effect": 80,
+     "value": 1,
+     "varbit": "talent_regen_stave_charges_earth"
+    }
+   ],
+   "cacheText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 earth rune.",
+   "wikiText": "Whenever you Regenerate charges from a powered staff or wand, also Regenerate 1 earth rune",
+   "wikiStyle": "Magic",
+   "wikiIcon": "F9"
+  }
+ ],
+ "edges": [
+  [
+   "AA",
+   "B1"
+  ],
+  [
+   "AA",
+   "B2"
+  ],
+  [
+   "AA",
+   "B3"
+  ],
+  [
+   "AA",
+   "BA"
+  ],
+  [
+   "AA",
+   "BB"
+  ],
+  [
+   "AA",
+   "BC"
+  ],
+  [
+   "B1",
+   "C1"
+  ],
+  [
+   "B1",
+   "C2"
+  ],
+  [
+   "B1",
+   "C3"
+  ],
+  [
+   "B1",
+   "C4"
+  ],
+  [
+   "B2",
+   "E1"
+  ],
+  [
+   "B2",
+   "E2"
+  ],
+  [
+   "B2",
+   "E3"
+  ],
+  [
+   "B3",
+   "D1"
+  ],
+  [
+   "B3",
+   "D2"
+  ],
+  [
+   "B3",
+   "D3"
+  ],
+  [
+   "B3",
+   "D4"
+  ],
+  [
+   "BA",
+   "F12"
+  ],
+  [
+   "BA",
+   "G11"
+  ],
+  [
+   "BB",
+   "F11"
+  ],
+  [
+   "BB",
+   "H5"
+  ],
+  [
+   "BC",
+   "G12"
+  ],
+  [
+   "BC",
+   "H8"
+  ],
+  [
+   "C1",
+   "CA"
+  ],
+  [
+   "C2",
+   "CB"
+  ],
+  [
+   "C3",
+   "CB"
+  ],
+  [
+   "C4",
+   "CC"
+  ],
+  [
+   "CA",
+   "F1"
+  ],
+  [
+   "CA",
+   "F2"
+  ],
+  [
+   "CB",
+   "F2"
+  ],
+  [
+   "CB",
+   "F3"
+  ],
+  [
+   "CC",
+   "F3"
+  ],
+  [
+   "CC",
+   "F4"
+  ],
+  [
+   "D1",
+   "DA"
+  ],
+  [
+   "D2",
+   "DB"
+  ],
+  [
+   "D3",
+   "DB"
+  ],
+  [
+   "D4",
+   "DC"
+  ],
+  [
+   "DA",
+   "G1"
+  ],
+  [
+   "DA",
+   "G2"
+  ],
+  [
+   "DB",
+   "G2"
+  ],
+  [
+   "DB",
+   "G3"
+  ],
+  [
+   "DC",
+   "G3"
+  ],
+  [
+   "DC",
+   "G4"
+  ],
+  [
+   "E1",
+   "EA"
+  ],
+  [
+   "E2",
+   "EB"
+  ],
+  [
+   "E3",
+   "EC"
+  ],
+  [
+   "EA",
+   "H1"
+  ],
+  [
+   "EA",
+   "H2"
+  ],
+  [
+   "EA",
+   "H5"
+  ],
+  [
+   "EB",
+   "H2"
+  ],
+  [
+   "EB",
+   "H3"
+  ],
+  [
+   "EC",
+   "H3"
+  ],
+  [
+   "EC",
+   "H4"
+  ],
+  [
+   "EC",
+   "H8"
+  ],
+  [
+   "F1",
+   "F11"
+  ],
+  [
+   "F1",
+   "FA"
+  ],
+  [
+   "F10",
+   "F9"
+  ],
+  [
+   "F10",
+   "FC"
+  ],
+  [
+   "F12",
+   "F13"
+  ],
+  [
+   "F12",
+   "F4"
+  ],
+  [
+   "F13",
+   "J9"
+  ],
+  [
+   "F2",
+   "FB"
+  ],
+  [
+   "F3",
+   "FC"
+  ],
+  [
+   "F4",
+   "FD"
+  ],
+  [
+   "F5",
+   "F6"
+  ],
+  [
+   "F5",
+   "FB"
+  ],
+  [
+   "F6",
+   "FA"
+  ],
+  [
+   "F7",
+   "FB"
+  ],
+  [
+   "F7",
+   "FC"
+  ],
+  [
+   "F8",
+   "FB"
+  ],
+  [
+   "F8",
+   "FC"
+  ],
+  [
+   "F9",
+   "FD"
+  ],
+  [
+   "FA",
+   "I1"
+  ],
+  [
+   "FB",
+   "I2"
+  ],
+  [
+   "FC",
+   "I3"
+  ],
+  [
+   "FD",
+   "I4"
+  ],
+  [
+   "G1",
+   "G11"
+  ],
+  [
+   "G1",
+   "GA"
+  ],
+  [
+   "G10",
+   "G9"
+  ],
+  [
+   "G10",
+   "GD"
+  ],
+  [
+   "G12",
+   "G4"
+  ],
+  [
+   "G2",
+   "GB"
+  ],
+  [
+   "G3",
+   "GC"
+  ],
+  [
+   "G4",
+   "GD"
+  ],
+  [
+   "G5",
+   "G6"
+  ],
+  [
+   "G5",
+   "GA"
+  ],
+  [
+   "G6",
+   "GB"
+  ],
+  [
+   "G7",
+   "G8"
+  ],
+  [
+   "G7",
+   "GB"
+  ],
+  [
+   "G8",
+   "GC"
+  ],
+  [
+   "G9",
+   "GC"
+  ],
+  [
+   "GA",
+   "J1"
+  ],
+  [
+   "GB",
+   "J2"
+  ],
+  [
+   "GC",
+   "J3"
+  ],
+  [
+   "GD",
+   "J4"
+  ],
+  [
+   "H1",
+   "HA"
+  ],
+  [
+   "H10",
+   "H9"
+  ],
+  [
+   "H10",
+   "J6"
+  ],
+  [
+   "H2",
+   "HB"
+  ],
+  [
+   "H3",
+   "HC"
+  ],
+  [
+   "H4",
+   "HD"
+  ],
+  [
+   "H5",
+   "H6"
+  ],
+  [
+   "H6",
+   "H7"
+  ],
+  [
+   "H7",
+   "I6"
+  ],
+  [
+   "H8",
+   "H9"
+  ],
+  [
+   "HA",
+   "K1"
+  ],
+  [
+   "HA",
+   "K4"
+  ],
+  [
+   "HB",
+   "K1"
+  ],
+  [
+   "HB",
+   "K2"
+  ],
+  [
+   "HB",
+   "K8"
+  ],
+  [
+   "HC",
+   "K2"
+  ],
+  [
+   "HC",
+   "K3"
+  ],
+  [
+   "HC",
+   "K8"
+  ],
+  [
+   "HD",
+   "K3"
+  ],
+  [
+   "HD",
+   "K6"
+  ],
+  [
+   "I1",
+   "I5"
+  ],
+  [
+   "I1",
+   "IA"
+  ],
+  [
+   "I2",
+   "IB"
+  ],
+  [
+   "I3",
+   "IC"
+  ],
+  [
+   "I4",
+   "I7"
+  ],
+  [
+   "I4",
+   "ID"
+  ],
+  [
+   "I5",
+   "I6"
+  ],
+  [
+   "I5",
+   "K5"
+  ],
+  [
+   "I7",
+   "J7"
+  ],
+  [
+   "IA",
+   "L1"
+  ],
+  [
+   "IA",
+   "L5"
+  ],
+  [
+   "IB",
+   "L2"
+  ],
+  [
+   "IB",
+   "L6"
+  ],
+  [
+   "IC",
+   "L3"
+  ],
+  [
+   "IC",
+   "L7"
+  ],
+  [
+   "ID",
+   "L4"
+  ],
+  [
+   "ID",
+   "L8"
+  ],
+  [
+   "J1",
+   "J7"
+  ],
+  [
+   "J1",
+   "JA"
+  ],
+  [
+   "J2",
+   "JB"
+  ],
+  [
+   "J3",
+   "JC"
+  ],
+  [
+   "J4",
+   "J5"
+  ],
+  [
+   "J4",
+   "JD"
+  ],
+  [
+   "J5",
+   "J6"
+  ],
+  [
+   "J5",
+   "K7"
+  ],
+  [
+   "J7",
+   "J8"
+  ],
+  [
+   "J8",
+   "J9"
+  ],
+  [
+   "JA",
+   "M1"
+  ],
+  [
+   "JB",
+   "M2"
+  ],
+  [
+   "JC",
+   "M3"
+  ],
+  [
+   "JD",
+   "M4"
+  ],
+  [
+   "K10",
+   "KB"
+  ],
+  [
+   "K10",
+   "KC"
+  ],
+  [
+   "K4",
+   "K5"
+  ],
+  [
+   "K4",
+   "KA"
+  ],
+  [
+   "K6",
+   "K7"
+  ],
+  [
+   "K6",
+   "KC"
+  ],
+  [
+   "K8",
+   "KB"
+  ],
+  [
+   "K9",
+   "KA"
+  ],
+  [
+   "K9",
+   "KB"
+  ],
+  [
+   "KA",
+   "N1"
+  ],
+  [
+   "KB",
+   "N2"
+  ],
+  [
+   "KC",
+   "N3"
+  ],
+  [
+   "N1",
+   "N4"
+  ],
+  [
+   "N1",
+   "N5"
+  ],
+  [
+   "N2",
+   "N6"
+  ],
+  [
+   "N2",
+   "N7"
+  ],
+  [
+   "N3",
+   "N8"
+  ],
+  [
+   "N3",
+   "N9"
+  ]
+ ],
+ "effectVarbits": {
+  "1": "talent_regen_ammo_chance",
+  "2": "talent_ammo_regen_magic_accuracy",
+  "3": "talent_airrune_regen_prayer_restore",
+  "4": "talent_waterrune_regen_healing",
+  "5": "talent_firerune_regen_damage_boost",
+  "6": "talent_earthrune_regen_defence_boost",
+  "7": "talent_percentage_magic_damage",
+  "8": "talent_crossbow_echo_reproc_chance",
+  "9": "talent_bow_echo_pass_accuracy",
+  "10": "talent_thrown_maxhit_echoes",
+  "11": "talent_ranged_regen_echo_chance",
+  "12": "talent_all_style_accuracy",
+  "13": "talent_defence_boost",
+  "14": "talent_percentage_melee_damage",
+  "15": "talent_percentage_ranged_damage",
+  "16": "talent_offhand_stat_boost",
+  "17": "talent_thrown_weapon_melee_str_scale",
+  "18": "talent_overhealing_via_talents",
+  "19": "talent_thorns_damage",
+  "20": "talent_melee_range_multiplier",
+  "21": "talent_poison_chance_from_ranged",
+  "22": "talent_recoil_heal",
+  "23": "talent_shield_reflect",
+  "24": "talent_spec_for_free",
+  "25": "talent_distance_melee_minhit",
+  "26": "talent_melee_distance_healing_chance",
+  "27": "talent_damage_reduction",
+  "28": "talent_air_spell_damage_high_hp",
+  "29": "talent_water_spell_damage_high_hp",
+  "30": "talent_air_spell_max_hit_prayer_bonus",
+  "31": "talent_water_spell_bouce_heal",
+  "32": "talent_fire_hp_consume_for_damage",
+  "33": "talent_fire_spell_burn_bounce",
+  "34": "talent_magic_attack_speed_traditional",
+  "35": "talent_regen_stave_charges_water",
+  "36": "talent_regen_stave_charges_fire",
+  "37": "talent_prayer_pen_melee",
+  "38": "talent_prayer_pen_ranged",
+  "39": "talent_prayer_pen_magic",
+  "40": "talent_prayer_pen_all",
+  "41": "talent_earth_scale_defence_stat",
+  "42": "talent_earth_reduce_defence",
+  "43": "talent_light_weapon_doublehit",
+  "44": "talent_free_random_weapon_attack_chance",
+  "45": "talent_smoke_counts_as_air",
+  "46": "talent_ice_counts_as_water",
+  "47": "talent_blood_counts_as_fire",
+  "48": "talent_shadow_counts_as_earth",
+  "49": "talent_ranged_strength_hp_difference",
+  "50": "talent_crossbow_slow_big_hits",
+  "51": "talent_crossbow_max_hit",
+  "52": "talent_ranged_echo_cyclical",
+  "53": "talent_bow_fast_hits",
+  "54": "talent_enchanted_bolts_random_effect",
+  "55": "talent_thrown_weapon_accuracy",
+  "56": "talent_thrown_weapon_multi",
+  "57": "talent_max_accuracy_roll_from_range",
+  "58": "talent_buffed_ranged_prayers",
+  "59": "talent_bow_min_hit_stacking_increase",
+  "60": "talent_bow_max_hit_stacking_increase",
+  "61": "talent_prayer_restore_no_overhead",
+  "62": "talent_restore_sa_energy_from_distance",
+  "63": "talent_heal_stood_still",
+  "64": "talent_defence_recoil_scaling",
+  "65": "talent_light_weapon_faster",
+  "66": "talent_hit_restore_spec_energy",
+  "67": "talent_overheal_consumption_boost",
+  "68": "talent_unique_blindbag_damage",
+  "69": "talent_melee_range_conditional_boost",
+  "70": "talent_percentage_melee_maxhit_distance",
+  "71": "talent_2h_melee_echos",
+  "72": "talent_unique_blindbag_chance",
+  "73": "talent_melee_strength_prayer_bonus",
+  "74": "talent_hit_autovenge_chance",
+  "75": "talent_shield_block_heal",
+  "76": "talent_max_hit_style_swap",
+  "77": "talent_multi_hit_str_increase",
+  "78": "talent_regen_magic_level_boost",
+  "79": "talent_regen_stave_charges_air",
+  "80": "talent_regen_stave_charges_earth",
+  "81": "talent_magic_attack_speed_powered",
+  "82": "talent_crossbow_double_accuracy_roll",
+  "83": "talent_air_spell_damage_active_prayers",
+  "84": "talent_thorns_double_hit"
+ }
+}
