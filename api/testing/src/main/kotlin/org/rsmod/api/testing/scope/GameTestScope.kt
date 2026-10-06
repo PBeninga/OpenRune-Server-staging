@@ -13,12 +13,17 @@ import dev.openrune.types.ObjectServerType
 import dev.openrune.types.StatType
 import dev.openrune.types.aconverted.interf.IfButtonOp
 import dev.openrune.types.aconverted.interf.IfSubType
+import io.netty.buffer.Unpooled
 import jakarta.inject.Inject
 import java.util.IdentityHashMap
 import kotlin.contracts.contract
 import kotlin.reflect.KClass
+import net.rsprot.buffer.extensions.pSmart1or2
+import net.rsprot.buffer.extensions.pVarInt2s
+import net.rsprot.buffer.extensions.pjstr
 import net.rsprot.protocol.game.incoming.buttons.If3Button
 import net.rsprot.protocol.game.incoming.buttons.IfButtonD
+import net.rsprot.protocol.game.incoming.buttons.IfScriptTrigger
 import net.rsprot.protocol.game.incoming.locs.OpLocV2
 import net.rsprot.protocol.game.incoming.misc.user.MoveGameClick
 import net.rsprot.protocol.game.incoming.npcs.OpNpcV2
@@ -32,6 +37,7 @@ import org.rsmod.api.game.process.GameCycle
 import org.rsmod.api.inv.map.InvMapInit
 import org.rsmod.api.net.rsprot.handlers.If3ButtonHandler
 import org.rsmod.api.net.rsprot.handlers.IfButtonDHandler
+import org.rsmod.api.net.rsprot.handlers.IfScriptTriggerHandler
 import org.rsmod.api.net.rsprot.handlers.MoveGameClickHandler
 import org.rsmod.api.net.rsprot.handlers.OpLocHandler
 import org.rsmod.api.net.rsprot.handlers.OpNpcHandler
@@ -130,6 +136,7 @@ constructor(
     private val protectedAccess: ProtectedAccessLauncher,
     private val ifButtonHandler: If3ButtonHandler,
     private val ifButtonDHandler: IfButtonDHandler,
+    private val ifScriptTriggerHandler: IfScriptTriggerHandler,
     private val gameClickHandler: MoveGameClickHandler,
     private val resumePCountDialog: ResumePCountDialogHandler,
     private val resumePauseButtonHandler: ResumePauseButtonHandler,
@@ -432,6 +439,38 @@ constructor(
             intoComsub = intoComsub,
             intoObj = intoObj,
         )
+    }
+
+    /**
+     * Sends `if_runscript` on [component] (`"component.x:y"`) with [args] encoded as the client
+     * does: `Int`, `String`, `IntArray` or `Array<String>`. The server decodes them with the types
+     * registered for [component] (`onIfScriptTrigger`), as it does for a real client.
+     */
+    public fun Player.ifScriptTrigger(
+        component: String,
+        vararg args: Any,
+        comsub: Int = -1,
+        crc: Int = 0,
+    ) {
+        val buffer = Unpooled.buffer()
+        for (arg in args) {
+            when (arg) {
+                is Int -> buffer.pVarInt2s(arg)
+                is String -> buffer.pjstr(arg)
+                is IntArray -> {
+                    buffer.pSmart1or2(arg.size)
+                    arg.forEach { buffer.pVarInt2s(it) }
+                }
+                is Array<*> -> {
+                    buffer.pSmart1or2(arg.size)
+                    arg.forEach { buffer.pjstr(it as String) }
+                }
+                else -> error("Unsupported if_runscript arg: $arg")
+            }
+        }
+        val combinedId = CombinedId(component.asRSCM(RSCMType.COMPONENT))
+        val message = IfScriptTrigger(combinedId, comsub, -1, crc, buffer)
+        captureClient.queue(ifScriptTriggerHandler, message)
     }
 
     public fun Player.resumeCountDialog(count: Int) {
@@ -873,6 +912,20 @@ constructor(
         Assertions.assertFalse(player.ui.containsModal(interf)) {
             val openedModals = player.ui.modals.values.map(::UserInterface)
             "Modal is opened. (modal=$interf) | (opened=$openedModals) | (player=$player)"
+        }
+    }
+
+    /** Asserts that [interf] (`"interface.x"`) is open as an overlay. */
+    public fun assertOverlayOpen(interf: String, player: Player = this.player) {
+        Assertions.assertTrue(player.ui.containsOverlay(interf)) {
+            "Overlay not opened. (expected=$interf) | (player=$player)"
+        }
+    }
+
+    /** Asserts that [interf] (`"interface.x"`) is not open as an overlay. */
+    public fun assertOverlayNotOpen(interf: String, player: Player = this.player) {
+        Assertions.assertFalse(player.ui.containsOverlay(interf)) {
+            "Overlay is opened. (overlay=$interf) | (player=$player)"
         }
     }
 
