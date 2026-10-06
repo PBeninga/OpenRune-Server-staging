@@ -97,6 +97,7 @@ constructor(
             if (spec.fee > 0) owner.invAdd(owner.inv, "obj.coins", spec.fee)
             return Result.Failed("No instance space available, try again shortly.")
         }
+        regionRepo.protect(region)
 
         val instanceId = allocateId()
         val session =
@@ -278,6 +279,9 @@ constructor(
         if (session.occupants.isEmpty() && !session.arenaExpired) {
             resetNpcs(session, region, currentTick)
             startSession(session, currentTick)
+        }
+        if (!session.isServerOwned) {
+            regionRepo.protect(region)
         }
         return Result.Joined(session, session.enterCoord(region))
     }
@@ -631,7 +635,7 @@ constructor(
             regionToInstance.remove(regionId, session.id)
         }
         val region = regions.remove(session.id)
-        if (session.isServerOwned && region != null) {
+        if (region != null) {
             regionRepo.unprotect(region)
         }
         ownerIndex.remove(session.owner)
@@ -651,6 +655,7 @@ constructor(
         session.removeOccupant(playerId, currentTick)
         clearOccupant(player)
         publishPlayerLeave(player, session)
+        unprotectIfEmpty(session)
         if (
             session.spec.destroyWhenEmpty &&
                 !session.isServerOwned &&
@@ -663,6 +668,20 @@ constructor(
         if (session.isServerOwned && session.occupants.isEmpty() && session.state is SessionState.Grace) {
             resetServerOwned(session, currentTick)
         }
+    }
+
+    /**
+     * A player-owned region stays protected from the moment it is created or joined until its last
+     * occupant leaves. Every region allocation first frees the unprotected regions with no player
+     * in their zones, and a player teleported into a region only shows up there on the next cycle,
+     * so an unprotected new instance could be freed under the players entering it.
+     */
+    private fun unprotectIfEmpty(session: InstanceSession) {
+        if (session.isServerOwned || session.occupants.isNotEmpty()) {
+            return
+        }
+        val region = regions[session.id] ?: return
+        regionRepo.unprotect(region)
     }
 
     private fun assignOccupant(player: Player, session: InstanceSession) {
