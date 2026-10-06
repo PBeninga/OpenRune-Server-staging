@@ -9,3 +9,7 @@ talent_tree_node_order = 5942
 demonic_pacts_points_granted = 62090
 demonic_pacts_resets_granted = 62091
 demonic_pacts_resets_used = 62092
+
+# Pact effect timers (block 32050-32059, shared by the effect batches).
+[gamevals.timer]
+demonic_pacts_prayer_restore = 32059
