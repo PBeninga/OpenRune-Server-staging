@@ -1,5 +1,6 @@
 plugins {
     id("base-conventions")
+    id("integration-test-suite")
 }
 
 kotlin {
@@ -16,6 +17,7 @@ dependencies {
     implementation(projects.api.combat.combatWeapon)
     implementation(projects.api.npc)
     implementation(projects.api.player)
+    implementation(projects.api.random)
     implementation(projects.api.script)
 
     implementation(projects.api.utils.utilsVars)

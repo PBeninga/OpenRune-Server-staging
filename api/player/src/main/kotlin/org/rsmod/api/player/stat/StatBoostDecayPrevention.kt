@@ -143,7 +143,7 @@ public object StatBoostDecayPrevention {
 public fun Player.clearPositiveStatBoost(
     stat: String,
 ) {
-    if (stat(stat) > statBase(stat)) {
+    if (stat(stat) > statRestingLevel(stat)) {
         statRestore(stat)
     }
 }
