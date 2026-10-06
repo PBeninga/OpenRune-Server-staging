@@ -1,5 +1,7 @@
 package org.rsmod.api.core.module
 
+import com.google.inject.Scopes
+import com.google.inject.multibindings.OptionalBinder
 import org.rsmod.api.npc.hit.NpcDamageContributor
 import org.rsmod.api.npc.hit.modifier.NpcHitModifier
 import org.rsmod.api.npc.hit.modifier.StandardNpcHitModifier
@@ -16,7 +18,10 @@ public object EntityHitModule : ExtendedModule() {
         newSetBinding<NpcDamageContributor>()
         bindBaseInstance<NpcHitModifier>(StandardNpcHitModifier::class.java)
         bindBaseInstance<NpcHitProcessor>(StandardNpcHitProcessor::class.java)
-        bindBaseInstance<PlayerHitModifier>(StandardPlayerHitModifier::class.java)
+        OptionalBinder.newOptionalBinder(binder(), PlayerHitModifier::class.java)
+            .setDefault()
+            .to(StandardPlayerHitModifier::class.java)
+            .`in`(Scopes.SINGLETON)
         bindBaseInstance<InstantPlayerHitProcessor>(DamageOnlyPlayerHitProcessor::class.java)
     }
 }

@@ -15,6 +15,8 @@ public data class Hit(
     private val sourceUid: Int?,
     private val righthandObj: Int?,
     private val secondaryObj: Int?,
+    /** `true` for mechanic damage (see [HitBuilder.isMechanic]). */
+    public val isMechanic: Boolean = false,
 ) {
     public val damage: Int
         get() = hitmark.damage

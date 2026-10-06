@@ -28,6 +28,12 @@ public class HitBuilder(
      */
     public var penetration: Int = 0
 
+    /**
+     * `true` for mechanic damage that must stay lethal, such as raid mechanics. Damage-received
+     * effects that negate or reduce damage (dodge, damage reduction) must not apply to it.
+     */
+    public var isMechanic: Boolean = false
+
     public fun isRighthandObj(type: ItemServerType): Boolean = type.id == righthandType
 
     public fun isSecondaryObj(type: ItemServerType): Boolean = type.id == secondaryType
@@ -46,6 +52,7 @@ public class HitBuilder(
             sourceUid = sourceUid,
             righthandObj = righthandType,
             secondaryObj = secondaryType,
+            isMechanic = isMechanic,
         )
     }
 
