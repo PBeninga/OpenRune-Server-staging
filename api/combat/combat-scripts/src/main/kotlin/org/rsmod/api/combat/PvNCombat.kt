@@ -6,6 +6,7 @@ import jakarta.inject.Inject
 import org.rsmod.api.combat.commons.CombatAttack
 import org.rsmod.api.combat.manager.PlayerAttackManager
 import org.rsmod.api.combat.manager.RangedAmmoManager
+import org.rsmod.api.combat.modifiers.CombatModifierPipeline
 import org.rsmod.api.combat.player.activateMagicSpecial
 import org.rsmod.api.combat.player.activateMeleeSpecial
 import org.rsmod.api.combat.player.activateRangedSpecial
@@ -44,13 +45,17 @@ constructor(
     private val ammunition: RangedAmmoManager,
     private val spellsReg: SpellAttackRegistry,
     private val attackValidateHooks: Set<NpcAttackValidateHook>,
+    private val modifiers: CombatModifierPipeline,
 ) {
     suspend fun attack(access: ProtectedAccess, target: Npc, attack: CombatAttack.PlayerAttack) {
-        when (attack) {
-            is CombatAttack.Melee -> access.attackMelee(target, attack)
-            is CombatAttack.Ranged -> access.attackRanged(target, attack)
-            is CombatAttack.Spell -> access.attackMagicSpell(target, attack)
-            is CombatAttack.Staff -> access.attackMagicStaff(target, attack)
+        val spell = (attack as? CombatAttack.Spell)?.spell?.obj
+        modifiers.withAttack(access.player, target, attack.combatStyle(), spell) {
+            when (attack) {
+                is CombatAttack.Melee -> access.attackMelee(target, attack)
+                is CombatAttack.Ranged -> access.attackRanged(target, attack)
+                is CombatAttack.Spell -> access.attackMagicSpell(target, attack)
+                is CombatAttack.Staff -> access.attackMagicStaff(target, attack)
+            }
         }
     }
 
@@ -73,7 +78,10 @@ constructor(
         // helper function that does so) to re-engage in combat after performing the special attack.
         if (specialAttackType == SpecialAttackType.Weapon) {
             specialAttackType = SpecialAttackType.None
-            val activatedSpec = activateMeleeSpecial(npc, attack, specialsReg, specialEnergy)
+            val activatedSpec =
+                modifiers.withSpecialAttack(player) {
+                    activateMeleeSpecial(npc, attack, specialsReg, specialEnergy)
+                }
             if (activatedSpec) {
                 return
             }
@@ -123,7 +131,10 @@ constructor(
         // helper function that does so) to re-engage in combat after performing the special attack.
         if (specialAttackType == SpecialAttackType.Weapon) {
             specialAttackType = SpecialAttackType.None
-            val activatedSpec = activateRangedSpecial(npc, attack, specialsReg, specialEnergy)
+            val activatedSpec =
+                modifiers.withSpecialAttack(player) {
+                    activateRangedSpecial(npc, attack, specialsReg, specialEnergy)
+                }
             if (activatedSpec) {
                 return
             }
@@ -272,7 +283,10 @@ constructor(
         // helper function that does so) to re-engage in combat after performing the special attack.
         if (specialAttackType == SpecialAttackType.Weapon) {
             specialAttackType = SpecialAttackType.None
-            val activatedSpec = activateMagicSpecial(npc, attack, specialsReg, specialEnergy)
+            val activatedSpec =
+                modifiers.withSpecialAttack(player) {
+                    activateMagicSpecial(npc, attack, specialsReg, specialEnergy)
+                }
             if (activatedSpec) {
                 return
             }

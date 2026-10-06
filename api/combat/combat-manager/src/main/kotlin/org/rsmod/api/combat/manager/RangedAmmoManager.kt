@@ -4,6 +4,8 @@ import dev.openrune.types.ItemServerType
 import dev.openrune.util.Wearpos
 import jakarta.inject.Inject
 import org.rsmod.api.combat.commons.ranged.RangedAmmunition
+import org.rsmod.api.combat.modifiers.CombatModifierPipeline
+import org.rsmod.api.combat.modifiers.ResourceKind
 import org.rsmod.api.random.GameRandom
 import org.rsmod.api.repo.obj.ObjRepository
 import org.rsmod.events.EventBus
@@ -20,6 +22,7 @@ constructor(
     private val collision: CollisionFlagMap,
     private val worldQueues: WorldQueueList,
     private val objRepo: ObjRepository,
+    private val modifiers: CombatModifierPipeline,
 ) {
     /**
      * Validates whether the given [weapon] and [ammo] combination are usable by [player].
@@ -131,7 +134,9 @@ constructor(
         dropChance: Int,
         dropDuration: Int,
     ) {
-        val conserve = RangedAmmunition.conserveAmmo(player, random)
+        val avasConserve = RangedAmmunition.conserveAmmo(player, random)
+        val conserve =
+            avasConserve || modifiers.isRefunded(player, ResourceKind.Ammo, ammoType, ammoCount)
         if (!conserve) {
             RangedAmmunition.detractAmmo(player, ammoWearpos, ammoType, ammoCount, eventBus)
         }

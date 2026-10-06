@@ -126,5 +126,6 @@ constructor(
     private fun Npc.publishHitEvent(hit: Hit) {
         val event = NpcHitEvents.Impact(this, hit)
         eventBus.publish(event)
+        eventBus.publish(NpcHitEvents.AnyImpact(this, hit))
     }
 }

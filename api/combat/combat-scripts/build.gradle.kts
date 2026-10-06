@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.api.areaChecker)
     implementation(projects.api.combat.combatCommons)
     implementation(projects.api.combat.combatFormulas)
+    implementation(projects.api.combat.combatModifiers)
     implementation(projects.api.combat.combatManager)
     implementation(projects.api.combat.combatWeapon)
     implementation(projects.api.config)
