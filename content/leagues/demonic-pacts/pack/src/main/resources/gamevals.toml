@@ -14,3 +14,5 @@ demonic_pacts_resets_used = 62092
 [gamevals.timer]
 demonic_pacts_prayer_restore = 32059
 demonic_pacts_burn = 32058
+demonic_pacts_magic_boost = 32057
+demonic_pacts_defence_boost = 32056
