@@ -1,44 +1,75 @@
 package org.rsmod.api.testing
 
 import com.github.michaelbull.logging.InlineLogger
-import com.google.inject.AbstractModule
+import com.google.inject.Guice
 import com.google.inject.Injector
+import com.google.inject.Module
+import com.google.inject.util.Modules
+import dev.openrune.ServerCacheManager
+import dev.openrune.map.GameMapDecoder
+import dev.openrune.map.GameMapSpawnSink
+import dev.openrune.map.MapSingletons
+import dev.openrune.map.npc.MapNpcDefinition
+import dev.openrune.map.obj.MapObjDefinition
 import kotlin.jvm.optionals.getOrNull
 import kotlin.reflect.KClass
 import kotlin.time.measureTime
 import org.junit.jupiter.api.extension.ExtensionContext
-import org.rsmod.api.realm.Realm
+import org.rsmod.api.game.process.PluginScriptBootGate
 import org.rsmod.api.route.BoundValidator
 import org.rsmod.api.route.RayCastFactory
 import org.rsmod.api.route.RayCastValidator
 import org.rsmod.api.route.RouteFactory
 import org.rsmod.api.route.StepFactory
 import org.rsmod.api.testing.factory.TestCacheTypes
+import org.rsmod.api.testing.factory.collisionFactory
+import org.rsmod.api.testing.module.GameTestOverrideModule
+import org.rsmod.api.testing.module.GameTestPluginModules
 import org.rsmod.api.testing.scope.AdvancedGameTestScope
 import org.rsmod.api.testing.scope.AdvancedReadOnly
 import org.rsmod.api.testing.scope.BasicGameTestScope
 import org.rsmod.api.testing.scope.GameTestScope
-import org.rsmod.api.testing.util.TestRealmConfig
+import org.rsmod.api.testing.util.TestServerConfig
 import org.rsmod.events.EventBus
+import org.rsmod.map.CoordGrid
+import org.rsmod.plugin.module.PluginModule
 import org.rsmod.plugin.scripts.PluginScript
 import org.rsmod.plugin.scripts.ScriptContext
 import org.rsmod.routefinder.collision.CollisionFlagMap
-import org.rsmod.server.app.GameServer
+import org.rsmod.server.app.modules.GameModule
+import org.rsmod.server.app.modules.ParserModule
+import org.rsmod.server.shared.loader.PluginModuleLoader
+import org.rsmod.server.shared.loader.PluginScriptLoader
 
 public class GameTestState {
-    public val collision: CollisionFlagMap by lazy { injected.collision }
-    public val routeFactory: RouteFactory by lazy { injected.routeFactory }
-    public val rayCastFactory: RayCastFactory by lazy { injected.rayCastFactory }
-    public val stepFactory: StepFactory by lazy { injected.stepFactory }
-    public val rayCastValidator: RayCastValidator by lazy { injected.rayCastValidator }
-    public val boundValidator: BoundValidator by lazy { injected.boundValidator }
+    /** The game map's collision, as loaded from the cache. Treat it as read-only. */
+    public val collision: CollisionFlagMap
+        get() = MapSingletons.collision
 
-    /* The following declaration should be treated as read-only by tests. */
-    public val eventBus: EventBus by lazy { injected.eventBus }
+    public val routeFactory: RouteFactory by lazy { RouteFactory(collision) }
+    public val rayCastFactory: RayCastFactory by lazy { RayCastFactory(collision) }
+    public val stepFactory: StepFactory by lazy { StepFactory(collision) }
+    public val rayCastValidator: RayCastValidator by lazy { RayCastValidator(collision) }
+    public val boundValidator: BoundValidator by lazy { BoundValidator(collision) }
 
-    private lateinit var injected: GameTestInjected
-    private lateinit var readOnly: AdvancedReadOnly
+    /**
+     * The event bus of the shared world: every plugin module and plugin script on the classpath,
+     * booted once per test JVM as the server boots. Used by [runBasicGameTest].
+     *
+     * Booting it also runs every script's `startup`, which is where some scripts set process-wide
+     * state that the per-test worlds rely on (for example `InvTransactionsScript`), as in rsmod's
+     * harness.
+     *
+     * Treat it as read-only.
+     */
+    public val eventBus: EventBus by lazy { sharedWorld.getInstance(EventBus::class.java) }
 
+    private val sharedWorld: Injector by lazy { createSharedWorld() }
+    private val readOnly: AdvancedReadOnly by lazy {
+        sharedWorld.getInstance(AdvancedReadOnly::class.java)
+    }
+
+    private val serverConfig = TestServerConfig.create()
     private val logger = InlineLogger()
 
     /**
@@ -47,6 +78,10 @@ public class GameTestState {
      * If one or more [scripts] are provided, the test runs with isolated [ScriptContext]s that bind
      * events only for the specified scripts. If no scripts are provided, the test runs **without
      * any plugin-specific events**, ensuring a clean execution environment.
+     *
+     * Each test gets its own injector: the server's module graph, api plugin modules, the content
+     * plugin modules that own [scripts], and test overrides (deterministic random, test realm, no
+     * database). See [GameTestScope.Builder].
      *
      * ### Why This Matters
      * Isolating scripts prevents unintended interactions from unrelated scripts. For example,
@@ -73,26 +108,55 @@ public class GameTestState {
     /**
      * Runs a game test with optional isolated script contexts and an injected dependency.
      *
-     * This function allows for injecting a **single test-specific dependency** via an optional
-     * child module, while also providing script isolation similar to the simpler [runGameTest]. The
-     * injected dependency acts as a **wrapper** around one or more required dependencies, avoiding
-     * the need for multiple dependency parameters.
+     * This function allows for injecting a **single test-specific dependency**, while also
+     * providing script isolation similar to the simpler [runGameTest]. The injected dependency acts
+     * as a **wrapper** around one or more required dependencies, avoiding the need for multiple
+     * dependency parameters.
+     *
+     * [childModule] **overrides** the test injector's bindings (it is applied with
+     * `Modules.override`), so it can replace any binding, including ones from plugin modules such
+     * as a registry bound with `bindInstance`, and add elements to multibinder sets.
+     *
+     * **Example Usage:**
+     *
+     * ```
+     * object MeleeAccuracyTestModule : AbstractModule() {
+     *   override fun configure() {
+     *      bind(PvNMeleeAccuracy::class.java).`in`(Scopes.SINGLETON)
+     *   }
+     * }
+     * ```
+     * ```
+     * class MeleeAccuracyTestDependencies @Inject constructor(val accuracy: PvNMeleeAccuracy)
+     * ```
+     * ```
+     * runInjectedGameTest(
+     *  // Wrapper to be injected that contains sub-dependencies.
+     *  MeleeAccuracyTestDependencies::class,
+     *  // Optional module with test-specific (or overriding) bindings.
+     *  childModule = MeleeAccuracyTestModule,
+     * ) { deps -> // `deps` is the injected `MeleeAccuracyTestDependencies`.
+     *  val accuracy = deps.accuracy
+     *  val npc = npcFactory.create(...)
+     *  val hitChance = accuracy.getHitChance(player, npc, ...)
+     *  assertEquals(5000, hitChance)
+     * }
+     * ```
      *
      * @param dependency The class type of the **dependency wrapper** to be injected.
-     * @param childModule An optional [AbstractModule] that provides additional or overriding
-     *   test-specific dependency bindings. If omitted, only the parent's injector bindings are
-     *   used.
+     * @param childModule An optional [Module] that adds or overrides test-specific bindings.
      * @param scripts The [PluginScript] classes relevant to the test scope. If specified, only the
      *   events for these scripts will be loaded; otherwise, no plugin events are registered.
      * @see [GameTestScope]
      */
     public fun <T : Any> runInjectedGameTest(
         dependency: KClass<T>,
-        childModule: AbstractModule? = null,
+        childModule: Module? = null,
         vararg scripts: KClass<out PluginScript>,
         testBody: GameTestScope.(dependency: T) -> Unit,
     ) {
-        val injector = GameTestScope.Builder(this, scripts.toSet()).buildInjector(childModule)
+        val overrides = listOfNotNull(childModule)
+        val injector = GameTestScope.Builder(this, scripts.toSet()).buildInjector(overrides)
         val scope = injector.getInstance(GameTestScope::class.java)
         val injectedDependency = injector.getInstance(dependency.java)
         testBody(scope, injectedDependency)
@@ -133,18 +197,40 @@ public class GameTestState {
         testBody: BasicGameTestScope.(AdvancedGameTestScope) -> Unit,
     ): Unit = testBody(standardScope, advancedScope)
 
+    /**
+     * Creates the injector for one game test. [scripts] selects the content plugin modules to
+     * install (see [GameTestPluginModules]) and [overrides] are applied last.
+     */
+    internal fun createTestInjector(
+        scripts: Collection<KClass<out PluginScript>>,
+        overrides: List<Module>,
+    ): Injector {
+        val collision = collisionFactory.borrowSharedMap()
+        // Copy each zone: sharing the arrays let a test's locs leak into the map of later tests.
+        val mapFlags = MapSingletons.collision.flags
+        for (zone in mapFlags.indices) {
+            collision.flags[zone] = mapFlags[zone]?.copyOf()
+        }
+        val testOverrides = GameTestOverrideModule(collision, serverConfig)
+        val modules = serverModules() + GameTestPluginModules.create(scripts)
+        val injector = Guice.createInjector(overrideAll(modules, testOverrides, overrides))
+        injector.getInstance(PluginScriptBootGate::class.java).markReady()
+        return injector
+    }
+
     internal fun initialize() {
         logger.info { "Setting up game-test state..." }
         val duration = measureTime {
-            val server = GameServer(skipTypeVerificationOverride = false)
-            val injector = initializeGameInjector(server)
-            injected = injector.getInstance(GameTestInjected::class.java)
-            readOnly = injector.getInstance(AdvancedReadOnly::class.java)
-
-            val realm = injector.getInstance(Realm::class.java)
-            realm.updateConfig(TestRealmConfig.create())
-
-            TestCacheTypes.install()
+            val cache = ServerCacheManager.init(serverConfig.revision)
+            try {
+                GameMapDecoder.decodeAll(IgnoreMapSpawns, cache)
+            } finally {
+                cache.close()
+            }
+            check(sharedWorld.getInstance(PluginScriptBootGate::class.java).isReady())
+            if (System.getProperty(SYNTHETIC_TYPES_PROPERTY).toBoolean()) {
+                TestCacheTypes.install()
+            }
         }
         logger.info { "Set up game-test state in $duration." }
     }
@@ -161,9 +247,48 @@ public class GameTestState {
         logger.info { "Finalizing game-test state..." }
     }
 
-    private fun initializeGameInjector(server: GameServer): Injector {
-        val injector = server.createInjector()
-        server.prepareGame(injector)
+    private fun createSharedWorld(): Injector {
+        logger.info { "Booting the shared game-test world (all plugin modules and scripts)..." }
+        val modules = serverModules() + PluginModuleLoader.load(PluginModule::class.java)
+        val overrides = GameTestOverrideModule(collision = null, serverConfig = serverConfig)
+        val injector = Guice.createInjector(overrideAll(modules, overrides, emptyList()))
+        val scripts = PluginScriptLoader().load(PluginScript::class.java, injector)
+        val context = injector.getInstance(ScriptContext::class.java)
+        for (script in scripts) {
+            with(script) { context.startup() }
+        }
+        injector.getInstance(PluginScriptBootGate::class.java).markReady()
         return injector
+    }
+
+    private fun serverModules(): List<Module> = listOf(GameModule, ParserModule)
+
+    private fun overrideAll(
+        modules: List<Module>,
+        testOverrides: Module,
+        overrides: List<Module>,
+    ): Module {
+        val withTestOverrides = Modules.override(modules).with(testOverrides)
+        return if (overrides.isEmpty()) {
+            withTestOverrides
+        } else {
+            Modules.override(withTestOverrides).with(overrides)
+        }
+    }
+
+    private object IgnoreMapSpawns : GameMapSpawnSink {
+        override fun onNpcSpawn(def: MapNpcDefinition, coords: CoordGrid) {}
+
+        override fun onObjSpawn(def: MapObjDefinition, coords: CoordGrid) {}
+    }
+
+    public companion object {
+        /**
+         * Set to `true` (as a test task system property) in modules whose tests register synthetic
+         * cache types ([TestCacheTypes]), so the cache lookups are stubbed before any test runs.
+         * The stub is left out elsewhere: concurrent tests that advance game ticks through a
+         * stubbed `ServerCacheManager` fail intermittently with MockK's "can't find stub".
+         */
+        public const val SYNTHETIC_TYPES_PROPERTY: String = "rsmod.testing.synthetic-types"
     }
 }

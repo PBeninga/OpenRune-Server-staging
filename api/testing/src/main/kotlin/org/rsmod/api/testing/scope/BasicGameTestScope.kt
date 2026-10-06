@@ -42,6 +42,7 @@ public class BasicGameTestScope(private val eventBus: EventBus) {
         val slot = playerList.nextFreeSlot() ?: error("No available slot.")
         player.coords = coords
         player.slotId = slot
+        player.assignTestAccount(slot)
         playerList[slot] = player
         eventBus.publish(SessionStateEvent.Initialize(player))
         eventBus.publish(SessionStateEvent.Login(player))
@@ -65,6 +66,7 @@ public class BasicGameTestScope(private val eventBus: EventBus) {
         val slot = playerList.nextFreeSlot() ?: error("No available slot.")
         player.coords = coords
         player.slotId = slot
+        player.assignTestAccount(slot)
         playerList[slot] = player
         eventBus.publish(SessionStateEvent.Initialize(player))
         action(player)
@@ -78,6 +80,7 @@ public class BasicGameTestScope(private val eventBus: EventBus) {
         val slot = npcList.nextFreeSlot() ?: error("No available slot.")
         npc.slotId = slot
         npcList[slot] = npc
+        eventBus.publish(NpcStateEvents.Create(npc))
         eventBus.publish(NpcStateEvents.Spawn(npc))
         action(npc)
         npc.slotId = -1
@@ -124,10 +127,20 @@ public class BasicGameTestScope(private val eventBus: EventBus) {
         }
 
     public fun setMaxLevels(player: Player) {
-        val stats = ServerCacheManager.getStats().values
-        for (stat in stats) {
+        for (stat in ServerCacheManager.getStats().values) {
             player.statMap.setBaseLevel(stat.internalName, stat.maxLevel.toByte())
             player.statMap.setCurrentLevel(stat.internalName, stat.maxLevel.toByte())
         }
+    }
+
+    /** Login scripts read the account ids, which a real login always sets. */
+    private fun Player.assignTestAccount(slot: Int) {
+        val id = slot + 1
+        uuid = id.toLong()
+        accountId = id
+        characterId = id
+        accountHash = id.toLong()
+        userId = id.toLong()
+        userHash = id.toLong()
     }
 }

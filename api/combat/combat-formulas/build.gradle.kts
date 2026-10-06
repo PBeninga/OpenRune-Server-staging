@@ -25,3 +25,9 @@ dependencies {
     integrationImplementation(projects.api.combat.combatCommons)
     integrationImplementation(projects.api.combat.combatWeapon)
 }
+
+testing.suites.named<JvmTestSuite>("integration") {
+    targets.all {
+        testTask.configure { systemProperty("rsmod.testing.synthetic-types", true) }
+    }
+}
