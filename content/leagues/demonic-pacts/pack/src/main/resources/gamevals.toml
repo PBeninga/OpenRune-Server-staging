@@ -13,3 +13,4 @@ demonic_pacts_resets_used = 62092
 # Pact effect timers (block 32050-32059, shared by the effect batches).
 [gamevals.timer]
 demonic_pacts_prayer_restore = 32059
+demonic_pacts_burn = 32058
