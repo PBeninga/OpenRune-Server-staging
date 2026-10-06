@@ -164,9 +164,13 @@ constructor(
             consume += invObj.copy(count = required)
         }
 
-        val transaction = player.invDelAll(player.inv, consume, strict = true)
-        if (!transaction.success) {
-            return CastResult.Failure.NotEnoughInvObj
+        // When every rune comes from the rune pouch there is nothing to delete from the inventory,
+        // and an empty transaction never succeeds.
+        if (consume.isNotEmpty()) {
+            val transaction = player.invDelAll(player.inv, consume, strict = true)
+            if (!transaction.success) {
+                return CastResult.Failure.NotEnoughInvObj
+            }
         }
 
         for (source in varbitSources) {
