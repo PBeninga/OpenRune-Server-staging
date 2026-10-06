@@ -6,6 +6,7 @@ import org.rsmod.api.combat.accuracy.player.PlayerMeleeAccuracy
 import org.rsmod.api.combat.commons.styles.MeleeAttackStyle
 import org.rsmod.api.combat.commons.types.MeleeAttackType
 import org.rsmod.api.combat.formulas.accuracy.AccuracyOperations
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
 import org.rsmod.api.combat.formulas.attributes.CombatMeleeAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatMeleeAttributeCollector
@@ -27,6 +28,7 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         blockType: MeleeAttackType?,
         specialMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         computeHitChance(
             source = player,
@@ -35,6 +37,7 @@ constructor(
             attackStyle = attackStyle,
             blockType = blockType,
             specialMultiplier = specialMultiplier,
+            rollModifier = rollModifier,
         )
 
     public fun computeHitChance(
@@ -44,24 +47,34 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         blockType: MeleeAttackType?,
         specialMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
         val npcAttributes = EnumSet.noneOf(CombatNpcAttributes::class.java)
         val meleeAttributes = meleeAttributes.collect(source, attackType)
 
         val baseAttackRoll =
-            computeAttackRoll(source, attackType, attackStyle, meleeAttributes, npcAttributes)
-        val attackRoll = (baseAttackRoll * specialMultiplier).toInt()
-
-        val defenceRoll = computeDefenceRoll(target, blockType)
+            computeAttackRoll(
+                source,
+                attackType,
+                attackStyle,
+                meleeAttributes,
+                npcAttributes,
+                rollModifier,
+            )
+        val specAttackRoll = (baseAttackRoll * specialMultiplier).toInt()
+        val attackRoll = rollModifier.modifyAttackRoll(specAttackRoll)
+        val defenceRoll = rollModifier.modifyDefenceRoll(computeDefenceRoll(target, blockType))
 
         val hitChance = AccuracyOperations.calculateHitChance(attackRoll, defenceRoll)
-        return MeleeAccuracyOperations.modifyHitChance(
-            hitChance = hitChance,
-            attackRoll = attackRoll,
-            defenceRoll = defenceRoll,
-            meleeAttributes = meleeAttributes,
-            npcAttributes = npcAttributes,
-        )
+        val meleeHitChance =
+            MeleeAccuracyOperations.modifyHitChance(
+                hitChance = hitChance,
+                attackRoll = attackRoll,
+                defenceRoll = defenceRoll,
+                meleeAttributes = meleeAttributes,
+                npcAttributes = npcAttributes,
+            )
+        return rollModifier.modifyHitChance(meleeHitChance, attackRoll, defenceRoll)
     }
 
     public fun computeAttackRoll(
@@ -70,9 +83,11 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         meleeAttributes: EnumSet<CombatMeleeAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
-        val effectiveAttack = MeleeAccuracyOperations.calculateEffectiveAttack(source, attackStyle)
-        val attackBonus = source.getAttackBonus(attackType)
+        val effectiveAttack =
+            MeleeAccuracyOperations.calculateEffectiveAttack(source, attackStyle, rollModifier)
+        val attackBonus = rollModifier.modifyAttackBonus(source.getAttackBonus(attackType))
         val attackRoll = PlayerMeleeAccuracy.calculateBaseAttackRoll(effectiveAttack, attackBonus)
         return MeleeAccuracyOperations.modifyAttackRoll(attackRoll, meleeAttributes, npcAttributes)
     }

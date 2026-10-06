@@ -9,6 +9,7 @@ import org.rsmod.api.combat.accuracy.player.PlayerMagicAccuracy
 import org.rsmod.api.combat.commons.magic.Spellbook
 import org.rsmod.api.combat.commons.styles.MagicAttackStyle
 import org.rsmod.api.combat.formulas.accuracy.AccuracyOperations
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
 import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatSpellAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatStaffAttributes
@@ -36,6 +37,7 @@ constructor(
         spell: ItemServerType,
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
         val targetType = target.visType
         val elementalWeakness = targetType.param(params.elemental_weakness_percent)
@@ -51,6 +53,7 @@ constructor(
             targetWeaknessPercent = elementalWeakness,
             spellbook = spellbook,
             usedSunfireRune = usedSunfireRune,
+            rollModifier = rollModifier,
         )
     }
 
@@ -66,6 +69,7 @@ constructor(
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
         npc: Npc? = null,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
         val spellAttributes =
             magicAttributes.spellCollect(source, spell, spellbook, usedSunfireRune, random)
@@ -73,13 +77,15 @@ constructor(
         val slayerTask = target.isSlayerTask(source)
         val npcAttributes = npcAttributes.collect(target, npc, targetCurrHp, targetMaxHp, slayerTask)
 
-        val attackRoll =
+        val baseAttackRoll =
             computeSpellAttackRoll(
                 source = source,
                 targetWeaknessPercent = targetWeaknessPercent,
                 spellAttributes = spellAttributes,
                 npcAttributes = npcAttributes,
+                rollModifier = rollModifier,
             )
+        val attackRoll = rollModifier.modifyAttackRoll(baseAttackRoll)
 
         val amascutInvocationLvl = source.vars["varbit.toa_client_raid_level"]
         val baseDefenceRoll =
@@ -90,9 +96,11 @@ constructor(
                 amascutInvocationLvl = amascutInvocationLvl,
                 npcAttributes = npcAttributes,
             )
-        val defenceRoll = modifySpellDefenceRoll(baseDefenceRoll, spellAttributes)
+        val spellDefenceRoll = modifySpellDefenceRoll(baseDefenceRoll, spellAttributes)
+        val defenceRoll = rollModifier.modifyDefenceRoll(spellDefenceRoll)
 
-        return AccuracyOperations.calculateHitChance(attackRoll, defenceRoll, npcAttributes)
+        val hitChance = AccuracyOperations.calculateHitChance(attackRoll, defenceRoll, npcAttributes)
+        return rollModifier.modifyHitChance(hitChance, attackRoll, defenceRoll)
     }
 
     public fun computeSpellAttackRoll(
@@ -100,9 +108,11 @@ constructor(
         targetWeaknessPercent: Int,
         spellAttributes: EnumSet<CombatSpellAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
-        val effectiveMagic = MagicAccuracyOperations.calculateEffectiveMagic(source, null)
-        val magicBonus = bonuses.offensiveMagicBonus(source)
+        val effectiveMagic =
+            MagicAccuracyOperations.calculateEffectiveMagic(source, null, rollModifier)
+        val magicBonus = rollModifier.modifyAttackBonus(bonuses.offensiveMagicBonus(source))
         val attackRoll = PlayerMagicAccuracy.calculateBaseAttackRoll(effectiveMagic, magicBonus)
         return MagicAccuracyOperations.modifySpellAttackRoll(
             attackRoll = attackRoll,
@@ -117,6 +127,7 @@ constructor(
         target: Npc,
         attackStyle: MagicAttackStyle?,
         specialMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         computeStaffHitChance(
             source = player,
@@ -128,6 +139,7 @@ constructor(
             targetMagic = target.magicLvl,
             attackStyle = attackStyle,
             specialMultiplier = specialMultiplier,
+            rollModifier = rollModifier,
         )
 
     public fun computeStaffHitChance(
@@ -140,6 +152,7 @@ constructor(
         attackStyle: MagicAttackStyle?,
         specialMultiplier: Double,
         npc: Npc? = null,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
         val staffAttributes = magicAttributes.staffCollect(source, random)
 
@@ -147,8 +160,15 @@ constructor(
         val npcAttributes = npcAttributes.collect(target, npc, targetCurrHp, targetMaxHp, slayerTask)
 
         val baseAttackRoll =
-            computeStaffAttackRoll(source, attackStyle, staffAttributes, npcAttributes)
-        val attackRoll = (baseAttackRoll * specialMultiplier).toInt()
+            computeStaffAttackRoll(
+                source,
+                attackStyle,
+                staffAttributes,
+                npcAttributes,
+                rollModifier,
+            )
+        val specAttackRoll = (baseAttackRoll * specialMultiplier).toInt()
+        val attackRoll = rollModifier.modifyAttackRoll(specAttackRoll)
 
         val amascutInvocationLvl = source.vars["varbit.toa_client_raid_level"]
         val baseDefenceRoll =
@@ -159,9 +179,11 @@ constructor(
                 amascutInvocationLvl = amascutInvocationLvl,
                 npcAttributes = npcAttributes,
             )
-        val defenceRoll = modifyStaffDefenceRoll(baseDefenceRoll, staffAttributes)
+        val staffDefenceRoll = modifyStaffDefenceRoll(baseDefenceRoll, staffAttributes)
+        val defenceRoll = rollModifier.modifyDefenceRoll(staffDefenceRoll)
 
-        return AccuracyOperations.calculateHitChance(attackRoll, defenceRoll, npcAttributes)
+        val hitChance = AccuracyOperations.calculateHitChance(attackRoll, defenceRoll, npcAttributes)
+        return rollModifier.modifyHitChance(hitChance, attackRoll, defenceRoll)
     }
 
     public fun computeStaffAttackRoll(
@@ -169,9 +191,11 @@ constructor(
         attackStyle: MagicAttackStyle?,
         staffAttributes: EnumSet<CombatStaffAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int {
-        val effectiveMagic = MagicAccuracyOperations.calculateEffectiveMagic(source, attackStyle)
-        val magicBonus = bonuses.offensiveMagicBonus(source)
+        val effectiveMagic =
+            MagicAccuracyOperations.calculateEffectiveMagic(source, attackStyle, rollModifier)
+        val magicBonus = rollModifier.modifyAttackBonus(bonuses.offensiveMagicBonus(source))
         val attackRoll = PlayerMagicAccuracy.calculateBaseAttackRoll(effectiveMagic, magicBonus)
         return MagicAccuracyOperations.modifyStaffAttackRoll(
             attackRoll = attackRoll,

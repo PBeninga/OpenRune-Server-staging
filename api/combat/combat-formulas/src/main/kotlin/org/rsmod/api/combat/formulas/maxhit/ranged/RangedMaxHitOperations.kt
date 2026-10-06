@@ -7,6 +7,7 @@ import kotlin.math.min
 import org.rsmod.api.combat.commons.styles.RangedAttackStyle
 import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatRangedAttributes
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.combat.formulas.scale
 import org.rsmod.api.combat.maxhit.player.PlayerRangedMaxHit
 import org.rsmod.api.player.stat.stat
@@ -163,12 +164,17 @@ public object RangedMaxHitOperations {
         return modified
     }
 
-    public fun calculateEffectiveRanged(player: Player, attackStyle: RangedAttackStyle?): Int =
+    public fun calculateEffectiveRanged(
+        player: Player,
+        attackStyle: RangedAttackStyle?,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
+    ): Int =
         calculateEffectiveRanged(
             visLevel = player.stat("stat.ranged"),
             vars = player.vars,
             worn = player.worn,
             attackStyle = attackStyle,
+            maxHitModifier = maxHitModifier,
         )
 
     private fun calculateEffectiveRanged(
@@ -176,9 +182,10 @@ public object RangedMaxHitOperations {
         vars: VarPlayerIntMap,
         worn: Inventory,
         attackStyle: RangedAttackStyle?,
+        maxHitModifier: MaxHitModifier,
     ): Int {
         val styleBonus = attackStyle.styleBonus()
-        val prayerBonus = vars.prayerBonus()
+        val prayerBonus = maxHitModifier.modifyPrayerBonus(vars.prayerBonus())
         val voidBonus = worn.voidBonus()
         return PlayerRangedMaxHit.calculateEffectiveRanged(
             visibleRangedLvl = visLevel,

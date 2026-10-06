@@ -7,6 +7,7 @@ import org.rsmod.api.combat.commons.styles.AttackStyle
 import org.rsmod.api.combat.commons.styles.MeleeAttackStyle
 import org.rsmod.api.combat.formulas.HIT_CHANCE_SCALE
 import org.rsmod.api.combat.formulas.accuracy.AccuracyOperations
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
 import org.rsmod.api.combat.formulas.attributes.CombatMeleeAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.scale
@@ -139,12 +140,17 @@ public object MeleeAccuracyOperations {
         return modified
     }
 
-    public fun calculateEffectiveAttack(player: Player, attackStyle: MeleeAttackStyle?): Int =
+    public fun calculateEffectiveAttack(
+        player: Player,
+        attackStyle: MeleeAttackStyle?,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
+    ): Int =
         calculateEffectiveAttack(
             visLevel = player.attackLvl,
             vars = player.vars,
             worn = player.worn,
             attackStyle = attackStyle,
+            rollModifier = rollModifier,
         )
 
     private fun calculateEffectiveAttack(
@@ -152,9 +158,10 @@ public object MeleeAccuracyOperations {
         vars: VarPlayerIntMap,
         worn: Inventory,
         attackStyle: MeleeAttackStyle?,
+        rollModifier: AccuracyRollModifier,
     ): Int {
         val styleBonus = attackStyle.offensiveStyleBonus()
-        val prayerBonus = vars.offensivePrayerBonus()
+        val prayerBonus = rollModifier.modifyPrayerBonus(vars.offensivePrayerBonus())
         val voidBonus = worn.offensiveVoidBonus()
         return PlayerMeleeAccuracy.calculateEffectiveAttack(
             visibleAttackLvl = visLevel,

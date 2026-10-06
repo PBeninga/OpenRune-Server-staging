@@ -11,6 +11,7 @@ import org.rsmod.api.combat.formulas.attributes.CombatStaffAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatMagicAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.CombatNpcAttributeCollector
 import org.rsmod.api.combat.formulas.isSlayerTask
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.config.refs.params
 import org.rsmod.api.player.bonus.WornBonuses
 import org.rsmod.api.player.stat.magicLvl
@@ -55,6 +56,7 @@ constructor(
         baseMaxHit: Int,
         attackRate: Int,
         usedSunfireRune: Boolean,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): IntRange {
         val targetType = target.visType
         val elementalWeakness = targetType.param(params.elemental_weakness_percent)
@@ -71,6 +73,7 @@ constructor(
                 attackRate = attackRate,
                 spellbook = spellbook,
                 usedSunfireRune = usedSunfireRune,
+                maxHitModifier = maxHitModifier,
             )
         player.maxHit = maxHit.last
         return maxHit
@@ -88,6 +91,7 @@ constructor(
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
         npc: Npc? = null,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): IntRange {
         val spellAttributes =
             magicAttributes.spellCollect(source, spell, spellbook, usedSunfireRune, random)
@@ -96,7 +100,13 @@ constructor(
         val npcAttributes = npcAttributes.collect(target, npc, targetCurrHp, targetMaxHp, slayerTask)
 
         val modifiedDamage =
-            computeSpellModifiedDamage(source, baseMaxHit, spellAttributes, npcAttributes)
+            computeSpellModifiedDamage(
+                source,
+                baseMaxHit,
+                spellAttributes,
+                npcAttributes,
+                maxHitModifier,
+            )
         return MagicMaxHitOperations.modifySpellDamageRange(
             modifiedDamage = modifiedDamage,
             baseDamage = baseMaxHit,
@@ -112,9 +122,14 @@ constructor(
         baseDamage: Int,
         spellAttributes: EnumSet<CombatSpellAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
-        val magicDmgBonus = bonuses.magicDamageBonusBase(source)
-        val prayerDmgBonus = MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+        val magicDmgBonus =
+            maxHitModifier.modifyMagicDamageBonus(bonuses.magicDamageBonusBase(source))
+        val prayerDmgBonus =
+            maxHitModifier.modifyMagicPrayerDamageBonus(
+                MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+            )
         return MagicMaxHitOperations.modifySpellBaseDamage(
             baseDamage = baseDamage,
             sourceMagic = source.magicLvl,
@@ -143,6 +158,7 @@ constructor(
         target: Npc,
         baseMaxHit: Int,
         specialMultiplier: Double,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val maxHit =
             computeStaffMaxHit(
@@ -153,6 +169,7 @@ constructor(
                 targetMaxHp = target.baseHitpointsLvl,
                 baseMaxHit = baseMaxHit,
                 specialMultiplier = specialMultiplier,
+                maxHitModifier = maxHitModifier,
             )
         player.maxHit = maxHit
         return maxHit
@@ -166,6 +183,7 @@ constructor(
         baseMaxHit: Int,
         specialMultiplier: Double,
         npc: Npc? = null,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val staffAttributes = magicAttributes.staffCollect(source, random)
 
@@ -173,7 +191,13 @@ constructor(
         val npcAttributes = npcAttributes.collect(target, npc, targetCurrHp, targetMaxHp, slayerTask)
 
         val modifiedDamage =
-            computeStaffModifiedDamage(source, baseMaxHit, staffAttributes, npcAttributes)
+            computeStaffModifiedDamage(
+                source,
+                baseMaxHit,
+                staffAttributes,
+                npcAttributes,
+                maxHitModifier,
+            )
         return (modifiedDamage * specialMultiplier).toInt()
     }
 
@@ -182,9 +206,14 @@ constructor(
         baseDamage: Int,
         staffAttributes: EnumSet<CombatStaffAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
-        val magicDmgBonus = bonuses.magicDamageBonusBase(source)
-        val prayerDmgBonus = MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+        val magicDmgBonus =
+            maxHitModifier.modifyMagicDamageBonus(bonuses.magicDamageBonusBase(source))
+        val prayerDmgBonus =
+            maxHitModifier.modifyMagicPrayerDamageBonus(
+                MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
+            )
         return MagicMaxHitOperations.modifyStaffBaseDamage(
             baseDamage = baseDamage,
             sourceBaseMagicDmgBonus = magicDmgBonus,

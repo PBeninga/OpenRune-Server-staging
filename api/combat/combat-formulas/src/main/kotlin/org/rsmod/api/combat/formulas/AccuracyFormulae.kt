@@ -8,6 +8,7 @@ import org.rsmod.api.combat.commons.styles.MeleeAttackStyle
 import org.rsmod.api.combat.commons.styles.RangedAttackStyle
 import org.rsmod.api.combat.commons.types.MeleeAttackType
 import org.rsmod.api.combat.commons.types.RangedAttackType
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
 import org.rsmod.api.combat.formulas.accuracy.magic.NvNMagicAccuracy
 import org.rsmod.api.combat.formulas.accuracy.magic.NvPMagicAccuracy
 import org.rsmod.api.combat.formulas.accuracy.magic.PvNMagicAccuracy
@@ -76,9 +77,18 @@ constructor(
         blockType: MeleeAttackType?,
         specMultiplier: Double,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
         val hitChance =
-            getMeleeHitChance(player, target, attackType, attackStyle, blockType, specMultiplier)
+            getMeleeHitChance(
+                player,
+                target,
+                attackType,
+                attackStyle,
+                blockType,
+                specMultiplier,
+                rollModifier,
+            )
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -106,6 +116,7 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         blockType: MeleeAttackType?,
         specMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvnMeleeAccuracy.getHitChance(
             player = player,
@@ -114,6 +125,7 @@ constructor(
             attackStyle = attackStyle,
             blockType = blockType,
             specialMultiplier = specMultiplier,
+            rollModifier = rollModifier,
         )
 
     /**
@@ -144,9 +156,18 @@ constructor(
         blockType: MeleeAttackType?,
         specMultiplier: Double,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
         val hitChance =
-            getMeleeHitChance(player, target, attackType, attackStyle, blockType, specMultiplier)
+            getMeleeHitChance(
+                player,
+                target,
+                attackType,
+                attackStyle,
+                blockType,
+                specMultiplier,
+                rollModifier,
+            )
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -174,6 +195,7 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         blockType: MeleeAttackType?,
         specMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvpMeleeAccuracy.getHitChance(
             player = player,
@@ -182,6 +204,7 @@ constructor(
             attackStyle = attackStyle,
             blockType = blockType,
             specialMultiplier = specMultiplier,
+            rollModifier = rollModifier,
         )
 
     /**
@@ -284,9 +307,18 @@ constructor(
         blockType: RangedAttackType?,
         specMultiplier: Double,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
         val hitChance =
-            getRangedHitChance(player, target, attackType, attackStyle, blockType, specMultiplier)
+            getRangedHitChance(
+                player,
+                target,
+                attackType,
+                attackStyle,
+                blockType,
+                specMultiplier,
+                rollModifier,
+            )
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -312,6 +344,7 @@ constructor(
         attackStyle: RangedAttackStyle?,
         blockType: RangedAttackType?,
         specMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvnRangedAccuracy.getHitChance(
             player = player,
@@ -320,6 +353,7 @@ constructor(
             attackStyle = attackStyle,
             blockType = blockType,
             specialMultiplier = specMultiplier,
+            rollModifier = rollModifier,
         )
 
     /**
@@ -347,8 +381,17 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specMultiplier: Double,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
-        val hitChance = getRangedHitChance(player, target, attackType, attackStyle, specMultiplier)
+        val hitChance =
+            getRangedHitChance(
+                player,
+                target,
+                attackType,
+                attackStyle,
+                specMultiplier,
+                rollModifier,
+            )
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -371,6 +414,7 @@ constructor(
         attackType: RangedAttackType?,
         attackStyle: RangedAttackStyle?,
         specMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvpRangedAccuracy.getHitChance(
             player = player,
@@ -378,6 +422,7 @@ constructor(
             attackType = attackType,
             attackStyle = attackStyle,
             specialMultiplier = specMultiplier,
+            rollModifier = rollModifier,
         )
 
     /**
@@ -458,8 +503,10 @@ constructor(
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
-        val hitChance = getSpellHitChance(player, target, spell, spellbook, usedSunfireRune)
+        val hitChance =
+            getSpellHitChance(player, target, spell, spellbook, usedSunfireRune, rollModifier)
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -481,6 +528,7 @@ constructor(
         spell: ItemServerType,
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvnMagicAccuracy.getSpellHitChance(
             player = player,
@@ -488,6 +536,7 @@ constructor(
             spell = spell,
             spellbook = spellbook,
             usedSunfireRune = usedSunfireRune,
+            rollModifier = rollModifier,
         )
 
     /**
@@ -514,8 +563,10 @@ constructor(
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
-        val hitChance = getSpellHitChance(player, target, spell, spellbook, usedSunfireRune)
+        val hitChance =
+            getSpellHitChance(player, target, spell, spellbook, usedSunfireRune, rollModifier)
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -537,6 +588,7 @@ constructor(
         spell: ItemServerType,
         spellbook: Spellbook?,
         usedSunfireRune: Boolean,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvpMagicAccuracy.getSpellHitChance(
             player = player,
@@ -544,6 +596,7 @@ constructor(
             spell = spell,
             spellbook = spellbook,
             usedSunfireRune = usedSunfireRune,
+            rollModifier = rollModifier,
         )
 
     /**
@@ -568,8 +621,9 @@ constructor(
         attackStyle: MagicAttackStyle?,
         specMultiplier: Double,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
-        val hitChance = getStaffHitChance(player, target, attackStyle, specMultiplier)
+        val hitChance = getStaffHitChance(player, target, attackStyle, specMultiplier, rollModifier)
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -589,12 +643,14 @@ constructor(
         target: Npc,
         attackStyle: MagicAttackStyle?,
         specMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvnMagicAccuracy.getStaffHitChance(
             player = player,
             target = target,
             attackStyle = attackStyle,
             specialMultiplier = specMultiplier,
+            rollModifier = rollModifier,
         )
 
     /**
@@ -619,8 +675,10 @@ constructor(
         attackStyle: MagicAttackStyle?,
         specMultiplier: Double,
         random: GameRandom,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Boolean {
-        val hitChance = getStaffHitChance(player, target, attackStyle, specMultiplier)
+        val hitChance =
+            getStaffHitChance(player, target, attackStyle, specMultiplier, rollModifier)
         return isSuccessfulHit(hitChance, random)
     }
 
@@ -640,12 +698,14 @@ constructor(
         target: Player,
         attackStyle: MagicAttackStyle?,
         specMultiplier: Double,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
     ): Int =
         pvpMagicAccuracy.getStaffHitChance(
             player = player,
             target = target,
             attackStyle = attackStyle,
             specialMultiplier = specMultiplier,
+            rollModifier = rollModifier,
         )
 
     /**

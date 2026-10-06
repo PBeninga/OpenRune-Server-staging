@@ -11,6 +11,7 @@ import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatMeleeAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.CombatNpcAttributeCollector
 import org.rsmod.api.combat.formulas.isSlayerTask
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.combat.maxhit.player.PlayerMeleeMaxHit
 import org.rsmod.api.combat.weapon.WeaponSpeeds
 import org.rsmod.api.player.bonus.WornBonuses
@@ -48,6 +49,7 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         specialMultiplier: Double,
         roundUp: Boolean = false,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val maxHit =
             computeMaxHit(
@@ -60,6 +62,7 @@ constructor(
                 attackStyle = attackStyle,
                 specialMultiplier = specialMultiplier,
                 roundUp = roundUp,
+                maxHitModifier = maxHitModifier,
             )
         player.maxHit = maxHit
         return maxHit
@@ -75,6 +78,7 @@ constructor(
         specialMultiplier: Double,
         roundUp: Boolean = false,
         npc: Npc? = null,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val meleeAttributes = meleeAttributes.collect(source, attackType)
         addProcAttributes(meleeAttributes)
@@ -83,7 +87,13 @@ constructor(
         val npcAttributes = npcAttributes.collect(target, npc, targetCurrHp, targetMaxHp, slayerTask)
 
         val modifiedDamage =
-            computeModifiedDamage(source, attackStyle, meleeAttributes, npcAttributes)
+            computeModifiedDamage(
+                source,
+                attackStyle,
+                meleeAttributes,
+                npcAttributes,
+                maxHitModifier,
+            )
         val scaled = modifiedDamage * specialMultiplier
         val specMaxHit = if (roundUp) ceil(scaled).toInt() else scaled.toInt()
         return modifyPostSpec(source, specMaxHit, meleeAttributes, npcAttributes)
@@ -102,10 +112,11 @@ constructor(
         attackStyle: MeleeAttackStyle?,
         meleeAttributes: EnumSet<CombatMeleeAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val effectiveStrength =
-            MeleeMaxHitOperations.calculateEffectiveStrength(source, attackStyle)
-        val strengthBonus = bonuses.strengthBonus(source)
+            MeleeMaxHitOperations.calculateEffectiveStrength(source, attackStyle, maxHitModifier)
+        val strengthBonus = maxHitModifier.modifyStrengthBonus(bonuses.strengthBonus(source))
         val baseDamage = PlayerMeleeMaxHit.calculateBaseDamage(effectiveStrength, strengthBonus)
         return MeleeMaxHitOperations.modifyBaseDamage(baseDamage, meleeAttributes, npcAttributes)
     }

@@ -11,6 +11,7 @@ import org.rsmod.api.combat.formulas.attributes.CombatRangedAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatNpcAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.CombatRangedAttributeCollector
 import org.rsmod.api.combat.formulas.isSlayerTask
+import org.rsmod.api.combat.formulas.maxhit.MaxHitModifier
 import org.rsmod.api.combat.maxhit.player.PlayerRangedMaxHit
 import org.rsmod.api.combat.weapon.WeaponSpeeds
 import org.rsmod.api.config.refs.params
@@ -48,6 +49,7 @@ constructor(
         attackStyle: RangedAttackStyle?,
         specialMultiplier: Double,
         boltSpecDamage: Int,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val targetType = target.visType
         val targetMagic = max(target.magicLvl, targetType.param(params.attack_magic))
@@ -63,6 +65,7 @@ constructor(
                 attackStyle = attackStyle,
                 specialMultiplier = specialMultiplier,
                 boltSpecDamage = boltSpecDamage,
+                maxHitModifier = maxHitModifier,
             )
         player.maxHit = maxHit
         return maxHit
@@ -79,6 +82,7 @@ constructor(
         specialMultiplier: Double,
         boltSpecDamage: Int,
         npc: Npc? = null,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
         val rangeAttributes = rangedAttributes.collect(source, attackType, attackStyle)
 
@@ -86,7 +90,14 @@ constructor(
         val npcAttributes = npcAttributes.collect(target, npc, targetCurrHp, targetMaxHp, slayerTask)
 
         val modifiedDamage =
-            computeModifiedDamage(source, targetMagic, attackStyle, rangeAttributes, npcAttributes)
+            computeModifiedDamage(
+                source,
+                targetMagic,
+                attackStyle,
+                rangeAttributes,
+                npcAttributes,
+                maxHitModifier,
+            )
         val specMaxHit = (modifiedDamage * specialMultiplier).toInt()
         return modifyPostSpec(source, specMaxHit, boltSpecDamage, rangeAttributes, npcAttributes)
     }
@@ -97,9 +108,11 @@ constructor(
         attackStyle: RangedAttackStyle?,
         rangeAttributes: EnumSet<CombatRangedAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+        maxHitModifier: MaxHitModifier = MaxHitModifier.NONE,
     ): Int {
-        val effectiveRanged = RangedMaxHitOperations.calculateEffectiveRanged(source, attackStyle)
-        val rangedBonus = bonuses.rangedStrengthBonus(source)
+        val effectiveRanged =
+            RangedMaxHitOperations.calculateEffectiveRanged(source, attackStyle, maxHitModifier)
+        val rangedBonus = maxHitModifier.modifyStrengthBonus(bonuses.rangedStrengthBonus(source))
         val baseDamage = PlayerRangedMaxHit.calculateBaseDamage(effectiveRanged, rangedBonus)
         return RangedMaxHitOperations.modifyBaseDamage(
             baseDamage = baseDamage,

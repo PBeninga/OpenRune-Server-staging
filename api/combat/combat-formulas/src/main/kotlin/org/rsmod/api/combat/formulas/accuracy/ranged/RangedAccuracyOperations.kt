@@ -7,6 +7,7 @@ import org.rsmod.api.combat.accuracy.player.PlayerRangedAccuracy
 import org.rsmod.api.combat.commons.styles.AttackStyle
 import org.rsmod.api.combat.commons.styles.RangedAttackStyle
 import org.rsmod.api.combat.formulas.accuracy.AccuracyOperations
+import org.rsmod.api.combat.formulas.accuracy.AccuracyRollModifier
 import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.CombatRangedAttributes
 import org.rsmod.api.combat.formulas.scale
@@ -165,12 +166,17 @@ public object RangedAccuracyOperations {
         return modified
     }
 
-    public fun calculateEffectiveRanged(player: Player, attackStyle: RangedAttackStyle?): Int =
+    public fun calculateEffectiveRanged(
+        player: Player,
+        attackStyle: RangedAttackStyle?,
+        rollModifier: AccuracyRollModifier = AccuracyRollModifier.NONE,
+    ): Int =
         calculateEffectiveRanged(
             visLevel = player.rangedLvl,
             vars = player.vars,
             worn = player.worn,
             attackStyle = attackStyle,
+            rollModifier = rollModifier,
         )
 
     private fun calculateEffectiveRanged(
@@ -178,9 +184,10 @@ public object RangedAccuracyOperations {
         vars: VarPlayerIntMap,
         worn: Inventory,
         attackStyle: RangedAttackStyle?,
+        rollModifier: AccuracyRollModifier,
     ): Int {
         val styleBonus = attackStyle.offensiveStyleBonus()
-        val prayerBonus = vars.offensivePrayerBonus()
+        val prayerBonus = rollModifier.modifyPrayerBonus(vars.offensivePrayerBonus())
         val voidBonus = worn.offensiveVoidBonus()
         return PlayerRangedAccuracy.calculateEffectiveRanged(
             visibleRangedLvl = visLevel,
