@@ -26,15 +26,16 @@ public fun Player.statBase(stat: String): Int {
 }
 
 /**
- * Restores the current level of [stat] to its base level.
+ * Restores the current level of [stat] to its resting level ([statRestingLevel]): the base level
+ * plus any permanent or timed boost from [StatBoosts].
  *
  * **Notes:**
- * - This function resets the current level to the base level, whether it is above or below it.
- * - If the current level is already equal to the base level, this function does nothing.
+ * - This function resets the current level to the resting level, whether it is above or below it.
+ * - If the current level is already equal to the resting level, this function does nothing.
  */
 public fun Player.statRestore(stat: String) {
     val currLevel = stat(stat)
-    val baseLevel = statBase(stat)
+    val baseLevel = statRestingLevel(stat)
     val delta = baseLevel - currLevel
     when {
         delta == 0 -> return
@@ -101,7 +102,7 @@ public fun Player.statAdd(stat: String, constant: Int, percent: Int) {
 
     statMap.setCurrentLevel(stat, cappedLevel.toByte())
 
-    val statType = ServerCacheManager.getStats(stat.asRSCM(RSCMType.STAT))?: error("No stat found for $stat")
+    val statType = ServerCacheManager.getStats(stat.asRSCM(RSCMType.STAT)) ?: error("No stat found for $stat")
 
     updateStat(stat)
 
@@ -234,6 +235,9 @@ public fun Player.statDrain(stat: String, constant: Int, percent: Int) {
  * `statHeal(stat, constant = 25, percent = 20)` will restore the stat by `25 + (80 * 20%) = 42`,
  * but it will be capped at the base level of `80` as opposed to `92`.
  *
+ * The cap is the stat's resting level ([statRestingLevel]), which is the base level unless
+ * [StatBoosts] raised it. A level already above the cap (a potion boost) is left unchanged.
+ *
  * @param constant The fixed amount to add to the player's current stat level.
  * @param percent The percentage (`0`-`100`) of the player's **base** stat level to add.
  * @throws IllegalArgumentException if [constant] is negative, or if [percent] is not within the
@@ -247,7 +251,7 @@ public fun Player.statHeal(internal: String, constant: Int, percent: Int) {
     val base = statBase(internal)
     val current = stat(internal)
     val calculated = current + (constant + (base * percent) / 100)
-    val cappedLevel = calculated.coerceIn(current, base)
+    val cappedLevel = calculated.coerceIn(current, max(current, statRestingLevel(internal)))
 
     statMap.setCurrentLevel(internal, cappedLevel.toByte())
 

@@ -7,12 +7,11 @@ import dev.openrune.types.StatType
 import org.rsmod.api.config.constants
 import org.rsmod.api.player.hands
 import org.rsmod.api.player.stat.StatBoostDecayPrevention
-import org.rsmod.api.player.stat.baseHitpointsLvl
 import org.rsmod.api.player.stat.hitpoints
 import org.rsmod.api.player.stat.stat
 import org.rsmod.api.player.stat.statAdd
-import org.rsmod.api.player.stat.statBase
 import org.rsmod.api.player.stat.statHeal
+import org.rsmod.api.player.stat.statRestingLevel
 import org.rsmod.api.player.stat.statSub
 import org.rsmod.api.script.onPlayerLogin
 import org.rsmod.api.script.onPlayerSoftTimer
@@ -42,9 +41,9 @@ public class StatRegenScript : PluginScript() {
 
     private fun Player.statRegen() {
         for (stat in regenStats) {
-            val statInternal = RSCM.getReverseMapping(RSCMType.STAT,stat.id)
+            val statInternal = RSCM.getReverseMapping(RSCMType.STAT, stat.id)
 
-            val base = statBase(statInternal)
+            val base = statRestingLevel(statInternal)
             val current = stat(statInternal)
             if (current < base) {
                 statAdd(statInternal, constant = 1, percent = 0)
@@ -54,9 +53,9 @@ public class StatRegenScript : PluginScript() {
 
     private fun Player.statBoostRestore() {
         for (stat in regenStats) {
-            val statInternal = RSCM.getReverseMapping(RSCMType.STAT,stat.id)
+            val statInternal = RSCM.getReverseMapping(RSCMType.STAT, stat.id)
 
-            val base = statBase(statInternal)
+            val base = statRestingLevel(statInternal)
             val current = stat(statInternal)
             if (
                 current > base &&
@@ -72,10 +71,17 @@ public class StatRegenScript : PluginScript() {
                 )
             }
         }
+        val hitpointsRest = statRestingLevel("stat.hitpoints")
+        if (
+            hitpoints > hitpointsRest &&
+            !StatBoostDecayPrevention.prevents(this, "stat.hitpoints")
+        ) {
+            statSub("stat.hitpoints", constant = 1, percent = 0)
+        }
     }
 
     private fun Player.healthRegen() {
-        if (hitpoints >= baseHitpointsLvl) {
+        if (hitpoints >= statRestingLevel("stat.hitpoints")) {
             return
         }
         val amount = if (hands.isType("obj.jewl_bracelet_regen")) 2 else 1
