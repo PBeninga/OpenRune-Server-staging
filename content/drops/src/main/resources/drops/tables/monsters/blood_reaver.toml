@@ -130,7 +130,7 @@ weight = 1
 shared = "gem"
 
 [[main.separate_rolls]]
-numerator = 1
+numerator = 5
 denominator = 640
 
 [[main.separate_rolls.entries]]

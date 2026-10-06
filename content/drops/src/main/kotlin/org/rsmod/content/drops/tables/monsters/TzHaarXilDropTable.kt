@@ -25,7 +25,7 @@ public val tzHaarXilDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         1 weight "obj.uncut_diamond" count 1
         195 weight ringNothing()
         4 outOf 2048 separate "obj.tzhaar_throwingring" count 10..29
-        3 outOf 2048 separate rsPlayerWeightedTable {
+        6 outOf 2048 separate rsPlayerWeightedTable {
             3 weight "obj.tzhaar_splitsword" count 1
             3 weight "obj.tzhaar_knife" count 1
         }

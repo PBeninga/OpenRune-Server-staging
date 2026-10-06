@@ -27,7 +27,7 @@ public val ternDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         2 weight "obj.oak_roots" count 1
         15 outOf 500 separate "obj.flax_seed" count 1
         9 outOf 500 separate "obj.hemp_seed" count 1
-        6 outOf 500 separate rsPlayerWeightedTable {
+        12 outOf 500 separate rsPlayerWeightedTable {
             6 weight "obj.cotton_seed" count 1
             6 weight "obj.coral_elkhorn_frag" count 1
         }
@@ -35,7 +35,7 @@ public val ternDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         1 outOf 500 separate "obj.coral_umbral_frag" count 1
         65 outOf 5000 separate "obj.bird_nest_seeds_jan2019" count 1
         32 outOf 5000 separate "obj.bird_nest_ring" count 1
-        1 outOf 5000 separate rsPlayerWeightedTable {
+        3 outOf 5000 separate rsPlayerWeightedTable {
             1 weight "obj.bird_nest_egg_red" count 1
             1 weight "obj.bird_nest_egg_green" count 1
             1 weight "obj.bird_nest_egg_blue" count 1

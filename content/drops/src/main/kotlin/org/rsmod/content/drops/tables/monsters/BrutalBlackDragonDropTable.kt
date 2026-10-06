@@ -61,7 +61,7 @@ public val brutalBlackDragonDropTable: RSDropTable<Player, DropRollItem> = RSDro
             player -> !player.hasCompletedQuest("quest_monkeymadness2")
         }
         8 weight "obj.anglerfish" count 2
-        1 outOf 512 separate rsPlayerWeightedTable {
+        4 outOf 512 separate rsPlayerWeightedTable {
             1 weight "obj.dragon_platelegs" count 1
             1 weight "obj.dragon_plateskirt" count 1
             1 weight "obj.dragon_spear" count 1

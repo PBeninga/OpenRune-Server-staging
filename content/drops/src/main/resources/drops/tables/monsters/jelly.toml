@@ -118,7 +118,7 @@ obj = "obj.adamant_axe"
 count = 1
 
 [[main.separate_rolls]]
-numerator = 2
+numerator = 6
 denominator = 64
 
 [[main.separate_rolls.entries]]

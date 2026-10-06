@@ -37,19 +37,19 @@ public val skeletonShayzienCryptsDropTable: RSDropTable<Player, DropRollItem> = 
         20 weight "obj.coins" count 80
         2 weight "obj.coins" count 45
         5 weight "obj.coins" count 100..200
-        9 outOf 6720 separate rsPlayerWeightedTable {
+        27 outOf 6720 separate rsPlayerWeightedTable {
             9 weight "obj.opal_bolttips" count 4..10
             9 weight "obj.pearl_bolttips" count 4..10
             9 weight "obj.xbows_bolt_tips_diamond" count 4..10
         }
-        3 outOf 6720 separate rsPlayerWeightedTable {
+        12 outOf 6720 separate rsPlayerWeightedTable {
             3 weight "obj.xbows_bolt_tips_jade" count 4..10
             3 weight "obj.xbows_bolt_tips_redtopaz" count 4..10
             3 weight "obj.xbows_bolt_tips_sapphire" count 4..10
             3 weight "obj.xbows_bolt_tips_onyx" count 4..10
         }
         5 outOf 6720 separate "obj.xbows_bolt_tips_emerald" count 4..10
-        6 outOf 6720 separate rsPlayerWeightedTable {
+        12 outOf 6720 separate rsPlayerWeightedTable {
             6 weight "obj.xbows_bolt_tips_ruby" count 4..10
             6 weight "obj.xbows_bolt_tips_dragonstone" count 4..10
         }

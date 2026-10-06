@@ -48,7 +48,7 @@ public val vardorvisDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         1 outOf 1088 separate "obj.soulreaper_axe_head" count 1
         3 outOf 1088 separate vestigeProgressRoll("varp.vardorvis_vestige_progress", "obj.ultor_vestige")
         3 outOf 1088 separate "obj.chromium_ingot" count 1
-        1 outOf 3264 separate rsPlayerWeightedTable {
+        3 outOf 3264 separate rsPlayerWeightedTable {
             1 weight "obj.virtus_mask" count 1
             1 weight "obj.virtus_top" count 1
             1 weight "obj.virtus_legs" count 1
@@ -59,7 +59,7 @@ public val vardorvisDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         }
         1 outOf 81 separate "obj.dt2_awakeners_orb" count 1
         1 outOf 204 separate "obj.blood_quartz" count 1
-        1 outOf 5 separate rsPlayerWeightedTable {
+        3 outOf 5 separate rsPlayerWeightedTable {
             1 weight "obj.potato_tuna+sweetcorn" count 3..4
             1 weight "obj.3doseprayerrestore" count 1
             1 weight "obj.2dose2combat" count 1

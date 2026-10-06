@@ -57,7 +57,7 @@ public val bloodthirstyNechryarchDropTable: RSDropTable<Player, DropRollItem> = 
         35 weight "obj.cert_magic_logs" count 30..50
         30 weight "obj.cert_wine_of_zamorak" count 30..50
         30 weight "obj.dwarf_weed_seed" count 5..8
-        4 outOf 116 separate rsPlayerWeightedTable {
+        8 outOf 116 separate rsPlayerWeightedTable {
             4 weight "obj.adamant_platelegs" count 1
             4 weight "obj.rune_2h_sword" count 1
         }
@@ -65,7 +65,7 @@ public val bloodthirstyNechryarchDropTable: RSDropTable<Player, DropRollItem> = 
         2 outOf 116 separate "obj.adamant_kiteshield" count 1
         1 outOf 116 separate "obj.rune_armoured_boots" count 1
         8 outOf 116 separate "obj.chaosrune" count 37
-        6 outOf 116 separate rsPlayerWeightedTable {
+        12 outOf 116 separate rsPlayerWeightedTable {
             6 weight "obj.deathrune" count 5
             6 weight "obj.deathrune" count 10
         }
@@ -74,14 +74,14 @@ public val bloodthirstyNechryarchDropTable: RSDropTable<Player, DropRollItem> = 
         13 outOf 116 separate "obj.coins" count 1000..1499
         11 outOf 116 separate "obj.coins" count 1500..2000
         6 outOf 116 separate "obj.coins" count 2500..2999
-        3 outOf 116 separate rsPlayerWeightedTable {
+        6 outOf 116 separate rsPlayerWeightedTable {
             3 weight "obj.coins" count 3000..3500
             3 weight "obj.coins" count 500..999
         }
         1 outOf 116 separate "obj.coins" count 5000
         4 outOf 116 separate "obj.cert_softclay" count 25
         3 outOf 116 separate "obj.tuna" count 1
-        7 outOf 128 separate rsPlayerWeightedTable {
+        21 outOf 128 separate rsPlayerWeightedTable {
             7 weight "obj.adamant_kiteshield" count 1
             7 weight "obj.rune_axe" count 1
             7 weight "obj.rune_sq_shield" count 1
@@ -90,12 +90,12 @@ public val bloodthirstyNechryarchDropTable: RSDropTable<Player, DropRollItem> = 
         4 outOf 128 separate "obj.rune_med_helm" count 1
         3 outOf 128 separate "obj.rune_full_helm" count 1
         2 outOf 128 separate "obj.mystic_air_staff" count 1
-        1 outOf 128 separate rsPlayerWeightedTable {
+        2 outOf 128 separate rsPlayerWeightedTable {
             1 weight "obj.rune_armoured_boots" count 1
             1 weight "obj.rune_chainbody" count 1
         }
         12 outOf 128 separate "obj.deathrune" count 23
-        10 outOf 128 separate rsPlayerWeightedTable {
+        20 outOf 128 separate rsPlayerWeightedTable {
             10 weight "obj.bloodrune" count 20
             10 weight "obj.chaosrune" count 50
         }

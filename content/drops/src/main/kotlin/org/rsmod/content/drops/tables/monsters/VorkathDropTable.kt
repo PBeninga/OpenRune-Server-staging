@@ -53,14 +53,14 @@ public val vorkathDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         3 weight "obj.cert_dragonstone" count 2..3
         3 weight "obj.wrath_talisman" count 1
         25 outOf 2730 separate "obj.xbows_bolt_tips_diamond" count 25..30
-        20 outOf 2730 separate rsPlayerWeightedTable {
+        40 outOf 2730 separate rsPlayerWeightedTable {
             20 weight "obj.xbows_bolt_tips_emerald" count 25..30
             20 weight "obj.xbows_bolt_tips_ruby" count 25..30
         }
         14 outOf 2730 separate "obj.xbows_bolt_tips_dragonstone" count 25..30
         7 outOf 2730 separate "obj.xbows_bolt_tips_onyx" count 25..30
         5 outOf 2730 separate "obj.xbows_bolt_tips_sapphire" count 25..30
-        3 outOf 300 separate rsPlayerWeightedTable {
+        6 outOf 300 separate rsPlayerWeightedTable {
             3 weight "obj.cert_raw_shark" count 35..55
             3 weight "obj.shark_lure" count 70..110
         }

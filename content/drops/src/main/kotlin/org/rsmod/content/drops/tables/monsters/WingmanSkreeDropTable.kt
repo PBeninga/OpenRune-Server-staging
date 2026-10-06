@@ -31,13 +31,13 @@ public val wingmanSkreeDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         70 weight "obj.coins" count 1000..1100
         8 weight "obj.cert_crushed_bird_nest" count 2
         8 weight "obj.cert_unidentified_kwuarm" count 1
-        1 outOf 16129 separate rsPlayerWeightedTable {
+        3 outOf 16129 separate rsPlayerWeightedTable {
             1 weight "obj.armadyl_helmet" count 1
             1 weight "obj.armadyl_chestplate" count 1
             1 weight "obj.armadyl_skirt" count 1
         }
         124 outOf 16129 separate "obj.coins" count 1000..1100
-        1 outOf 1524 separate rsPlayerWeightedTable {
+        3 outOf 1524 separate rsPlayerWeightedTable {
             1 weight "obj.godwars_godsword_blade1" count 1
             1 weight "obj.godwars_godsword_blade2" count 1
             1 weight "obj.godwars_godsword_blade3" count 1
