@@ -14,4 +14,5 @@ dependencies {
     integrationImplementation(projects.api.serverConfig)
     integrationImplementation(projects.content.leagues.demonicPacts.demonicPactsPack)
     integrationImplementation(libs.jackson.module.kotlin)
+    integrationImplementation(libs.rsprot.api)
 }
