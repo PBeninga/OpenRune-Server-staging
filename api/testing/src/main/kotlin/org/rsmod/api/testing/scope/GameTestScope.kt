@@ -1,16 +1,12 @@
 package org.rsmod.api.testing.scope
 
-import com.google.inject.AbstractModule
-import com.google.inject.Guice
 import com.google.inject.Injector
-import com.google.inject.Provider
-import com.google.inject.Scopes
-import com.google.inject.multibindings.Multibinder
+import com.google.inject.Module
 import dev.openrune.ServerCacheManager
-import dev.openrune.definition.type.VarBitType
-import dev.openrune.definition.type.widget.ComponentType
+import dev.openrune.map.MapSingletons
 import dev.openrune.rscm.RSCM.asRSCM
 import dev.openrune.rscm.RSCMType
+import dev.openrune.types.InventoryServerType
 import dev.openrune.types.ItemServerType
 import dev.openrune.types.NpcServerType
 import dev.openrune.types.ObjectServerType
@@ -18,6 +14,7 @@ import dev.openrune.types.StatType
 import dev.openrune.types.aconverted.interf.IfButtonOp
 import dev.openrune.types.aconverted.interf.IfSubType
 import jakarta.inject.Inject
+import java.util.IdentityHashMap
 import kotlin.contracts.contract
 import kotlin.reflect.KClass
 import net.rsprot.protocol.game.incoming.buttons.If3Button
@@ -26,42 +23,25 @@ import net.rsprot.protocol.game.incoming.locs.OpLocV2
 import net.rsprot.protocol.game.incoming.misc.user.MoveGameClick
 import net.rsprot.protocol.game.incoming.npcs.OpNpcV2
 import net.rsprot.protocol.game.incoming.resumed.ResumePCountDialog
+import net.rsprot.protocol.game.incoming.resumed.ResumePauseButton
 import net.rsprot.protocol.game.outgoing.misc.player.MessageGame
 import net.rsprot.protocol.util.CombinedId
 import org.junit.jupiter.api.Assertions
 import org.rsmod.annotations.InternalApi
-import org.rsmod.api.account.character.CharacterDataStage
-import org.rsmod.api.db.Database
-import org.rsmod.api.db.DatabaseConfig
-import org.rsmod.api.db.DatabaseConnection
 import org.rsmod.api.game.process.GameCycle
 import org.rsmod.api.inv.map.InvMapInit
-import org.rsmod.api.market.DefaultMarketPrices
-import org.rsmod.api.market.MarketPrices
 import org.rsmod.api.net.rsprot.handlers.If3ButtonHandler
 import org.rsmod.api.net.rsprot.handlers.IfButtonDHandler
 import org.rsmod.api.net.rsprot.handlers.MoveGameClickHandler
 import org.rsmod.api.net.rsprot.handlers.OpLocHandler
 import org.rsmod.api.net.rsprot.handlers.OpNpcHandler
 import org.rsmod.api.net.rsprot.handlers.ResumePCountDialogHandler
+import org.rsmod.api.net.rsprot.handlers.ResumePauseButtonHandler
 import org.rsmod.api.npc.apPlayer2
-import org.rsmod.api.npc.hit.NpcDamageContributor
 import org.rsmod.api.npc.hit.modifier.NpcHitModifier
-import org.rsmod.api.npc.hit.modifier.StandardNpcHitModifier
-import org.rsmod.api.npc.hit.processor.NpcHitProcessor
-import org.rsmod.api.npc.hit.processor.StandardNpcHitProcessor
 import org.rsmod.api.npc.hit.queueHit
 import org.rsmod.api.npc.interact.AiPlayerInteractions
 import org.rsmod.api.npc.opPlayer2
-import org.rsmod.api.player.hit.modifier.PlayerHitModifier
-import org.rsmod.api.player.hit.modifier.StandardPlayerHitModifier
-import org.rsmod.api.player.hit.processor.DamageOnlyPlayerHitProcessor
-import org.rsmod.api.player.hit.processor.InstantPlayerHitProcessor
-import org.rsmod.api.player.hook.PlayerGroundItemDropHook
-import org.rsmod.api.player.hook.PlayerInvUpdateHook
-import org.rsmod.api.player.hook.PlayerObjTakeValidateHook
-import org.rsmod.api.player.hook.PlayerPostTickHook
-import org.rsmod.api.player.hook.PlayerTeleportValidateHook
 import org.rsmod.api.player.protect.ProtectedAccess
 import org.rsmod.api.player.protect.ProtectedAccessLauncher
 import org.rsmod.api.player.protect.clearPendingAction
@@ -70,63 +50,33 @@ import org.rsmod.api.player.ui.ifOpenMain
 import org.rsmod.api.player.ui.ifOpenSub
 import org.rsmod.api.player.vars.VarPlayerIntMapSetter
 import org.rsmod.api.player.vars.varMoveSpeed
-import org.rsmod.api.random.CoreRandom
 import org.rsmod.api.random.DefaultGameRandom
 import org.rsmod.api.random.GameRandom
-import org.rsmod.api.realm.Realm
-import org.rsmod.api.registry.account.AccountRegistry
 import org.rsmod.api.registry.controller.ControllerRegistry
 import org.rsmod.api.registry.controller.isSuccess
 import org.rsmod.api.registry.loc.LocRegistry
-import org.rsmod.api.registry.loc.LocRegistryNormal
-import org.rsmod.api.registry.loc.LocRegistryRegion
 import org.rsmod.api.registry.npc.NpcRegistry
 import org.rsmod.api.registry.npc.isSuccess
-import org.rsmod.api.registry.obj.ObjRegistry
-import org.rsmod.api.registry.player.PlayerRegistry
 import org.rsmod.api.registry.region.RegionRegistry
-import org.rsmod.api.registry.zone.ZonePlayerActivityBitSet
 import org.rsmod.api.repo.controller.ControllerRepository
-import org.rsmod.api.repo.loc.LocRepository
 import org.rsmod.api.repo.npc.NpcRepository
-import org.rsmod.api.repo.obj.ObjRepository
-import org.rsmod.api.repo.player.PlayerRepository
 import org.rsmod.api.repo.region.RegionRepository
 import org.rsmod.api.repo.region.RegionTemplate
-import org.rsmod.api.repo.world.WorldRepository
-import org.rsmod.api.route.BoundValidator
-import org.rsmod.api.route.RayCastFactory
-import org.rsmod.api.route.RayCastValidator
-import org.rsmod.api.route.RouteFactory
-import org.rsmod.api.route.StepFactory
-import org.rsmod.api.server.config.ServerConfigModule
-import org.rsmod.api.stats.levelmod.InvisibleLevelMod
-import org.rsmod.api.stats.levelmod.InvisibleLevels
-import org.rsmod.api.stats.xpmod.XpMod
-import org.rsmod.api.stats.xpmod.XpModifiers
 import org.rsmod.api.testing.GameTestState
 import org.rsmod.api.testing.capture.CaptureClient
 import org.rsmod.api.testing.factory.TestCacheTypes
-import org.rsmod.api.testing.factory.collisionFactory
-import org.rsmod.api.testing.random.FixedRandom
 import org.rsmod.api.testing.random.SequenceRandom
-import org.rsmod.api.testing.util.TestRealmConfig
-import org.rsmod.api.utils.logging.GameExceptionHandler
 import org.rsmod.events.EventBus
-import org.rsmod.game.GameUpdate
 import org.rsmod.game.MapClock
-import org.rsmod.game.area.AreaIndex
 import org.rsmod.game.cheat.CheatCommandMap
 import org.rsmod.game.client.Client
 import org.rsmod.game.entity.Controller
-import org.rsmod.game.entity.ControllerList
 import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.PathingEntity
 import org.rsmod.game.entity.Player
 import org.rsmod.game.entity.PlayerList
 import org.rsmod.game.entity.player.SessionStateEvent
 import org.rsmod.game.entity.util.PathingEntityCommon
-import org.rsmod.game.entity.util.ShuffledPlayerList
 import org.rsmod.game.hit.HitType
 import org.rsmod.game.inv.InvObj
 import org.rsmod.game.inv.Inventory
@@ -139,22 +89,28 @@ import org.rsmod.game.loc.LocZoneKey
 import org.rsmod.game.map.LocZoneStorage
 import org.rsmod.game.map.collision.addLoc
 import org.rsmod.game.movement.MoveSpeed
-import org.rsmod.game.queue.EngineQueueCache
 import org.rsmod.game.region.Region
-import org.rsmod.game.region.RegionListLarge
-import org.rsmod.game.region.RegionListSmall
 import org.rsmod.game.stat.PlayerSkillXPTable
 import org.rsmod.game.stat.PlayerStatMap
 import org.rsmod.game.ui.UserInterface
 import org.rsmod.map.CoordGrid
+import org.rsmod.map.square.MapSquareGrid
 import org.rsmod.map.zone.ZoneGrid
 import org.rsmod.map.zone.ZoneKey
 import org.rsmod.plugin.scripts.PluginScript
 import org.rsmod.plugin.scripts.ScriptContext
 import org.rsmod.routefinder.collision.CollisionFlagMap
 import org.rsmod.routefinder.loc.LocLayerConstants
-import org.rsmod.server.app.modules.ParserModule
 
+/**
+ * The receiver of [GameTestState.runGameTest]: one isolated game world with a single registered
+ * [player], driven tick by tick with [advance].
+ *
+ * Cache types come from the global `ServerCacheManager`, looked up by RSCM name: [objType],
+ * [npcType], [locType], [invType], or the [objTypes], [npcTypes] and [locTypes] maps
+ * (`npcTypes["npc.man"]`). Cache types are mutable data classes shared by every test: never
+ * modify one, `copy()` it instead.
+ */
 public class GameTestScope
 @Inject
 constructor(
@@ -176,12 +132,14 @@ constructor(
     private val ifButtonDHandler: IfButtonDHandler,
     private val gameClickHandler: MoveGameClickHandler,
     private val resumePCountDialog: ResumePCountDialogHandler,
+    private val resumePauseButtonHandler: ResumePauseButtonHandler,
     private val opLocHandler: OpLocHandler,
     private val opNpcHandler: OpNpcHandler,
     private val aiPlayerInteractions: AiPlayerInteractions,
     private val npcHitModifier: NpcHitModifier,
     private val regionRegistry: RegionRegistry,
     private val regionRepo: RegionRepository,
+    private val cheatCommands: CheatCommandMap,
 ) {
     init {
         registerPlayer()
@@ -189,6 +147,15 @@ constructor(
 
     public val player: Player by lazy { players.first() }
     public val client: CaptureClient by lazy { player.captureClient }
+
+    public val objTypes: TestTypeMap<ItemServerType> =
+        TestTypeMap(RSCMType.OBJ, ServerCacheManager.getItems())
+
+    public val npcTypes: TestTypeMap<NpcServerType> =
+        TestTypeMap(RSCMType.NPC, ServerCacheManager.getNpcs())
+
+    public val locTypes: TestTypeMap<ObjectServerType> =
+        TestTypeMap(RSCMType.LOC, ServerCacheManager.getObjects())
 
     private val Player.captureClient
         get() = client as CaptureClient
@@ -198,10 +165,13 @@ constructor(
 
     private var playerUuidCounter = 0L
 
+    private val dialogueRecorders = IdentityHashMap<Player, DialogueRecorder>()
+
     public fun advance(ticks: Int = 1) {
         repeat(ticks) {
             clearCaptureClients()
             gameCycle.tick()
+            recordDialogues()
             flushCaptureClients()
         }
     }
@@ -238,6 +208,7 @@ constructor(
         player.characterId = resolvedUuid.toInt()
         player.accountHash = resolvedUuid
         player.userId = resolvedUuid
+        player.userHash = resolvedUuid
         player.runEnergy = Int.MAX_VALUE
         player.assignUid()
         players[slot] = player
@@ -262,32 +233,30 @@ constructor(
         players.remove(slot)
     }
 
+    /** Sets a varp (`"varp.x"`) or varbit (`"varbit.x"`). */
     public fun Player.setVarp(varp: String, value: Int) {
         VarPlayerIntMapSetter.set(this, varp, value)
     }
 
-    public fun Player.setVarBit(varbit: VarBitType, value: Int) {
-        VarPlayerIntMapSetter.set(this, varbit, value)
-    }
-
+    /** Sets a varbit (`"varbit.x"`) or varp (`"varp.x"`). */
     public fun Player.setVarBit(varbit: String, value: Int) {
         VarPlayerIntMapSetter.set(this, varbit, value)
     }
 
     public fun Player.setCurrentLevel(stat: String, level: Int) {
-        statMap.setCurrentLevel(stat, level.toByte())
-    }
-
-    public fun Player.setBaseLevel(stat: String, level: Int) {
-        statMap.setBaseLevel(stat, level.toByte())
-    }
-
-    public fun Player.setCurrentLevel(stat: StatType, level: Int) {
         stats.setCurrentLevel(stat, level)
     }
 
-    public fun Player.setBaseLevel(stat: StatType, level: Int) {
+    public fun Player.setCurrentLevel(stat: StatType, level: Int) {
+        stats.setCurrentLevel(stat.internalName, level)
+    }
+
+    public fun Player.setBaseLevel(stat: String, level: Int) {
         stats.setBaseLevel(stat, level)
+    }
+
+    public fun Player.setBaseLevel(stat: StatType, level: Int) {
+        stats.setBaseLevel(stat.internalName, level)
     }
 
     public fun Player.setMoveSpeed(speed: MoveSpeed) {
@@ -336,9 +305,11 @@ constructor(
         inv.fillNulls()
     }
 
-    public fun Player.fillInv(with: InvObj = InvObj(testItem("obj.beer")), inv: Inventory = this.inv) {
+    public fun Player.fillInv(with: InvObj = InvObj("obj.beer"), inv: Inventory = this.inv) {
         repeat(inv.size) { inv[it] = InvObj(with) }
     }
+
+    public fun Player.count(obj: String, inv: Inventory = this.inv): Int = inv.count(obj)
 
     public fun Player.count(obj: ItemServerType, inv: Inventory = this.inv): Int =
         inv.count(obj.internalName)
@@ -347,60 +318,62 @@ constructor(
         invMap.values.forEach(Inventory::fillNulls)
     }
 
+    /**
+     * Executes the `::[command]` cheat for this player, as if typed in chat, with the given [args].
+     *
+     * Fails if no plugin script under test has registered [command].
+     */
+    public fun Player.cheat(command: String, vararg args: String) {
+        val executed = cheatCommands.execute(this, command, args.toList())
+        Assertions.assertTrue(executed) { "Cheat command not registered: `$command`" }
+    }
+
     public fun Player.opLoc1(loc: BoundLocInfo, controlKey: Boolean = false) {
-        val message = OpLocV2(loc.id, loc.x, loc.z, controlKey, op = 1, subop = 0)
-        captureClient.queue(opLocHandler, message)
+        opLoc(loc, controlKey, op = 1)
     }
 
     public fun Player.opLoc2(loc: BoundLocInfo, controlKey: Boolean = false) {
-        val message = OpLocV2(loc.id, loc.x, loc.z, controlKey, op = 2, subop = 0)
-        captureClient.queue(opLocHandler, message)
+        opLoc(loc, controlKey, op = 2)
     }
 
     public fun Player.opLoc3(loc: BoundLocInfo, controlKey: Boolean = false) {
-        val message = OpLocV2(loc.id, loc.x, loc.z, controlKey, op = 3, subop = 0)
-        captureClient.queue(opLocHandler, message)
+        opLoc(loc, controlKey, op = 3)
     }
 
     public fun Player.opLoc4(loc: BoundLocInfo, controlKey: Boolean = false) {
-        val message = OpLocV2(loc.id, loc.x, loc.z, controlKey, op = 4, subop = 0)
-        captureClient.queue(opLocHandler, message)
+        opLoc(loc, controlKey, op = 4)
     }
 
     public fun Player.opLoc5(loc: BoundLocInfo, controlKey: Boolean = false) {
-        val message = OpLocV2(loc.id, loc.x, loc.z, controlKey, op = 5, subop = 0)
-        captureClient.queue(opLocHandler, message)
+        opLoc(loc, controlKey, op = 5)
     }
 
     public fun Player.opNpc1(npc: Npc, controlKey: Boolean = false) {
-        val message = OpNpcV2(npc.slotId, controlKey, op = 1, subop = 0)
-        captureClient.queue(opNpcHandler, message)
+        opNpc(npc, controlKey, op = 1)
     }
 
     public fun Player.opNpc2(npc: Npc, controlKey: Boolean = false) {
-        val message = OpNpcV2(npc.slotId, controlKey, op = 2, subop = 0)
-        captureClient.queue(opNpcHandler, message)
+        opNpc(npc, controlKey, op = 2)
     }
 
     public fun Player.opNpc3(npc: Npc, controlKey: Boolean = false) {
-        val message = OpNpcV2(npc.slotId, controlKey, op = 3, subop = 0)
-        captureClient.queue(opNpcHandler, message)
+        opNpc(npc, controlKey, op = 3)
     }
 
     public fun Player.opNpc4(npc: Npc, controlKey: Boolean = false) {
-        val message = OpNpcV2(npc.slotId, controlKey, op = 4, subop = 0)
-        captureClient.queue(opNpcHandler, message)
+        opNpc(npc, controlKey, op = 4)
     }
 
     public fun Player.opNpc5(npc: Npc, controlKey: Boolean = false) {
-        val message = OpNpcV2(npc.slotId, controlKey, op = 5, subop = 0)
-        captureClient.queue(opNpcHandler, message)
+        opNpc(npc, controlKey, op = 5)
     }
 
+    /** Opens [interf] (`"interface.x"`) as the main modal. */
     public fun Player.ifOpenMain(interf: String) {
         ifOpenMain(interf, eventBus)
     }
 
+    /** Opens [interf] (`"interface.x"`) as an overlay on [target] (`"component.x:y"`). */
     public fun Player.ifOpenOverlay(interf: String, target: String) {
         ifOpenSub(interf, target, IfSubType.Overlay, eventBus)
     }
@@ -409,27 +382,29 @@ constructor(
         ifClose(eventBus)
     }
 
+    /** Clicks [component] (`"component.x:y"`), as the client's `IF_BUTTON` packets do. */
     public fun Player.ifButton(
-        type: ComponentType,
+        component: String,
         comsub: Int? = null,
         op: IfButtonOp = IfButtonOp.Op1,
         obj: Int? = null,
     ) {
-        val combinedId = CombinedId(type.interfaceId, type.component)
+        val combinedId = CombinedId(component.asRSCM(RSCMType.COMPONENT))
         val message = If3Button(combinedId, comsub ?: -1, obj = obj ?: -1, op = op.slot)
         captureClient.queue(ifButtonHandler, message)
     }
 
+    /** Drags from [fromComponent] slot [fromComsub] to [intoComponent] slot [intoComsub]. */
     public fun Player.ifButtonD(
-        fromComponent: ComponentType,
+        fromComponent: String,
         fromComsub: Int,
         fromObj: ItemServerType?,
-        intoComponent: ComponentType,
+        intoComponent: String,
         intoComsub: Int,
         intoObj: ItemServerType?,
     ) {
-        val fromCombinedId = CombinedId(fromComponent.interfaceId, fromComponent.component)
-        val intoCombinedId = CombinedId(intoComponent.interfaceId, intoComponent.component)
+        val fromCombinedId = CombinedId(fromComponent.asRSCM(RSCMType.COMPONENT))
+        val intoCombinedId = CombinedId(intoComponent.asRSCM(RSCMType.COMPONENT))
         val message =
             IfButtonD(
                 fromCombinedId,
@@ -443,7 +418,7 @@ constructor(
     }
 
     public fun Player.ifButtonD(
-        fromComponent: ComponentType,
+        fromComponent: String,
         fromComsub: Int,
         intoComsub: Int,
         fromObj: ItemServerType? = null,
@@ -468,6 +443,138 @@ constructor(
         allocZoneCollision(dest)
         val message = MoveGameClick(dest.x, dest.z, keyCombination)
         captureClient.queue(gameClickHandler, message)
+    }
+
+    /**
+     * The chatbox dialogue this player is looking at (an npc or player line, a message box, an obj
+     * box or a choice menu), or `null` if no chatbox modal is open. See [TestDialogue].
+     */
+    public fun Player.dialogue(): TestDialogue? {
+        val interfaceId = ui.getModalOrNull(CHAT_MODAL)?.packed ?: return null
+        val recorder = dialogueRecorder()
+        recorder.record(captureClient.outgoingMessages)
+        return recorder.read(interfaceId)
+    }
+
+    /**
+     * Clicks "Click here to continue" on the open dialogue, as the client's `RESUME_PAUSEBUTTON`
+     * packet does. Like every input helper it is applied on the next [advance].
+     */
+    public fun Player.resumePauseButton() {
+        val dialogue = requireDialogue()
+        val layout =
+            DialogueLayout.of(dialogue.interf)
+                ?: Assertions.fail("No continue button known for ${dialogue.interf}.")
+        if (layout.isChoice) {
+            Assertions.fail<Unit>("A choice menu is open; use chooseOption. ($dialogue)")
+        }
+        queueResumePauseButton(layout.continueComponent, layout.continueSub)
+    }
+
+    /** Picks choice [option] (1 is the first) of the open choice menu, on the next [advance]. */
+    public fun Player.chooseOption(option: Int) {
+        val dialogue = requireDialogue()
+        val layout = DialogueLayout.of(dialogue.interf)
+        if (layout == null || !layout.isChoice) {
+            Assertions.fail<Unit>("No choice menu is open. ($dialogue)")
+            return
+        }
+        if (option !in 1..dialogue.options.size) {
+            Assertions.fail<Unit>("No option $option. (options=${dialogue.options})")
+        }
+        queueResumePauseButton(layout.continueComponent, option)
+    }
+
+    /** Picks the option of the open choice menu whose text is [option], on the next [advance]. */
+    public fun Player.chooseOption(option: String) {
+        val options = requireDialogue().options
+        val index = options.indexOf(option)
+        if (index < 0) {
+            Assertions.fail<Unit>("Option not found. (search=$option) | (options=$options)")
+        }
+        chooseOption(index + 1)
+    }
+
+    /**
+     * Asserts that [player]'s open dialogue shows exactly [text] (line breaks read as spaces) and,
+     * if given, that [speaker] says it.
+     */
+    public fun assertDialogue(text: String, speaker: String? = null, player: Player = this.player) {
+        val dialogue = player.requireDialogue()
+        Assertions.assertEquals(text, dialogue.text) { "Unexpected dialogue text. ($dialogue)" }
+        if (speaker != null) {
+            Assertions.assertEquals(speaker, dialogue.speaker) { "Unexpected speaker. ($dialogue)" }
+        }
+    }
+
+    /** Asserts that [player] has a choice menu open with exactly [options], in order. */
+    public fun assertDialogueOptions(vararg options: String, player: Player = this.player) {
+        val dialogue = player.requireDialogue()
+        Assertions.assertEquals(options.toList(), dialogue.options) {
+            "Unexpected options. ($dialogue)"
+        }
+    }
+
+    /** Asserts that [player] has no chatbox dialogue open. */
+    public fun assertNoDialogue(player: Player = this.player) {
+        val dialogue = player.dialogue()
+        Assertions.assertNull(dialogue) { "Dialogue is open: $dialogue" }
+    }
+
+    /**
+     * Buys [count] (1, 5, 10 or 50) of [obj] (`"obj.x"`) from the open shop, as the client's
+     * `Buy-n` op on the shop's item does. Applied on the next [advance].
+     */
+    public fun Player.shopBuy(obj: String, count: Int = 1) {
+        val shop = openedShop ?: Assertions.fail("No shop is open.")
+        val type = objType(obj)
+        val slot = shop.inv.objs.indexOfFirst { it?.id == type.id }
+        if (slot < 0) {
+            Assertions.fail<Unit>("The shop does not stock $obj.")
+        }
+        ifButton("component.shopmain:items", comsub = slot + 1, op = shopOp(count), obj = type.id)
+    }
+
+    /**
+     * Sells [count] (1, 5, 10 or 50) of [obj] (`"obj.x"`) from the inventory to the open shop, as
+     * the client's `Sell n` op does. Applied on the next [advance].
+     */
+    public fun Player.shopSell(obj: String, count: Int = 1) {
+        if (openedShop == null) {
+            Assertions.fail<Unit>("No shop is open.")
+        }
+        val type = objType(obj)
+        val slot = inv.objs.indexOfFirst { it?.id == type.id }
+        if (slot < 0) {
+            Assertions.fail<Unit>("The inventory holds no $obj.")
+        }
+        ifButton("component.shopside:items", comsub = slot, op = shopOp(count), obj = type.id)
+    }
+
+    private fun shopOp(count: Int): IfButtonOp =
+        when (count) {
+            1 -> IfButtonOp.Op2
+            5 -> IfButtonOp.Op3
+            10 -> IfButtonOp.Op4
+            50 -> IfButtonOp.Op5
+            else -> Assertions.fail("Shops buy and sell 1, 5, 10 or 50 at a time, not $count.")
+        }
+
+    private fun Player.requireDialogue(): TestDialogue =
+        dialogue() ?: Assertions.fail("No dialogue is open. (modals=${ui.modals.backing.values})")
+
+    private fun Player.dialogueRecorder(): DialogueRecorder =
+        dialogueRecorders.getOrPut(this) { DialogueRecorder() }
+
+    private fun Player.queueResumePauseButton(component: String, sub: Int) {
+        val combinedId = CombinedId(component.asRSCM(RSCMType.COMPONENT))
+        captureClient.queue(resumePauseButtonHandler, ResumePauseButton(combinedId, sub))
+    }
+
+    private fun recordDialogues() {
+        for (player in players) {
+            player.dialogueRecorder().record(player.captureClient.outgoingMessages)
+        }
     }
 
     public fun Player.withProtectedAccess(action: suspend ProtectedAccess.() -> Unit) {
@@ -497,6 +604,20 @@ constructor(
         collision.allocateIfAbsent(coord.x, coord.z, coord.level)
     }
 
+    /** The cache obj type [internal] (`"obj.x"`). */
+    public fun objType(internal: String): ItemServerType = objTypes[internal]
+
+    /** The cache npc type [internal] (`"npc.x"`). */
+    public fun npcType(internal: String): NpcServerType = npcTypes[internal]
+
+    /** The cache loc type [internal] (`"loc.x"`). */
+    public fun locType(internal: String): ObjectServerType = locTypes[internal]
+
+    /** The cache inv type [internal] (`"inv.x"`). */
+    public fun invType(internal: String): InventoryServerType =
+        ServerCacheManager.getInventory(internal.asRSCM(RSCMType.INV))
+            ?: error("Inv type not found: $internal")
+
     public fun spawnNpc(coords: CoordGrid, type: NpcServerType, init: Npc.() -> Unit = {}): Npc {
         val npc = Npc(type, coords).apply(init)
         val add = npcRegistry.add(npc)
@@ -504,6 +625,11 @@ constructor(
         return npc
     }
 
+    /** Spawns the cache npc [type] (`"npc.x"`) at [coords]. */
+    public fun spawnNpc(coords: CoordGrid, type: String, init: Npc.() -> Unit = {}): Npc =
+        spawnNpc(coords, npcType(type), init)
+
+    /** Spawns a controller of [type] (`"controller.x"`) at [coords]. */
     public fun spawnController(
         coords: CoordGrid,
         type: String,
@@ -516,6 +642,14 @@ constructor(
         return controller
     }
 
+    /**
+     * Places a map loc of [type] at [coords], with its collision, as if it had been decoded from
+     * the map.
+     *
+     * Packet handlers look loc types up in `ServerCacheManager`, so a loc that a test interacts with
+     * (`opLoc1`, ...) must be a real cache type. Standalone types from `locTypeFactory` only work
+     * for code that receives the type directly.
+     */
     public fun placeMapLoc(
         coords: CoordGrid,
         type: ObjectServerType,
@@ -537,12 +671,13 @@ constructor(
         return boundLoc
     }
 
+    /** Places the cache loc [type] (`"loc.x"`) at [coords]. See [placeMapLoc]. */
     public fun placeMapLoc(
         coords: CoordGrid,
         type: String,
         shape: LocShape = LocShape.CentrepieceStraight,
         angle: LocAngle = LocAngle.West,
-    ): BoundLocInfo = placeMapLoc(coords, testLoc(type), shape, angle)
+    ): BoundLocInfo = placeMapLoc(coords, locType(type), shape, angle)
 
     public fun locDel(bound: BoundLocInfo) {
         val locInfo = LocInfo(bound.layer, bound.coords, bound.entity)
@@ -556,38 +691,28 @@ constructor(
     public fun findLocs(coords: CoordGrid): Sequence<LocInfo> =
         locRegistry.findAll(ZoneKey.from(coords))
 
-    public fun findLoc(coords: CoordGrid, type: ObjectServerType): LocInfo? =
-        findLocs(coords).firstOrNull { it.id == type.id }
+    public fun findLoc(coords: CoordGrid, type: String): LocInfo? =
+        findLocs(coords).firstOrNull { it.id == type.asRSCM(RSCMType.LOC) }
 
     public fun locExists(loc: BoundLocInfo): Boolean = locRegistry.isValid(loc.coords, loc.id)
 
-    public fun locExists(coords: CoordGrid, type: ObjectServerType): Boolean =
-        locRegistry.isValid(coords, type.id)
+    public fun locExists(coords: CoordGrid, type: String): Boolean =
+        locRegistry.isValid(coords, type.asRSCM(RSCMType.LOC))
 
-    public fun findLocTypes(predicate: (ObjectServerType) -> Boolean): Sequence<ObjectServerType> {
-        return sequence {
-            for (type in ServerCacheManager.getObjects().values) {
-                if (predicate(type)) {
-                    yield(type)
-                }
-            }
-        }
-    }
+    public fun findLocTypes(predicate: (ObjectServerType) -> Boolean): Sequence<ObjectServerType> =
+        locTypes.values.asSequence().filter(predicate)
 
+    /** The first cache loc type in content group [content] (`"content.x"`). */
     public fun findLocType(
         content: String,
         predicate: (ObjectServerType) -> Boolean = { true },
-    ): ObjectServerType = findLocTypes { it.isContentType(content) && predicate(it) }.first()
-
-    public fun findObjType(predicate: (ItemServerType) -> Boolean): Sequence<ItemServerType> {
-        return sequence {
-            for (type in ServerCacheManager.getItems().values) {
-                if (predicate(type)) {
-                    yield(type)
-                }
-            }
-        }
+    ): ObjectServerType {
+        val contentId = content.asRSCM(RSCMType.CONTENT)
+        return findLocTypes { it.contentGroup == contentId && predicate(it) }.first()
     }
+
+    public fun findObjType(predicate: (ItemServerType) -> Boolean): Sequence<ItemServerType> =
+        objTypes.values.asSequence().filter(predicate)
 
     public fun firstObjType(predicate: (ItemServerType) -> Boolean): ItemServerType {
         val filtered = findObjType(predicate)
@@ -608,22 +733,32 @@ constructor(
         regionRegistry.removeInactiveLargeRegions()
     }
 
+    /**
+     * Registers the cache map's locs (walls, doors, tables...) of the map square that holds
+     * [coords], on every level, in this test's loc registry. A test world's loc registry starts
+     * empty, though its collision already includes these locs.
+     *
+     * Call it before building an instance that copies this map square: the copy takes its loc
+     * collision from the loc registry, so without the map's locs the copy has no walls.
+     */
+    public fun loadMapLocs(coords: CoordGrid) {
+        val zones = MapSquareGrid.LENGTH / ZoneGrid.LENGTH
+        for (level in 0 until CoordGrid.LEVEL_COUNT) {
+            for (zx in 0 until zones) {
+                for (zz in 0 until zones) {
+                    val lx = zx * ZoneGrid.LENGTH
+                    val lz = zz * ZoneGrid.LENGTH
+                    val zone = CoordGrid(level, coords.mx, coords.mz, lx, lz)
+                    val key = ZoneKey.from(zone)
+                    val mapLocs = MapSingletons.locZones.mapLocs[key] ?: continue
+                    locZoneStorage.mapLocs.getOrPut(key).putAll(mapLocs)
+                }
+            }
+        }
+    }
+
     public fun CaptureClient.clear() {
         clearOutgoing()
-    }
-
-    private fun clearCaptureClients() {
-        for (player in players) {
-            val client = player.captureClient
-            client.clearOutgoing()
-        }
-    }
-
-    private fun flushCaptureClients() {
-        for (player in players) {
-            val client = player.captureClient
-            client.clearIncoming()
-        }
     }
 
     public fun assertTrue(condition: Boolean) {
@@ -659,8 +794,16 @@ constructor(
         Assertions.assertNotEquals(expected, actual)
     }
 
+    public fun assertContains(inv: Inventory, obj: String) {
+        Assertions.assertTrue(obj in inv) { "Obj not found. (obj=$obj) | (inv=$inv)" }
+    }
+
     public fun assertContains(inv: Inventory, obj: ItemServerType) {
         Assertions.assertTrue(obj in inv) { "Obj not found. (obj=$obj) | (inv=$inv)" }
+    }
+
+    public fun assertDoesNotContain(inv: Inventory, obj: String) {
+        Assertions.assertFalse(obj in inv) { "Obj found. (obj=$obj) | (inv=$inv)" }
     }
 
     public fun assertDoesNotContain(inv: Inventory, obj: ItemServerType) {
@@ -674,7 +817,7 @@ constructor(
         }
     }
 
-    public fun assertExists(coords: CoordGrid, type: ObjectServerType) {
+    public fun assertExists(coords: CoordGrid, type: String) {
         Assertions.assertTrue(locExists(coords, type)) {
             val found = locRegistry.findAll(ZoneKey.from(coords)).toList()
             "Loc not found. (coords=$coords, type=$type) | (found=$found)"
@@ -685,7 +828,7 @@ constructor(
         Assertions.assertFalse(locExists(loc)) { "Loc found. (loc=$loc)" }
     }
 
-    public fun assertDoesNotExist(coords: CoordGrid, type: ObjectServerType) {
+    public fun assertDoesNotExist(coords: CoordGrid, type: String) {
         Assertions.assertFalse(locExists(coords, type)) {
             "Loc found. (coords=$coords) | (type=$type)"
         }
@@ -717,6 +860,7 @@ constructor(
         Assertions.assertEquals(emptyList<String>(), messages) { "Messages found:" }
     }
 
+    /** Asserts that [interf] (`"interface.x"`) is open as a modal. */
     public fun assertModalOpen(interf: String, player: Player = this.player) {
         Assertions.assertTrue(player.ui.containsModal(interf)) {
             val openedModals = player.ui.modals.values.map(::UserInterface)
@@ -724,6 +868,7 @@ constructor(
         }
     }
 
+    /** Asserts that [interf] (`"interface.x"`) is not open as a modal. */
     public fun assertModalNotOpen(interf: String, player: Player = this.player) {
         Assertions.assertFalse(player.ui.containsModal(interf)) {
             val openedModals = player.ui.modals.values.map(::UserInterface)
@@ -776,35 +921,53 @@ constructor(
         Assertions.assertDoesNotThrow { block() }
     }
 
-    private fun testItem(rscm: String): ItemServerType =
-        requireNotNull(ServerCacheManager.getItem(rscm.asRSCM(RSCMType.OBJ))) {
-            "Unknown item: $rscm"
+    private fun Player.opLoc(loc: BoundLocInfo, controlKey: Boolean, op: Int) {
+        val message =
+            OpLocV2(
+                id = loc.id,
+                x = loc.coords.x,
+                z = loc.coords.z,
+                controlKey = controlKey,
+                op = op,
+                subop = -1,
+            )
+        captureClient.queue(opLocHandler, message)
+    }
+
+    private fun Player.opNpc(npc: Npc, controlKey: Boolean, op: Int) {
+        val message = OpNpcV2(index = npc.slotId, controlKey = controlKey, op = op, subop = -1)
+        captureClient.queue(opNpcHandler, message)
+    }
+
+    private fun clearCaptureClients() {
+        for (player in players) {
+            val client = player.captureClient
+            client.clearOutgoing()
         }
+    }
 
-    private fun testLoc(rscm: String): ObjectServerType =
-        requireNotNull(ServerCacheManager.getObject(rscm.asRSCM(RSCMType.LOC))) {
-            "Unknown loc: $rscm"
+    private fun flushCaptureClients() {
+        for (player in players) {
+            val client = player.captureClient
+            client.clearIncoming()
         }
+    }
 
-    public class Builder(state: GameTestState, private val scripts: Set<KClass<out PluginScript>>) {
-        private val collisionMap: CollisionFlagMap = state.collision
+    /**
+     * Builds the injector for one test. See [GameTestState.runGameTest] for what it contains.
+     *
+     * Every plugin module outside `org.rsmod.content` is installed, plus the content plugin modules
+     * that own one of [scripts]. Only [scripts] have their events bound.
+     */
+    public class Builder(
+        private val state: GameTestState,
+        private val scripts: Set<KClass<out PluginScript>>,
+    ) {
+        internal fun build(): GameTestScope =
+            buildInjector(emptyList()).getInstance(GameTestScope::class.java)
 
-        internal fun build(): GameTestScope {
-            val module = TestModule(collisionMap)
-            val injector = Guice.createInjector(module)
-            bindScriptEvents(injector)
-            return injector.getInstance(GameTestScope::class.java)
-        }
-
-        internal fun buildInjector(optionalChildModule: AbstractModule?): Injector {
-            val module = TestModule(collisionMap)
-            val parentInjector = Guice.createInjector(module)
-            val injector =
-                if (optionalChildModule != null) {
-                    parentInjector.createChildInjector(optionalChildModule)
-                } else {
-                    parentInjector
-                }
+        internal fun buildInjector(overrides: List<Module>): Injector {
+            val injector = state.createTestInjector(scripts, overrides)
             bindScriptEvents(injector)
             return injector
         }
@@ -818,129 +981,16 @@ constructor(
         }
     }
 
-    private class TestModule(private val gameCollisionMap: CollisionFlagMap) : AbstractModule() {
-        override fun configure() {
-            bindInstances()
-            installModules()
-        }
-
-        private fun bindInstances() {
-            collisionFactory.borrowSharedMap().let { collision ->
-                // Copy the original game's collision flag map into the test.
-                // Important Note: This does _not_ add locs into the loc registry.
-                gameCollisionMap.flags.copyInto(collision.flags)
-                bind(CollisionFlagMap::class.java).toInstance(collision)
-            }
-
-            bind(AreaIndex::class.java).`in`(Scopes.SINGLETON)
-
-            bind(GameExceptionHandler::class.java)
-                .to(TestExceptionHandler::class.java)
-                .`in`(Scopes.SINGLETON)
-
-            bind(GameRandom::class.java)
-                .annotatedWith(CoreRandom::class.java)
-                .toInstance(FixedRandom(start = 0))
-
-            VariableGameRandom().let { random ->
-                bind(GameRandom::class.java).toInstance(random.impl)
-                bind(VariableGameRandom::class.java).toInstance(random)
-            }
-
-            bind(Realm::class.java).toInstance(createTestRealm())
-            bind(Database::class.java).to(ThrowDatabase::class.java).`in`(Scopes.SINGLETON)
-            bind(DatabaseConfig::class.java)
-                .toInstance(DatabaseConfig("jdbc:test", "test", "test", usesEmbeddedPostgres = false))
-
-            bind(EventBus::class.java).`in`(Scopes.SINGLETON)
-            bind(GameUpdate::class.java).`in`(Scopes.SINGLETON)
-            bind(MapClock::class.java).`in`(Scopes.SINGLETON)
-            bind(LocZoneStorage::class.java).`in`(Scopes.SINGLETON)
-
-            bind(BoundValidator::class.java).`in`(Scopes.SINGLETON)
-            bind(RayCastValidator::class.java).`in`(Scopes.SINGLETON)
-            bind(RayCastFactory::class.java).`in`(Scopes.SINGLETON)
-            bind(RouteFactory::class.java).`in`(Scopes.SINGLETON)
-            bind(StepFactory::class.java).`in`(Scopes.SINGLETON)
-
-            bind(AccountRegistry::class.java).`in`(Scopes.SINGLETON)
-            bind(ControllerList::class.java).`in`(Scopes.SINGLETON)
-            bind(ControllerRegistry::class.java).`in`(Scopes.SINGLETON)
-            bind(ControllerRepository::class.java).`in`(Scopes.SINGLETON)
-            bind(PlayerList::class.java).`in`(Scopes.SINGLETON)
-            bind(PlayerRegistry::class.java).`in`(Scopes.SINGLETON)
-            bind(PlayerRepository::class.java).`in`(Scopes.SINGLETON)
-            bind(ZonePlayerActivityBitSet::class.java).`in`(Scopes.SINGLETON)
-            bind(org.rsmod.game.entity.NpcList::class.java).`in`(Scopes.SINGLETON)
-            bind(NpcRegistry::class.java).`in`(Scopes.SINGLETON)
-            bind(NpcRepository::class.java).`in`(Scopes.SINGLETON)
-            bind(LocRegistry::class.java).`in`(Scopes.SINGLETON)
-            bind(LocRegistryNormal::class.java).`in`(Scopes.SINGLETON)
-            bind(LocRegistryRegion::class.java).`in`(Scopes.SINGLETON)
-            bind(LocRepository::class.java).`in`(Scopes.SINGLETON)
-            bind(RegionListSmall::class.java).`in`(Scopes.SINGLETON)
-            bind(RegionListLarge::class.java).`in`(Scopes.SINGLETON)
-            bind(RegionRegistry::class.java).`in`(Scopes.SINGLETON)
-            bind(RegionRepository::class.java).`in`(Scopes.SINGLETON)
-            bind(ObjRegistry::class.java).`in`(Scopes.SINGLETON)
-            bind(ObjRepository::class.java).`in`(Scopes.SINGLETON)
-            bind(WorldRepository::class.java).`in`(Scopes.SINGLETON)
-
-            bind(CheatCommandMap::class.java).`in`(Scopes.SINGLETON)
-            bind(EngineQueueCache::class.java).`in`(Scopes.SINGLETON)
-
-            Multibinder.newSetBinder(binder(), InvisibleLevelMod::class.java)
-            bind(InvisibleLevels::class.java).`in`(Scopes.SINGLETON)
-
-            Multibinder.newSetBinder(binder(), XpMod::class.java)
-            bind(XpModifiers::class.java).`in`(Scopes.SINGLETON)
-
-            bind(MarketPrices::class.java)
-                .to(DefaultMarketPrices::class.java)
-                .`in`(Scopes.SINGLETON)
-
-            bind(ShuffledPlayerList::class.java)
-                .toProvider(ShuffledPlayerListProvider::class.java)
-                .`in`(Scopes.SINGLETON)
-
-            Multibinder.newSetBinder(binder(), NpcDamageContributor::class.java)
-            Multibinder.newSetBinder(binder(), PlayerInvUpdateHook::class.java)
-            Multibinder.newSetBinder(binder(), PlayerPostTickHook::class.java)
-            Multibinder.newSetBinder(binder(), PlayerGroundItemDropHook::class.java)
-            Multibinder.newSetBinder(binder(), PlayerObjTakeValidateHook::class.java)
-            Multibinder.newSetBinder(binder(), PlayerTeleportValidateHook::class.java)
-            bind(NpcHitModifier::class.java).to(StandardNpcHitModifier::class.java)
-            bind(PlayerHitModifier::class.java).to(StandardPlayerHitModifier::class.java)
-            bind(NpcHitProcessor::class.java).to(StandardNpcHitProcessor::class.java)
-            bind(InstantPlayerHitProcessor::class.java).to(DamageOnlyPlayerHitProcessor::class.java)
-
-            Multibinder.newSetBinder(binder(), CharacterDataStage.Pipeline::class.java)
-        }
-
-        private fun installModules() {
-            install(ParserModule)
-            install(ServerConfigModule)
-        }
-
-        private fun createTestRealm(): Realm {
-            val realm = Realm(name = "test-suite")
-            realm.updateConfig(TestRealmConfig.create())
-            return realm
-        }
-
-        private class ShuffledPlayerListProvider
-        @Inject
-        constructor(private val playerList: PlayerList) : Provider<ShuffledPlayerList> {
-            override fun get(): ShuffledPlayerList = ShuffledPlayerList(playerList)
-        }
-
-        private class ThrowDatabase : Database {
-            override suspend fun <T> withTransaction(block: (DatabaseConnection) -> T): T =
-                error(
-                    "ThrowDatabase was used: no real Database is available. " +
-                        "If your test needs database access, bind a test-specific Database."
-                )
-        }
+    /**
+     * A read-only view of one cache type table, keyed by id, that can also be indexed by RSCM name:
+     * `npcTypes["npc.man"]`.
+     */
+    public class TestTypeMap<T : Any>(
+        private val rscmType: RSCMType,
+        private val backing: Map<Int, T>,
+    ) : Map<Int, T> by backing {
+        public operator fun get(internal: String): T =
+            backing[internal.asRSCM(rscmType)] ?: error("Cache type not found: $internal")
     }
 
     @Suppress("konsist.avoid usage of stdlib Random in properties")
@@ -988,40 +1038,34 @@ constructor(
         }
     }
 
+    /** Reads and writes skill levels by RSCM stat name (`player.stats["stat.attack"] = 99`). */
     public class StatsDelegate(private val backing: PlayerStatMap) {
         @OptIn(InternalApi::class)
-        public operator fun get(stat: StatType): Int =
-            backing.getCurrentLevel(stat.internalName).toInt() and 0xFF
+        public operator fun get(stat: String): Int =
+            backing.getCurrentLevel(stat).toInt() and 0xFF
 
-        public operator fun set(stat: StatType, value: Int) {
-            backing.setBaseLevel(stat.internalName, value.toByte())
-            backing.setCurrentLevel(stat.internalName, value.toByte())
-            if (value <= 0) {
-                backing.setFineXP(stat.internalName, 0)
+        public operator fun set(stat: String, value: Int) {
+            backing.setBaseLevel(stat, value.toByte())
+            backing.setCurrentLevel(stat, value.toByte())
+            setFineXp(stat, value)
+        }
+
+        public fun setBaseLevel(stat: String, value: Int) {
+            backing.setBaseLevel(stat, value.toByte())
+            setFineXp(stat, value)
+        }
+
+        public fun setCurrentLevel(stat: String, value: Int) {
+            backing.setCurrentLevel(stat, value.toByte())
+        }
+
+        private fun setFineXp(stat: String, level: Int) {
+            if (level <= 0) {
+                backing.setFineXP(stat, 0)
             } else {
-                val xp = PlayerSkillXPTable.getFineXPFromLevel(value)
-                backing.setFineXP(stat.internalName, xp)
+                val xp = PlayerSkillXPTable.getFineXPFromLevel(level)
+                backing.setFineXP(stat, xp)
             }
-        }
-
-        public fun setBaseLevel(stat: StatType, value: Int) {
-            backing.setBaseLevel(stat.internalName, value.toByte())
-            if (value <= 0) {
-                backing.setFineXP(stat.internalName, 0)
-            } else {
-                val xp = PlayerSkillXPTable.getFineXPFromLevel(value)
-                backing.setFineXP(stat.internalName, xp)
-            }
-        }
-
-        public fun setCurrentLevel(stat: StatType, value: Int) {
-            backing.setCurrentLevel(stat.internalName, value.toByte())
-        }
-    }
-
-    private class TestExceptionHandler : GameExceptionHandler {
-        override fun handle(t: Throwable, msg: () -> Any?) {
-            throw t
         }
     }
 }

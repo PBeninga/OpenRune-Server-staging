@@ -1,5 +1,6 @@
 plugins {
     id("base-conventions")
+    id("integration-test-suite")
 }
 
 kotlin {
@@ -32,8 +33,10 @@ dependencies {
     api(projects.engine.routefinder)
     implementation(libs.bundles.logging)
     implementation(libs.clikt)
+    implementation(libs.fastutil)
     implementation(libs.guice)
     implementation(libs.jupiter.api)
+    implementation(libs.kotlin.coroutines.core)
     implementation(projects.api.account)
     implementation(projects.api.cache)
     implementation(projects.api.db)
@@ -49,5 +52,13 @@ dependencies {
     implementation(projects.api.utils.utilsLogging)
     implementation(projects.engine.annotations)
     implementation(projects.engine.module)
+    // The game's Guice module graph (`GameModule`) and, through `server:shared`, every api and
+    // content module, so a test boots the same classpath as the server.
     implementation(projects.server.app)
+    implementation(projects.server.shared)
+    integrationImplementation(libs.kotlin.coroutines.core)
+    integrationImplementation(projects.api.areaChecker)
+    integrationImplementation(projects.api.db)
+    integrationImplementation(projects.api.serverConfig)
+    integrationImplementation(projects.api.shops)
 }
