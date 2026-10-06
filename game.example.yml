@@ -17,6 +17,13 @@ gameplay:
     mode: "assume-completed"
     virtual-completions: []
     virtual-lines: []
+  demonic-pacts:
+    # The Demonic Pacts League's pact tree (content/leagues/demonic-pacts). Off unless enabled.
+    # Unset numbers keep the league's own: 2 starting points, 2 free resets, 40 points spent at most.
+    enabled: false
+    # starting-points: 2
+    # free-resets: 2
+    # spend-cap: 40
 
 central:
   same-instance: true

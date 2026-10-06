@@ -1,0 +1,18 @@
+# Server-only counters behind DemonicPacts.grantPoints, grantReset and the reset action. Saved, never
+# sent to the client: the client sees their effect through talent_points_earned and
+# talent_resets_available.
+
+[[varp]]
+id = "varp.demonic_pacts_points_granted"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.demonic_pacts_resets_granted"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.demonic_pacts_resets_used"
+scope = "Perm"
+transmit = "Never"

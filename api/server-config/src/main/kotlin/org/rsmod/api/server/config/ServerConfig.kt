@@ -38,11 +38,26 @@ public data class GameplayConfig(
     val questRequirements: QuestRequirementsYaml = QuestRequirementsYaml(),
     @JsonProperty("drop-rates")
     val dropRates: DropRatesYaml = DropRatesYaml(),
+    @JsonProperty("demonic-pacts")
+    val demonicPacts: DemonicPactsYaml = DemonicPactsYaml(),
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public data class DropRatesYaml(
     val multiplier: Double = 1.0,
+)
+
+/**
+ * The Demonic Pacts League's pact tree (`content/leagues/demonic-pacts`). [enabled] is the default
+ * answer to whether a player's pacts are active; a server can decide it per player instead. An
+ * unset number keeps the league's own value.
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public data class DemonicPactsYaml(
+    val enabled: Boolean = false,
+    @JsonProperty("starting-points") val startingPoints: Int? = null,
+    @JsonProperty("free-resets") val freeResets: Int? = null,
+    @JsonProperty("spend-cap") val spendCap: Int? = null,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
